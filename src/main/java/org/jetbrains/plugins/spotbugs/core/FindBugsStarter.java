@@ -242,7 +242,12 @@ public abstract class FindBugsStarter implements AnalysisAbortingListener {
 	) throws IOException, InterruptedException {
 
 		final ModuleSettings moduleSettings = ModuleSettings.getInstance(module);
-		AbstractSettings settings = projectSettings;
+		AbstractSettings settings = new ProjectSettings();
+		PluginSettings findSecBugsPlugin = new PluginSettings();
+		findSecBugsPlugin.id = "com.h3xstream.findsecbugs";
+		findSecBugsPlugin.bundled = true;
+		findSecBugsPlugin.enabled = true;
+		settings.plugins.add(findSecBugsPlugin);
 		String importFilePathKey = WorkspaceSettings.PROJECT_IMPORT_FILE_PATH_KEY;
 		if (moduleSettings.overrideProjectSettings) {
 			settings = moduleSettings;

@@ -73,7 +73,7 @@ public final class AnalyzeClassUnderCursor extends AbstractAnalyzeAction {
 		final VirtualFile selectedFile = IdeaUtilImpl.getVirtualFile(e.getDataContext());
 		final PsiClass psiClass = IdeaUtilImpl.getCurrentClass(e.getDataContext());
 
-		new FindBugsStarter(project, "Running SpotBugs analysis for current class...") {
+		new FindBugsStarter(project, "Running security analysis for current class...") {
 			@Override
 			protected void createCompileScope(@NotNull final CompilerManager compilerManager, @NotNull final Consumer<CompileScope> consumer) {
 				consumer.consume(createFilesCompileScope(compilerManager, new VirtualFile[]{selectedFile}));

@@ -197,7 +197,7 @@ public class FindBugsCompileAfterHook implements CompilationStatusListener, Proj
 
 		new FindBugsStarter(
 				project,
-				"Running SpotBugs analysis for affected files...",
+				"Running security analysis for affected files...",
 				ProgressStartType.RunInBackground
 		) {
 			@Override
@@ -256,7 +256,7 @@ public class FindBugsCompileAfterHook implements CompilationStatusListener, Proj
 			public void run() {
 				new FindBugsStarter(
 						project,
-						"Running SpotBugs analysis for affected files...",
+						"Running security analysis for affected files...",
 						ProgressStartType.RunInBackground
 				) {
 					@Override

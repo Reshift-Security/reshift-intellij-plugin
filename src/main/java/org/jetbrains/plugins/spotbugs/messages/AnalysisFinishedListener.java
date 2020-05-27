@@ -25,7 +25,7 @@ import org.jetbrains.annotations.Nullable;
 import org.jetbrains.plugins.spotbugs.core.FindBugsResult;
 
 public interface AnalysisFinishedListener {
-	Topic<AnalysisFinishedListener> TOPIC = Topic.create("SpotBugs Analysis Finished", AnalysisFinishedListener.class);
+	Topic<AnalysisFinishedListener> TOPIC = Topic.create("Reshift Security Analysis Finished", AnalysisFinishedListener.class);
 
 	/**
 	 * Invoked by EDT.

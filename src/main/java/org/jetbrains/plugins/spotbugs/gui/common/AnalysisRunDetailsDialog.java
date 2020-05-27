@@ -60,7 +60,7 @@ public class AnalysisRunDetailsDialog {
 
 		final StringBuilder html = new StringBuilder();
 		html.append("<html><body>");
-		html.append("<p><h2>").append(VersionManager.getName()).append(": <b>found ").append(bugCount).append(" bugs in ").append(numClasses).append(numClasses > 1 ? " classes" : " class").append("</b>").append("</h2></p>");
+		html.append("<p><h2>").append(VersionManager.getName()).append(": <b>found ").append(bugCount).append(" vulnerabilities in ").append(numClasses).append(numClasses > 1 ? " classes" : " class").append("</b>").append("</h2></p>");
 		html.append("<p>").append("<font size='10px'>using ").append(VersionManager.getFullVersion()).append(" with SpotBugs version ").append(FindBugsUtil.getFindBugsFullVersion()).append("</font>").append("</p>");
 
 		for (final edu.umd.cs.findbugs.Project bugsProject : result.getProjects()) {

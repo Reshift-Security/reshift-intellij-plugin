@@ -75,7 +75,7 @@ public abstract class AnalyzeProjectFiles extends AbstractAnalyzeAction {
 			@NotNull final FindBugsState state
 	) {
 
-		new FindBugsStarter(project, "Running SpotBugs analysis for project '" + project.getName() + "'...") {
+		new FindBugsStarter(project, "Running security analysis for project '" + project.getName() + "'...") {
 			@Override
 			protected void createCompileScope(@NotNull final CompilerManager compilerManager, @NotNull final Consumer<CompileScope> consumer) {
 				consumer.consume(compilerManager.createProjectCompileScope(project));

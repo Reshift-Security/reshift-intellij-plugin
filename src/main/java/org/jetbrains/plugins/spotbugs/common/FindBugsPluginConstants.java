@@ -24,8 +24,8 @@ import java.io.File;
 @SuppressWarnings({"HardCodedStringLiteral"})
 public final class FindBugsPluginConstants {
 
-	public static final String PLUGIN_NAME = "IntelliJ SpotBugs plugin";
-	public static final String TOOL_WINDOW_ID = "SpotBugs"; // see plugin.xml
+	public static final String PLUGIN_NAME = "Reshift Security IntelliJ plugin";
+	public static final String TOOL_WINDOW_ID = "reshift"; // see plugin.xml
 	public static final String DEFAULT_EXPORT_DIR = System.getProperty("user.home") + File.separatorChar + TOOL_WINDOW_ID;
 
 	public static final String PLUGIN_ID = "org.jetbrains.plugins.spotbugs";

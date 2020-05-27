@@ -86,7 +86,7 @@ public final class AnalyzePackageFiles extends AbstractAnalyzeAction {
 		final String packageName = fileIndex.getPackageNameByDirectory(directory);
 		final boolean isTest = fileIndex.isInTestSourceContent(directory);
 
-		new FindBugsStarter(project, "Running SpotBugs analysis for package '" + packageName + "'...") {
+		new FindBugsStarter(project, "Running security analysis for package '" + packageName + "'...") {
 			@Override
 			protected void createCompileScope(@NotNull final CompilerManager compilerManager, @NotNull final Consumer<CompileScope> consumer) {
 				consumer.consume(compilerManager.createProjectCompileScope(project));
