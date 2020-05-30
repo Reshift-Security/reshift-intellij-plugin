@@ -52,7 +52,7 @@ final class PreviewPanel implements Disposable {
 	private static final JLabel NO_BUG_SELECTED_LABEL;
 
 	static {
-		NO_BUG_SELECTED_LABEL = new JLabel("Select a bug to preview", SwingConstants.CENTER);
+		NO_BUG_SELECTED_LABEL = new JLabel("Select a vulnerability to preview", SwingConstants.CENTER);
 		NO_BUG_SELECTED_LABEL.setForeground(UIUtil.getInactiveTextColor());
 	}
 
