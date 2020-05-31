@@ -53,9 +53,9 @@ public class ReshiftEducationService {
         String html = "";
         String reshiftEduBaseUrl = System.getenv("RESHIFT_EDU_BASE_URL");
         if (StringUtils.isEmpty(reshiftEduBaseUrl)) {
-            reshiftEduBaseUrl = "https://reshiftsecurity.com"; // TODO: fix this to correct URL
+            reshiftEduBaseUrl = "https://d20h2meksv6k0s.cloudfront.net";
         }
-        final String bugEduUrl = String.format("%s/%s/", reshiftEduBaseUrl, vulnerabilityType);
+        final String bugEduUrl = String.format("%s/%s/index.html", reshiftEduBaseUrl, vulnerabilityType);
         try {
             html = Jsoup.connect(bugEduUrl).get().html();
             if (!StringUtils.isEmpty(html)) {
