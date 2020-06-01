@@ -109,21 +109,23 @@ public enum GroupBy {
 	 */
 	public static GroupBy[] getSortOrderGroup(final GroupBy groupBy) {
 
-		switch (groupBy) {
-
-			case BugCategory:
-				return new GroupBy[]{BugCategory, BugType, BugShortDescription}; // FIXME: 2:Package, 3:Class, 4:Priority
-			case Class:
-				return new GroupBy[]{Class, BugCategory, BugType, BugShortDescription}; // FIXME: 1:Package, 3:Priority
-			case Package:
-				return new GroupBy[]{Package, BugCategory, BugType, BugShortDescription}; // FIXME: 2:Priority, 3:Class
-			case Priority:
-				return new GroupBy[]{Priority, BugCategory, BugType, BugShortDescription}; // FIXME: 2:Package, 3:Class
-			case BugRank:
-				return new GroupBy[]{BugRank, /*BugCategory,*/ BugType, BugShortDescription};
-			default:
-				throw new IllegalStateException("Unknown sort order group: " + groupBy);
-		}
+		// Always group by rank
+		return new GroupBy[]{BugRank, BugType};
+//		switch (groupBy) {
+//
+//			case BugCategory:
+//				return new GroupBy[]{BugCategory, BugType, BugShortDescription}; // FIXME: 2:Package, 3:Class, 4:Priority
+//			case Class:
+//				return new GroupBy[]{Class, BugCategory, BugType, BugShortDescription}; // FIXME: 1:Package, 3:Priority
+//			case Package:
+//				return new GroupBy[]{Package, BugCategory, BugType, BugShortDescription}; // FIXME: 2:Priority, 3:Class
+//			case Priority:
+//				return new GroupBy[]{Priority, BugCategory, BugType, BugShortDescription}; // FIXME: 2:Package, 3:Class
+//			case BugRank:
+//				return new GroupBy[]{BugRank, /*BugCategory,*/ BugType, BugShortDescription};
+//			default:
+//				throw new IllegalStateException("Unknown sort order group: " + groupBy);
+//		}
 	}
 
 	// FIXME: getAvailGroupsForPrimaryGroup ??? static !!??
