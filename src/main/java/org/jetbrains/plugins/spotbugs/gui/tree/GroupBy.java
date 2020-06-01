@@ -19,6 +19,7 @@
  */
 package org.jetbrains.plugins.spotbugs.gui.tree;
 
+import com.reshiftsecurity.results.FindBugsRankRenamer;
 import edu.umd.cs.findbugs.BugRankCategory;
 import edu.umd.cs.findbugs.I18N;
 import org.jetbrains.annotations.NotNull;
@@ -90,7 +91,7 @@ public enum GroupBy {
 				groupName = BugInstanceComparator.BugInstancePriorityComparator.getPriorityString(bug);
 				break;
 			case BugRank:
-				groupName = BugRankCategory.getRank(bug.getInstance().getBugRank()).toString();
+				groupName = FindBugsRankRenamer.rename(BugRankCategory.getRank(bug.getInstance().getBugRank()));
 				break;
 			default:
 				throw new IllegalStateException("Unknown group order: " + groupBy);
