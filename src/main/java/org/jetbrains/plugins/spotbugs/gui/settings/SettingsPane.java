@@ -91,11 +91,12 @@ abstract class SettingsPane extends JPanel implements Disposable {
 		//final TabbedPaneWrapper tabs = new TabbedPaneWrapper(this);
 		tabs = new JBTabbedPane();
 		tabs.addTab(ResourcesLoader.getString("settings.general"), generalTab);
-		tabs.addTab(ResourcesLoader.getString("settings.report"), reportTab);
-		tabs.addTab(ResourcesLoader.getString("settings.filter"), filterTab);
-		tabs.addTab(ResourcesLoader.getString("settings.detector"), detectorTab);
-		tabs.addTab(ResourcesLoader.getString("settings.annotate"), annotateTab);
-		tabs.addTab(ResourcesLoader.getString("settings.share"), shareTab);
+		// Hiding other unnecessary settings tabs
+		// tabs.addTab(ResourcesLoader.getString("settings.report"), reportTab);
+		// tabs.addTab(ResourcesLoader.getString("settings.filter"), filterTab);
+		// tabs.addTab(ResourcesLoader.getString("settings.detector"), detectorTab);
+		// tabs.addTab(ResourcesLoader.getString("settings.annotate"), annotateTab);
+		// tabs.addTab(ResourcesLoader.getString("settings.share"), shareTab);
 		//add(tabs.getComponent()); // see comment above
 		add(tabs);
 

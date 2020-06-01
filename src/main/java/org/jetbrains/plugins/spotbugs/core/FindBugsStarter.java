@@ -210,7 +210,7 @@ public abstract class FindBugsStarter implements AnalysisAbortingListener {
 				for (final Map.Entry<Module, FindBugsProject> entry : projects.getProjects().entrySet()) {
 					final FindBugsProject findBugsProject = entry.getValue();
 					final Module module = entry.getKey();
-					indicator.setText("Start SpotBugs analysis of " + findBugsProject.getProjectName());
+					indicator.setText("Start security analysis of " + findBugsProject.getProjectName());
 					final Pair<SortedBugCollection, Reporter> data = executeImpl(indicator, module, findBugsProject, numClassesOffset);
 					final int numClasses = data.getSecond().getProjectStats().getNumClasses();
 					numClassesOffset += numClasses;

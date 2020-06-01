@@ -59,7 +59,8 @@ final class GeneralTab extends JPanel {
 		topPane.add(toolWindowToFront);
 
 		add(topPane, BorderLayout.NORTH);
-		add(plugin);
+		// Hiding unnecessary plugin tab
+		// add(plugin);
 	}
 
 	void setProjectSettingsEnabled(final boolean enabled) {
