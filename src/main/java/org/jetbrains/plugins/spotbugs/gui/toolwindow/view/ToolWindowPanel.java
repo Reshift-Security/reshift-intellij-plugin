@@ -224,6 +224,7 @@ public final class ToolWindowPanel extends JPanel implements AnalysisStateListen
 	@Override
 	public void analysisStarted() {
 		EditorFactory.getInstance().refreshAllEditors();
+		_bugDetailsComponents.clearReshiftTabs();
 		DaemonCodeAnalyzer.getInstance(_project).restart();
 		updateLayout(false);
 		clear();

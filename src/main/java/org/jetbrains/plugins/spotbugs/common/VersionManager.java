@@ -64,9 +64,9 @@ public class VersionManager {
 
 	private static final String NAME = FindBugsPluginConstants.PLUGIN_NAME;
 	
-	private static final String WEBSITE = "https://github.com/JetBrains/spotbugs-intellij-plugin/";
+	private static final String WEBSITE = "https://reshiftsecurity.com/";
 
-	private static final String DOWNLOAD_WEBSITE = "https://plugins.jetbrains.com/plugin/14014-spotbugs";
+	private static final String DOWNLOAD_WEBSITE = "https://plugins.jetbrains.com/";
 
 	private static final String ISSUE_TRACKER = WEBSITE + "issues";
 

@@ -33,10 +33,13 @@
         <ul>
             <li>A curated list of security checks, vetted by security experts</li>
             <li>Rich developer-centric issue descriptions</li>
-            <li>Additional vulnerability resources</li>
-            <li>remediation help</li>
-            <li>real company examples</li>
-            <li>external links</li>
+            <li>Additional vulnerability resources
+                <ul>
+                    <li>remediation help</li>
+                    <li>real company examples</li>
+                    <li>external links</li>
+                </ul>
+            </li>
             <li>No configuration</li>
             <li>No login required</li>
         </ul>

@@ -168,13 +168,17 @@ public final class BugDetailsComponents {
 		}
 	}
 
+	public void clearReshiftTabs() {
+		_jTabbedPane.removeAll();
+		_reshiftContentPanes.clear();
+	}
+
 	private void refreshReshiftTabs() {
 		getTabbedPane();
 		// Get Reshift contents and set tabs
 		populateReshiftDevContent();
 		if (_reshiftVulnDetails != null && !_reshiftVulnDetails.isEmpty()) {
-			_jTabbedPane.removeAll();
-			_reshiftContentPanes.clear();
+			clearReshiftTabs();
 			int tabIndex = 0;
 			for (ReshiftDevContent reshiftSection : _reshiftVulnDetails.getDevContent()) {
 				Icon tabIcon = getReshiftSectionIcon(reshiftSection);
