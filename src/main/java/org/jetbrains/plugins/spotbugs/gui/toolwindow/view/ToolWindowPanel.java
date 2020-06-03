@@ -123,9 +123,9 @@ public final class ToolWindowPanel extends JPanel implements AnalysisStateListen
 
 
 		add(toolbarLeft, NDockLayout.WEST);
-		add(toolbarRight, NDockLayout.WEST);
+		// add(toolbarRight, NDockLayout.WEST);
 		add(toolbarNavigation, NDockLayout.WEST);
-		add(toolbarUtils, NDockLayout.WEST);
+		// add(toolbarUtils, NDockLayout.WEST);
 
 		updateLayout(false);
 
@@ -263,7 +263,10 @@ public final class ToolWindowPanel extends JPanel implements AnalysisStateListen
 			notificationType = NotificationType.INFORMATION;
 			message.append("&nbsp;<a href='").append(A_HREF_MORE_ANCHOR).append("'>more...</a><br/>");
 		}
-		message.append("<font size='10px'>using ").append(VersionManager.getFullVersion()).append("<br/>");
+		// message.append("<font size='10px'>using ").append(VersionManager.getFullVersion()).append("<br/>");
+		message.append("<br/>");
+		message.append("Would you like to integrate Reshift into your CI pipline? Sign up today for free on <a href='https://reshiftsecurity.com'>reshiftsecurity.com</a>");
+		message.append("<br/>");
 
 		if (error != null) {
 			final boolean findBugsError = FindBugsUtil.isFindBugsError(error);

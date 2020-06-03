@@ -94,9 +94,9 @@ public final class BugDetailsComponents {
 
 			if (SystemInfo.isMac) {
 				// Aqua LF will rotate content
-				_jTabbedPane.addTab("", PluginIcons.FINDBUGS_ICON, getBugDetailsSplitPane(), "Security Expert Tools/Resources to fix vulnerabilities");
+				_jTabbedPane.addTab("", PluginIcons.RESHIFT_ICON, getBugDetailsSplitPane(), "Security Expert Tools/Resources to fix vulnerabilities");
 			} else {
-				_jTabbedPane.addTab(null, new VerticalTextIcon("", true, PluginIcons.FINDBUGS_ICON), getBugDetailsSplitPane(), "Security Expert Tools/Resources to fix vulnerabilities");
+				_jTabbedPane.addTab(null, new VerticalTextIcon("", true, PluginIcons.RESHIFT_ICON), getBugDetailsSplitPane(), "Security Expert Tools/Resources to fix vulnerabilities");
 			}
 
 			_jTabbedPane.setMnemonicAt(0, KeyEvent.VK_1);
@@ -150,21 +150,21 @@ public final class BugDetailsComponents {
 	private Icon getReshiftSectionIcon(ReshiftDevContent reshiftDevContent) {
 		switch (reshiftDevContent.getSectionTitle()) {
 			case "Fixes":
-				return PluginIcons.GROUP_BY_PRIORITY_LOW_ICON;
+				return PluginIcons.RESHIFT_FIXES;
 			case "Impact":
-				return PluginIcons.GROUP_BY_PRIORITY_ICON;
+				return PluginIcons.RESHIFT_IMPACT;
 			case "Overview":
-				return PluginIcons.ANALYZE_SCOPE_FILES_ICON;
+				return PluginIcons.RESHIFT_OVERVIEW;
 			case "References":
-				return PluginIcons.ANALYZE_ALL_MODIFIED_FILES_ICON;
+				return PluginIcons.RESHIFT_REFERENCES;
 			case "Tales":
-				return PluginIcons.GROUP_BY_PACKAGE_ICON;
+				return PluginIcons.RESHIFT_TALES;
 			case "Testing":
-				return PluginIcons.GROUP_BY_CATEGORY_ICON;
+				return PluginIcons.RESHIFT_TESTING;
 			case "Examples":
-				return PluginIcons.GROUP_BY_CLASS_ICON;
+				return PluginIcons.RESHIFT_EXAMPLES;
 			default:
-				return PluginIcons.FINDBUGS_ICON;
+				return PluginIcons.RESHIFT_ICON;
 		}
 	}
 
