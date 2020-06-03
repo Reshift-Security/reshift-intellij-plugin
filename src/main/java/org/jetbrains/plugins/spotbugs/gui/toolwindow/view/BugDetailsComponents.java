@@ -184,23 +184,13 @@ public final class BugDetailsComponents {
 				Icon tabIcon = getReshiftSectionIcon(reshiftSection);
 				String tabTooltip = reshiftSection.getSectionTitle();
 				Component tabComponent = getReshiftContentPane(reshiftSection);
-				if (SystemInfo.isMac) {
-					// Aqua LF will rotate content
-					_jTabbedPane.insertTab(
-							null,
-							tabIcon,
-							tabComponent,
-							tabTooltip,
-							tabIndex);
-				} else {
-					_jTabbedPane.insertTab(
-							null,
-							tabIcon,
-							// new VerticalTextIcon("", true, tabIcon),
-							tabComponent,
-							tabTooltip,
-							tabIndex);
-				}
+				_jTabbedPane.insertTab(
+					null,
+					tabIcon,
+					tabComponent,
+					tabTooltip,
+					tabIndex);
+
 				tabIndex++;
 			}
 		}
