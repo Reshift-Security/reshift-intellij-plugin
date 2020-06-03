@@ -24,9 +24,9 @@ import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.util.SystemInfo;
 import com.intellij.ui.components.JBTabbedPane;
 import com.intellij.util.ui.*;
-import com.reshiftsecurity.education.ReshiftDevContent;
-import com.reshiftsecurity.education.ReshiftEducationService;
-import com.reshiftsecurity.education.ReshiftVulnerabilityDetails;
+import com.reshiftsecurity.education.DevContent;
+import com.reshiftsecurity.education.EducationService;
+import com.reshiftsecurity.education.VulnerabilityDetails;
 import edu.umd.cs.findbugs.*;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import icons.PluginIcons;
@@ -40,7 +40,6 @@ import org.jetbrains.plugins.spotbugs.resources.GuiResources;
 import javax.swing.*;
 import javax.swing.event.HyperlinkEvent;
 import javax.swing.text.html.HTMLEditorKit;
-import javax.swing.text.html.Option;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.io.*;
@@ -68,7 +67,7 @@ public final class BugDetailsComponents {
 	private BugInstance _lastBugInstance;
 	private JTabbedPane _jTabbedPane;
 	private MultiSplitPane _bugDetailsSplitPane;
-	private ReshiftVulnerabilityDetails _reshiftVulnDetails;
+	private VulnerabilityDetails _reshiftVulnDetails;
 	private String _currentReshiftSection;
 	private HashMap<String, Component> _reshiftContentPanes;
 
@@ -94,31 +93,13 @@ public final class BugDetailsComponents {
 			_jTabbedPane.setFocusable(false);
 			_jTabbedPane.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
 
-			if (SystemInfo.isMac) {
-				// Aqua LF will rotate content
-				_jTabbedPane.addTab("", PluginIcons.RESHIFT_ICON, getBugDetailsSplitPane(), "Security Expert Tools/Resources to fix vulnerabilities");
-			} else {
-				_jTabbedPane.addTab(null, new VerticalTextIcon("", true, PluginIcons.RESHIFT_ICON), getBugDetailsSplitPane(), "Security Expert Tools/Resources to fix vulnerabilities");
-			}
-
-			_jTabbedPane.setMnemonicAt(0, KeyEvent.VK_1);
-
-
-			if (Plugin.getByPluginId(EDU_UMD_CS_FINDBUGS_PLUGINS_WEB_CLOUD) != null) {
-				if (SystemInfo.isMac) {
-					// Aqua LF will rotate content
-					_jTabbedPane.addTab("Comments", PluginIcons.FINDBUGS_CLOUD_ICON, getCloudCommentsPanel(), "Comments from the FindBugs Cloud");
-				} else {
-					_jTabbedPane.addTab(null, new VerticalTextIcon("Comments", true, PluginIcons.FINDBUGS_CLOUD_ICON), getCloudCommentsPanel(), "Comments from the FindBugs Cloud");
-				}
-				_jTabbedPane.setMnemonicAt(1, KeyEvent.VK_2);
-			}
+			resetTabPane();
 		}
 
 		return _jTabbedPane;
 	}
 
-	private Component getReshiftContentPane(ReshiftDevContent reshiftContent) {
+	private Component getReshiftContentPane(DevContent reshiftContent) {
 		ExplanationEditorPane reshiftContentPane = new ExplanationEditorPane();
 		reshiftContentPane.setBorder(JBUI.Borders.empty(10));
 		reshiftContentPane.setEditable(false);
@@ -149,8 +130,8 @@ public final class BugDetailsComponents {
 		return reshiftPanel;
 	}
 
-	private Icon getReshiftSectionIcon(ReshiftDevContent reshiftDevContent) {
-		switch (reshiftDevContent.getSectionTitle()) {
+	private Icon getReshiftSectionIcon(DevContent devContent) {
+		switch (devContent.getSectionTitle()) {
 			case "Fixes":
 				return PluginIcons.RESHIFT_FIXES;
 			case "Impact":
@@ -170,8 +151,43 @@ public final class BugDetailsComponents {
 		}
 	}
 
-	public void clearReshiftTabs() {
+	private void resetTabPane() {
+		if (_jTabbedPane == null) {
+			return;
+		}
 		_jTabbedPane.removeAll();
+		if (SystemInfo.isMac) {
+			// Aqua LF will rotate content
+			_jTabbedPane.addTab("", PluginIcons.RESHIFT_ICON, getBugDetailsSplitPane(), "Security Expert Tools/Resources to fix vulnerabilities");
+		} else {
+			_jTabbedPane.addTab(null, new VerticalTextIcon("", true, PluginIcons.RESHIFT_ICON), getBugDetailsSplitPane(), "Security Expert Tools/Resources to fix vulnerabilities");
+		}
+
+		_jTabbedPane.setMnemonicAt(0, KeyEvent.VK_1);
+
+
+		if (Plugin.getByPluginId(EDU_UMD_CS_FINDBUGS_PLUGINS_WEB_CLOUD) != null) {
+			if (SystemInfo.isMac) {
+				// Aqua LF will rotate content
+				_jTabbedPane.addTab("Comments", PluginIcons.FINDBUGS_CLOUD_ICON, getCloudCommentsPanel(), "Comments from the FindBugs Cloud");
+			} else {
+				_jTabbedPane.addTab(null, new VerticalTextIcon("Comments", true, PluginIcons.FINDBUGS_CLOUD_ICON), getCloudCommentsPanel(), "Comments from the FindBugs Cloud");
+			}
+			_jTabbedPane.setMnemonicAt(1, KeyEvent.VK_2);
+		}
+
+	}
+
+	public void clearReshiftTabs() {
+		clearReshiftTabs(false);
+	}
+
+	public void clearReshiftTabs(boolean removeAllTabs) {
+		if (removeAllTabs) {
+			_jTabbedPane.removeAll();
+		} else {
+			resetTabPane();
+		}
 		_reshiftContentPanes.clear();
 	}
 
@@ -180,9 +196,9 @@ public final class BugDetailsComponents {
 		// Get Reshift contents and set tabs
 		populateReshiftDevContent();
 		if (_reshiftVulnDetails != null && !_reshiftVulnDetails.isEmpty()) {
-			clearReshiftTabs();
+			clearReshiftTabs(true);
 			int tabIndex = 0;
-			for (ReshiftDevContent reshiftSection : _reshiftVulnDetails.getDevContent()) {
+			for (DevContent reshiftSection : _reshiftVulnDetails.getDevContent()) {
 				Icon tabIcon = getReshiftSectionIcon(reshiftSection);
 				String tabTooltip = reshiftSection.getSectionTitle();
 				Component tabComponent = getReshiftContentPane(reshiftSection);
@@ -439,9 +455,9 @@ public final class BugDetailsComponents {
 	private void populateReshiftDevContent() {
 		if (_lastBugInstance != null) {
 			if (_reshiftVulnDetails == null) {
-				_reshiftVulnDetails = ReshiftEducationService.getVulnerabilityDetails(_lastBugInstance.getType());
+				_reshiftVulnDetails = EducationService.getVulnerabilityDetails(_lastBugInstance.getType());
 			} else if (!_reshiftVulnDetails.getVulnerabilityType().equalsIgnoreCase(_lastBugInstance.getType())) {
-				_reshiftVulnDetails = ReshiftEducationService.getVulnerabilityDetails(_lastBugInstance.getType());
+				_reshiftVulnDetails = EducationService.getVulnerabilityDetails(_lastBugInstance.getType());
 			}
 		}
 	}
@@ -453,7 +469,7 @@ public final class BugDetailsComponents {
 		}
 
 		if (_reshiftVulnDetails != null) {
-			Optional<ReshiftDevContent> bugDevContent = _reshiftVulnDetails.getDevContentByTitle(_currentReshiftSection);
+			Optional<DevContent> bugDevContent = _reshiftVulnDetails.getDevContentByTitle(_currentReshiftSection);
 			if (bugDevContent.isPresent()) {
 				return bugDevContent.get().getSectionHtml();
 			}

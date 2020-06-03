@@ -1,6 +1,6 @@
 package com.reshiftsecurity.analytics;
 
-public enum ReshiftAnalyticsActionType {
+public enum AnalyticsActionType {
     SCAN, CLICK;
 
     @Override

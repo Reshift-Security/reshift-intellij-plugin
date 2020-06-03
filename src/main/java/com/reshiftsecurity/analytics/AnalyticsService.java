@@ -6,16 +6,16 @@ import com.google.gson.GsonBuilder;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ReshiftAnalyticsService {
-    List<ReshiftAnalyticsAction> actions;
+public class AnalyticsService {
+    List<AnalyticsAction> actions;
     Gson jsonSerializer;
 
-    public ReshiftAnalyticsService() {
+    public AnalyticsService() {
         this.actions = new ArrayList<>();
         this.jsonSerializer = new GsonBuilder().setPrettyPrinting().create();
     }
 
-    public void recordAction(ReshiftAnalyticsAction action) {
+    public void recordAction(AnalyticsAction action) {
         this.actions.add(action);
         this.processActions();
     }

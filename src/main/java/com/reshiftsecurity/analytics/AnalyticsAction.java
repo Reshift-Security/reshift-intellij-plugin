@@ -2,13 +2,13 @@ package com.reshiftsecurity.analytics;
 
 import java.time.ZonedDateTime;
 
-public class ReshiftAnalyticsAction {
-    private ReshiftAnalyticsActionType actionType;
+public class AnalyticsAction {
+    private AnalyticsActionType actionType;
     private ZonedDateTime actionDateTime;
     private String actionResultComments;
     private int actionResultCount;
 
-    public ReshiftAnalyticsAction(ReshiftAnalyticsActionType type) {
+    public AnalyticsAction(AnalyticsActionType type) {
         this.actionType = type;
         this.actionDateTime = ZonedDateTime.now();
     }

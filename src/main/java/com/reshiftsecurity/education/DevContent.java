@@ -1,10 +1,10 @@
 package com.reshiftsecurity.education;
 
-public class ReshiftDevContent {
+public class DevContent {
     private String sectionTitle;
     private String sectionHtml;
 
-    public ReshiftDevContent(String sectionTitle, String sectionHtml) {
+    public DevContent(String sectionTitle, String sectionHtml) {
         this.sectionTitle = sectionTitle;
         this.sectionHtml = sectionHtml;
     }

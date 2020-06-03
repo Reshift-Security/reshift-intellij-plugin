@@ -10,9 +10,9 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ReshiftEducationService {
-    public static ReshiftVulnerabilityDetails getVulnerabilityDetails(String vulnerabilityType) {
-        List<ReshiftDevContent> devContent = new ArrayList<>();
+public class EducationService {
+    public static VulnerabilityDetails getVulnerabilityDetails(String vulnerabilityType) {
+        List<DevContent> devContent = new ArrayList<>();
         String rawHtml = getRawVulnerabilityDetails(vulnerabilityType);
         String[] sections = rawHtml.split("<h1>\\|");
         for (String section : sections) {
@@ -22,10 +22,10 @@ public class ReshiftEducationService {
                 String sectionTitle = section.substring(1, titleEndIndex);
                 String sectionContent = section.substring(titleEndIndex + titleEnd.length());
                 String sectionTitleH1 = String.format("<h1>%s</h1>", sectionTitle);
-                devContent.add(new ReshiftDevContent(sectionTitle,sectionTitleH1 + sectionContent));
+                devContent.add(new DevContent(sectionTitle,sectionTitleH1 + sectionContent));
             }
         }
-        ReshiftVulnerabilityDetails details = new ReshiftVulnerabilityDetails(vulnerabilityType);
+        VulnerabilityDetails details = new VulnerabilityDetails(vulnerabilityType);
         details.getDevContent().addAll(devContent);
         return details;
     }
