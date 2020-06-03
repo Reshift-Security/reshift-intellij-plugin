@@ -62,8 +62,9 @@ final class AdvancedSettingsAction extends DefaultActionGroup {
 		this.enabled = true;
 		getTemplatePresentation().setIcon(AllIcons.General.GearPlain);
 		add(new ResetToDefault());
-		add(new ImportSettings(module != null ? module.getName() : WorkspaceSettings.PROJECT_IMPORT_FILE_PATH_KEY));
-		add(new ExportSettings());
+		// removing unnecessary actions
+		// add(new ImportSettings(module != null ? module.getName() : WorkspaceSettings.PROJECT_IMPORT_FILE_PATH_KEY));
+		// add(new ExportSettings());
 	}
 
 	void setEnabled(final boolean enabled) {

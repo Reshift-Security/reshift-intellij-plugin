@@ -89,7 +89,7 @@ public enum Plugins {
 						"'" + ret.getAbsolutePath() + "': isDirectory=" + ret.isDirectory() + ", canWrite=" + ret.canWrite() + "\n" +
 						"'" + pluginsPath.getAbsolutePath() + "': isDirectory=" + pluginsPath.isDirectory() + ", canWrite=" + pluginsPath.canWrite());
 			}
-			ret = new File(pluginsPath, "spotbugs-idea");
+			ret = new File(pluginsPath, "reshiftsecurity-intellij");
 			if (!ret.isDirectory()) {
 				if (!ret.mkdirs()) {
 					throw new IllegalStateException("Could not create alternative SpotBugs plugin directory: " + ret.getAbsolutePath());

@@ -38,7 +38,7 @@ repositories {
 intellij {
     version ijVersion
 
-    pluginName 'spotbugs-idea'
+    pluginName 'reshiftsecurity-intellij'
     updateSinceUntilBuild false
     type 'IC'
 

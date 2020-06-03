@@ -52,7 +52,7 @@ import java.util.*;
 @edu.umd.cs.findbugs.annotations.SuppressFBWarnings({"SE_BAD_FIELD"})
 public final class ToolWindowPanel extends JPanel implements AnalysisStateListener, Disposable {
 
-	private static final String NOTIFICATION_GROUP_ID_ANALYSIS_FINISHED = "SpotBugs: Analysis Finished";
+	private static final String NOTIFICATION_GROUP_ID_ANALYSIS_FINISHED = "Reshift Security: Analysis Finished";
 	private static final NotificationGroup NOTIFICATION_GROUP_ANALYSIS_FINISHED = NotificationGroup.toolWindowGroup(
 			NOTIFICATION_GROUP_ID_ANALYSIS_FINISHED,
 			FindBugsPluginConstants.TOOL_WINDOW_ID,
@@ -123,9 +123,9 @@ public final class ToolWindowPanel extends JPanel implements AnalysisStateListen
 
 
 		add(toolbarLeft, NDockLayout.WEST);
-		add(toolbarRight, NDockLayout.WEST);
+		// add(toolbarRight, NDockLayout.WEST);
 		add(toolbarNavigation, NDockLayout.WEST);
-		add(toolbarUtils, NDockLayout.WEST);
+		// add(toolbarUtils, NDockLayout.WEST);
 
 		updateLayout(false);
 
@@ -224,6 +224,7 @@ public final class ToolWindowPanel extends JPanel implements AnalysisStateListen
 	@Override
 	public void analysisStarted() {
 		EditorFactory.getInstance().refreshAllEditors();
+		_bugDetailsComponents.clearReshiftTabs();
 		DaemonCodeAnalyzer.getInstance(_project).restart();
 		updateLayout(false);
 		clear();
@@ -249,7 +250,7 @@ public final class ToolWindowPanel extends JPanel implements AnalysisStateListen
 		final StringBuilder message = new StringBuilder()
 				.append("Found ")
 				.append(_bugTreePanel.getGroupModel().getBugCount())
-				.append(" bugs in ")
+				.append(" vulnerabilities in ")
 				.append(numAnalysedClasses)
 				.append(numAnalysedClasses > 1 ? " classes" : " class");
 
@@ -263,7 +264,10 @@ public final class ToolWindowPanel extends JPanel implements AnalysisStateListen
 			notificationType = NotificationType.INFORMATION;
 			message.append("&nbsp;<a href='").append(A_HREF_MORE_ANCHOR).append("'>more...</a><br/>");
 		}
-		message.append("<font size='10px'>using ").append(VersionManager.getFullVersion()).append(" with SpotBugs version ").append(FindBugsUtil.getFindBugsFullVersion()).append("</font><br/><br/>");
+		// message.append("<font size='10px'>using ").append(VersionManager.getFullVersion()).append("<br/>");
+		message.append("<br/>");
+		message.append("Would you like to integrate Reshift into your CI pipline? Sign up today for free on <a href='https://reshiftsecurity.com'>reshiftsecurity.com</a>");
+		message.append("<br/>");
 
 		if (error != null) {
 			final boolean findBugsError = FindBugsUtil.isFindBugsError(error);
@@ -458,7 +462,7 @@ public final class ToolWindowPanel extends JPanel implements AnalysisStateListen
 									"Settings | Appearance & Behavior | Notifications | " +
 									NOTIFICATION_GROUP_ID_ANALYSIS_FINISHED +
 									"\ncan be used to configure the notification.",
-							"SpotBugs Analysis Finished Notification",
+							"Reshift Security Analysis Finished Notification",
 							"Disable Notification", CommonBundle.getCancelButtonText(), Messages.getWarningIcon());
 					if (result == Messages.YES) {
 						NotificationUtil.getNotificationsConfigurationImpl().changeSettings(

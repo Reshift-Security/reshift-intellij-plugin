@@ -23,6 +23,7 @@ package icons;
 import com.intellij.icons.AllIcons;
 import com.intellij.ui.LayeredIcon;
 import com.intellij.util.IconUtil;
+import com.intellij.util.ui.UIUtil;
 import org.jetbrains.plugins.spotbugs.resources.ResourcesLoader;
 
 import javax.swing.*;
@@ -30,9 +31,11 @@ import java.util.Map;
 
 public interface PluginIcons {
 
-    Icon FINDBUGS_ICON = ResourcesLoader.loadIcon("bug.svg");
-    Icon FINDBUGS_ICON_13X13 = ResourcesLoader.loadIcon("bug13x13.svg");
-    Icon FINDBUGS_CLOUD_ICON = ResourcesLoader.loadIcon("bug_cloud.png");
+    Icon RESHIFT_ICON = ResourcesLoader.loadIcon("reshift.png");
+    Icon RESHIFT_LOGO_13X13 = ResourcesLoader.loadIcon("reshift-logo.png");
+    Icon FINDBUGS_CLOUD_ICON = ResourcesLoader.loadIcon("reshift-logo.png");
+
+    Icon PLUGIN_SETTINGS_ICON = ResourcesLoader.loadIcon("actions/reshift-settings.png");
 
     Icon CLOSE_EDITOR_ICON = AllIcons.Actions.Close;
     Icon CLOSE_EDITOR_HOVER_ICON = AllIcons.Actions.CloseHovered;
@@ -53,7 +56,7 @@ public interface PluginIcons {
     Icon ANALYZE_MODULE_FILES_INCLUDING_TESTS_ICON = new LayeredIcon(
             AllIcons.Nodes.Module, AllIcons.Nodes.RunnableMark, INCLUDING_TESTS_MARK_ICON
     );
-    Icon ANALYZE_PROJECT_FILES_NOT_INCLUDING_TESTS_ICON = LayeredIcon.create(AllIcons.Nodes.Project, AllIcons.Nodes.RunnableMark);
+    Icon ANALYZE_PROJECT_FILES_NOT_INCLUDING_TESTS_ICON = ResourcesLoader.loadIcon("actions/startscan.png");
     Icon ANALYZE_PROJECT_FILES_INCLUDING_TESTS_ICON = new LayeredIcon(
             AllIcons.Nodes.Project, AllIcons.Nodes.RunnableMark, INCLUDING_TESTS_MARK_ICON
     );
@@ -61,6 +64,18 @@ public interface PluginIcons {
     Icon ANALYZE_ALL_MODIFIED_FILES_ICON = LayeredIcon.create(AllIcons.Scope.ChangedFilesAll, AllIcons.Nodes.RunnableMark);
     Icon ANALYZE_CHANGELIST_FILES_ICON = LayeredIcon.create(AllIcons.Scope.ChangedFiles, AllIcons.Nodes.RunnableMark);
 
+    /**
+     * --------------------------------------------------------------------------------------------------
+     * Reshift education icons
+     */
+    Icon RESHIFT_OVERVIEW = ResourcesLoader.loadIcon("content/overview.svg");
+    Icon RESHIFT_FIXES = ResourcesLoader.loadIcon("content/fixes.svg");
+    Icon RESHIFT_EXAMPLES = ResourcesLoader.loadIcon("content/examples.svg");
+    Icon RESHIFT_TESTING = ResourcesLoader.loadIcon("content/testing.svg");
+    Icon RESHIFT_TALES = ResourcesLoader.loadIcon("content/tales.svg");
+    Icon RESHIFT_REFERENCES = ResourcesLoader.loadIcon("content/references.svg");
+    Icon RESHIFT_IMPACT = ResourcesLoader.loadIcon("content/impact.svg");
+    Icon RESHIFT_CONTENT_DEFAULT = ResourcesLoader.loadIcon("content/default.svg");
 
     /**
      * --------------------------------------------------------------------------------------------------

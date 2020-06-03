@@ -105,8 +105,8 @@ public final class AnalyzeSelectedFiles extends AbstractAnalyzeAction {
 	private String getTaskTitle(@NotNull final DataContext dataContext, @Nullable final VirtualFile[] selectedFiles) {
 		if (PlatformDataKeys.EDITOR.getData(dataContext) == null) {
 			String suffix = (selectedFiles == null || selectedFiles.length > 1) ? "s" : "";
-			return "Running SpotBugs analysis for selected file" + suffix + "...";
+			return "Running security analysis for selected file" + suffix + "...";
 		}
-		return "Running SpotBugs analysis for editor file...";
+		return "Running security analysis for editor file...";
 	}
 }

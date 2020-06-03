@@ -79,7 +79,7 @@ public abstract class AnalyzeModuleFiles extends AbstractAnalyzeAction {
 
 		final Module module = getModule(e);
 
-		new FindBugsStarter(project, "Running SpotBugs analysis for module'" + module.getName() + "'...") {
+		new FindBugsStarter(project, "Running security analysis for module'" + module.getName() + "'...") {
 			@Override
 			protected void createCompileScope(@NotNull final CompilerManager compilerManager, @NotNull final Consumer<CompileScope> consumer) {
 				consumer.consume(compilerManager.createModuleCompileScope(module, true));

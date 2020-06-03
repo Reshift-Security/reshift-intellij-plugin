@@ -37,7 +37,7 @@ import java.util.List;
 
 public class RootNode extends AbstractTreeNode<VisitableTreeNode> implements VisitableTreeNode {
 
-	private static final Icon EXPAND_ICON = new MaskIcon(ResourcesLoader.loadIcon("fb-logo.svg"), JBColor.BLACK);
+	private static final Icon EXPAND_ICON = new MaskIcon(ResourcesLoader.loadIcon("bluesheild.svg"));
 	private static final Icon COLLAPSE_ICON = EXPAND_ICON;
 
 	private int _bugCount;

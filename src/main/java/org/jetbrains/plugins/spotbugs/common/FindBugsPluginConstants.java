@@ -24,21 +24,21 @@ import java.io.File;
 @SuppressWarnings({"HardCodedStringLiteral"})
 public final class FindBugsPluginConstants {
 
-	public static final String PLUGIN_NAME = "IntelliJ SpotBugs plugin";
-	public static final String TOOL_WINDOW_ID = "SpotBugs"; // see plugin.xml
+	public static final String PLUGIN_NAME = "Reshift Security IntelliJ plugin";
+	public static final String TOOL_WINDOW_ID = "reshift"; // see plugin.xml
 	public static final String DEFAULT_EXPORT_DIR = System.getProperty("user.home") + File.separatorChar + TOOL_WINDOW_ID;
 
-	public static final String PLUGIN_ID = "org.jetbrains.plugins.spotbugs";
+	public static final String PLUGIN_ID = "com.reshiftsecurity.plugins.intellij";
 	public static final String MODULE_ID = "org.jetbrains.plugins.spotbugs.module";
 
 	// The action group for the plug-in tool window.
-	public static final String ACTION_GROUP_LEFT = "SpotBugs.ToolBarActions.left";
+	public static final String ACTION_GROUP_LEFT = "Reshift.ToolBarActions.left";
 
-	public static final String ACTION_GROUP_RIGHT = "SpotBugs.ToolBarActions.right";
+	public static final String ACTION_GROUP_RIGHT = "Reshift.ToolBarActions.right";
 
-	public static final String ACTION_GROUP_NAVIGATION = "SpotBugs.ToolBarActions.navigation";
+	public static final String ACTION_GROUP_NAVIGATION = "Reshift.ToolBarActions.navigation";
 
-	public static final String ACTION_GROUP_UTILS = "SpotBugs.ToolBarActions.utils";
+	public static final String ACTION_GROUP_UTILS = "Reshift.ToolBarActions.utils";
 
 	public static final String FILE_SEPARATOR = File.separator;
 

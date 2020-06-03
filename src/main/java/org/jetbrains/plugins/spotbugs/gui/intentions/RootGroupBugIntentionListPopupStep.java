@@ -71,6 +71,6 @@ public class RootGroupBugIntentionListPopupStep extends BaseListPopupStep<GroupB
 
 
 	public Icon getIcon(final int i) {
-		return PluginIcons.FINDBUGS_ICON;
+		return PluginIcons.RESHIFT_ICON;
 	}
 }

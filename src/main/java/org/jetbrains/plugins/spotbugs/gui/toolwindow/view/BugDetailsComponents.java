@@ -24,9 +24,13 @@ import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.util.SystemInfo;
 import com.intellij.ui.components.JBTabbedPane;
 import com.intellij.util.ui.*;
+import com.reshiftsecurity.education.DevContent;
+import com.reshiftsecurity.education.EducationService;
+import com.reshiftsecurity.education.VulnerabilityDetails;
 import edu.umd.cs.findbugs.*;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import icons.PluginIcons;
+import org.apache.commons.lang.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.plugins.spotbugs.common.util.BugInstanceUtil;
 import org.jetbrains.plugins.spotbugs.gui.common.*;
@@ -41,6 +45,8 @@ import java.awt.event.KeyEvent;
 import java.io.*;
 import java.net.URL;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @SuppressWarnings("MagicNumber")
@@ -61,11 +67,15 @@ public final class BugDetailsComponents {
 	private BugInstance _lastBugInstance;
 	private JTabbedPane _jTabbedPane;
 	private MultiSplitPane _bugDetailsSplitPane;
+	private VulnerabilityDetails _reshiftVulnDetails;
+	private String _currentReshiftSection;
+	private HashMap<String, Component> _reshiftContentPanes;
 
 
 	BugDetailsComponents(final ToolWindowPanel toolWindowPanel) {
 		_parent = toolWindowPanel;
 		_htmlEditorKit = GuiResources.createHtmlEditorKit();
+		_reshiftContentPanes = new HashMap<>();
 	}
 
 	JTabbedPane getTabbedPane() {
@@ -83,28 +93,125 @@ public final class BugDetailsComponents {
 			_jTabbedPane.setFocusable(false);
 			_jTabbedPane.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
 
-			if (SystemInfo.isMac) {
-				// Aqua LF will rotate content
-				_jTabbedPane.addTab("Bug Details", PluginIcons.FINDBUGS_ICON, getBugDetailsSplitPane(), "Bug details concerning the current selected bug in the left tree");
-			} else {
-				_jTabbedPane.addTab(null, new VerticalTextIcon("Bug Details", true, PluginIcons.FINDBUGS_ICON), getBugDetailsSplitPane(), "Bug details concerning the current selected bug in the left tree");
-			}
-
-			_jTabbedPane.setMnemonicAt(0, KeyEvent.VK_1);
-
-
-			if (Plugin.getByPluginId(EDU_UMD_CS_FINDBUGS_PLUGINS_WEB_CLOUD) != null) {
-				if (SystemInfo.isMac) {
-					// Aqua LF will rotate content
-					_jTabbedPane.addTab("Comments", PluginIcons.FINDBUGS_CLOUD_ICON, getCloudCommentsPanel(), "Comments from the FindBugs Cloud");
-				} else {
-					_jTabbedPane.addTab(null, new VerticalTextIcon("Comments", true, PluginIcons.FINDBUGS_CLOUD_ICON), getCloudCommentsPanel(), "Comments from the FindBugs Cloud");
-				}
-				_jTabbedPane.setMnemonicAt(1, KeyEvent.VK_2);
-			}
+			resetTabPane();
 		}
 
 		return _jTabbedPane;
+	}
+
+	private Component getReshiftContentPane(DevContent reshiftContent) {
+		ExplanationEditorPane reshiftContentPane = new ExplanationEditorPane();
+		reshiftContentPane.setBorder(JBUI.Borders.empty(10));
+		reshiftContentPane.setEditable(false);
+		reshiftContentPane.setContentType("text/html");
+		reshiftContentPane.setEditorKit(_htmlEditorKit);
+		reshiftContentPane.addHyperlinkListener(this::editorPaneHyperlinkUpdate);
+		try (StringReader reader = new StringReader(reshiftContent.getSectionHtml())) {
+			reshiftContentPane.setToolTipText(edu.umd.cs.findbugs.L10N
+					.getLocalString("tooltip.longer_description", "This gives more details on the detected vulnerability"));
+			reshiftContentPane.read(reader, "html bug description");
+		} catch (final IOException e) {
+			reshiftContentPane.setText("Could not find bug description: " + e.getMessage());
+			LOGGER.warn(e.getMessage(), e);
+		}
+		scrollRectToVisible(reshiftContentPane);
+
+		final JScrollPane scrollPane = ScrollPaneFacade.createScrollPane(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		scrollPane.setViewportView(reshiftContentPane);
+		//scrollPane.setBorder(BorderFactory.createCompoundBorder(new CustomLineBorder(new JBColor(new Color(208, 206, 203), new Color(170, 168, 165)), 1, 0, 0, 0), new CustomLineBorder(new JBColor(new Color(98, 95, 89), new Color(71, 68, 62)), 1, 0, 0, 0)));
+
+		JPanel reshiftPanel = new JPanel();
+		reshiftPanel.setBorder(JBUI.Borders.empty());
+		reshiftPanel.setLayout(new BorderLayout());
+		reshiftPanel.add(scrollPane, BorderLayout.CENTER);
+
+		_reshiftContentPanes.put(reshiftContent.getSectionTitle(), reshiftPanel);
+
+		return reshiftPanel;
+	}
+
+	private Icon getReshiftSectionIcon(DevContent devContent) {
+		switch (devContent.getSectionTitle()) {
+			case "Fixes":
+				return PluginIcons.RESHIFT_FIXES;
+			case "Impact":
+				return PluginIcons.RESHIFT_IMPACT;
+			case "Overview":
+				return PluginIcons.RESHIFT_OVERVIEW;
+			case "References":
+				return PluginIcons.RESHIFT_REFERENCES;
+			case "Tales":
+				return PluginIcons.RESHIFT_TALES;
+			case "Testing":
+				return PluginIcons.RESHIFT_TESTING;
+			case "Examples":
+				return PluginIcons.RESHIFT_EXAMPLES;
+			default:
+				return PluginIcons.RESHIFT_ICON;
+		}
+	}
+
+	private void resetTabPane() {
+		if (_jTabbedPane == null) {
+			return;
+		}
+		_jTabbedPane.removeAll();
+		if (SystemInfo.isMac) {
+			// Aqua LF will rotate content
+			_jTabbedPane.addTab("", PluginIcons.RESHIFT_ICON, getBugDetailsSplitPane(), "Security Expert Tools/Resources to fix vulnerabilities");
+		} else {
+			_jTabbedPane.addTab(null, new VerticalTextIcon("", true, PluginIcons.RESHIFT_ICON), getBugDetailsSplitPane(), "Security Expert Tools/Resources to fix vulnerabilities");
+		}
+
+		_jTabbedPane.setMnemonicAt(0, KeyEvent.VK_1);
+
+
+		if (Plugin.getByPluginId(EDU_UMD_CS_FINDBUGS_PLUGINS_WEB_CLOUD) != null) {
+			if (SystemInfo.isMac) {
+				// Aqua LF will rotate content
+				_jTabbedPane.addTab("Comments", PluginIcons.FINDBUGS_CLOUD_ICON, getCloudCommentsPanel(), "Comments from the FindBugs Cloud");
+			} else {
+				_jTabbedPane.addTab(null, new VerticalTextIcon("Comments", true, PluginIcons.FINDBUGS_CLOUD_ICON), getCloudCommentsPanel(), "Comments from the FindBugs Cloud");
+			}
+			_jTabbedPane.setMnemonicAt(1, KeyEvent.VK_2);
+		}
+
+	}
+
+	public void clearReshiftTabs() {
+		clearReshiftTabs(false);
+	}
+
+	public void clearReshiftTabs(boolean removeAllTabs) {
+		if (removeAllTabs) {
+			_jTabbedPane.removeAll();
+		} else {
+			resetTabPane();
+		}
+		_reshiftContentPanes.clear();
+	}
+
+	private void refreshReshiftTabs() {
+		getTabbedPane();
+		// Get Reshift contents and set tabs
+		populateReshiftDevContent();
+		if (_reshiftVulnDetails != null && !_reshiftVulnDetails.isEmpty()) {
+			clearReshiftTabs(true);
+			int tabIndex = 0;
+			for (DevContent reshiftSection : _reshiftVulnDetails.getDevContent()) {
+				Icon tabIcon = getReshiftSectionIcon(reshiftSection);
+				String tabTooltip = reshiftSection.getSectionTitle();
+				Component tabComponent = getReshiftContentPane(reshiftSection);
+				_jTabbedPane.insertTab(
+					null,
+					tabIcon,
+					tabComponent,
+					tabTooltip,
+					tabIndex);
+
+				tabIndex++;
+			}
+		}
 	}
 
 	private Component getBugDetailsSplitPane() {
@@ -345,19 +452,49 @@ public final class BugDetailsComponents {
 		refreshDetailsShown();
 	}
 
-	private void refreshDetailsShown() {
-		final String html = BugInstanceUtil.getDetailHtml(_lastBugInstance);
-		// no need for BufferedReader
-		try (StringReader reader = new StringReader(html)) {
-			_explanationPane.setToolTipText(edu.umd.cs.findbugs.L10N
-					.getLocalString("tooltip.longer_description", "This gives a longer description of the detected bug " +
-																												"pattern"));
-			_explanationPane.read(reader, "html bug description");
-		} catch (final IOException e) {
-			_explanationPane.setText("Could not find bug description: " + e.getMessage());
-			LOGGER.warn(e.getMessage(), e);
+	private void populateReshiftDevContent() {
+		if (_lastBugInstance != null) {
+			if (_reshiftVulnDetails == null) {
+				_reshiftVulnDetails = EducationService.getVulnerabilityDetails(_lastBugInstance.getType());
+			} else if (!_reshiftVulnDetails.getVulnerabilityType().equalsIgnoreCase(_lastBugInstance.getType())) {
+				_reshiftVulnDetails = EducationService.getVulnerabilityDetails(_lastBugInstance.getType());
+			}
 		}
-		scrollRectToVisible(_bugDetailsPane);
+	}
+
+	private String getCurrentReshiftExplanation() {
+		populateReshiftDevContent();
+		if (StringUtils.isEmpty(_currentReshiftSection)) {
+			_currentReshiftSection = "Overview";
+		}
+
+		if (_reshiftVulnDetails != null) {
+			Optional<DevContent> bugDevContent = _reshiftVulnDetails.getDevContentByTitle(_currentReshiftSection);
+			if (bugDevContent.isPresent()) {
+				return bugDevContent.get().getSectionHtml();
+			}
+		}
+		return "";
+	}
+
+	private void refreshDetailsShown() {
+		String html = BugInstanceUtil.getDetailHtml(_lastBugInstance);
+		String reshiftSectionContent = getCurrentReshiftExplanation();
+
+		if (!StringUtils.isEmpty(reshiftSectionContent)) {
+			refreshReshiftTabs();
+		} else {
+			// no need for BufferedReader
+			try (StringReader reader = new StringReader(html)) {
+				_explanationPane.setToolTipText(edu.umd.cs.findbugs.L10N
+						.getLocalString("tooltip.longer_description", "This gives more details on the detected vulnerability"));
+				_explanationPane.read(reader, "html bug description");
+			} catch (final IOException e) {
+				_explanationPane.setText("Could not find bug description: " + e.getMessage());
+				LOGGER.warn(e.getMessage(), e);
+			}
+			scrollRectToVisible(_explanationPane);
+		}
 	}
 
 	@SuppressWarnings({"AnonymousInnerClass"})
@@ -367,8 +504,8 @@ public final class BugDetailsComponents {
 
 	void adaptSize(final int width, final int height) {
 		//final int newWidth = (int) (width * _splitPaneHorizontalWeight);
-		final int expHeight = (int) (height * 0.4);
-		final int detailsHeight = (int) (height * 0.6);
+		final int expHeight = (int) (height);
+		final int detailsHeight = (int) (height * 0); // hide details pane for now; might need it later
 
 		//if(_bugDetailsPanel.getPreferredSize().width != newWidth && _bugDetailsPanel.getPreferredSize().height != detailsHeight) {
 		_bugDetailsPanel.setPreferredSize(new Dimension(width, detailsHeight));
@@ -386,6 +523,12 @@ public final class BugDetailsComponents {
 		getBugDetailsSplitPane().validate();
 		//_parent.validate();
 		//}
+
+		for (Component rPane : _reshiftContentPanes.values()) {
+			rPane.setPreferredSize(new Dimension(width, expHeight));
+			rPane.setSize(new Dimension(width, expHeight));
+			rPane.validate();
+		}
 	}
 
 	public void issueUpdated(final BugInstance bug) {

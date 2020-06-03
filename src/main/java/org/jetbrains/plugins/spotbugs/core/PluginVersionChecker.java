@@ -57,7 +57,7 @@ final class PluginVersionChecker {
 	@NotNull
 	private static String getLatestReleaseUrl() {
 		// https support only
-		return "https://api.github.com/repos/JetBrains/spotbugs-intellij-plugin/releases/latest";
+		return "https://api.github.com/repos/reshift-projects/reshift-intellij-plugin/releases/latest";
 	}
 
 	private static class LatestRelease {

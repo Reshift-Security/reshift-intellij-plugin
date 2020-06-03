@@ -72,7 +72,7 @@ public final class AnalyzeAllModifiedFiles extends AbstractAnalyzeAction {
 
 		final List<VirtualFile> modifiedFiles = IdeaUtilImpl.getAllModifiedFiles(e.getDataContext());
 
-		new FindBugsStarter(project, "Running SpotBugs analysis for modified files...") {
+		new FindBugsStarter(project, "Running security analysis for modified files...") {
 			@Override
 			protected void createCompileScope(@NotNull final CompilerManager compilerManager, @NotNull final Consumer<CompileScope> consumer) {
 				consumer.consume(createFilesCompileScope(compilerManager, modifiedFiles));

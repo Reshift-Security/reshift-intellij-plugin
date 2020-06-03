@@ -82,7 +82,7 @@ public final class CheckinHandlerFactoryImpl extends CheckinHandlerFactory {
 
 				new FindBugsStarter(
 						panel.getProject(),
-						"Running SpotBugs analysis for affected files...",
+						"Running security analysis for affected files...",
 						ProgressStartType.Modal
 				) {
 					@Override
