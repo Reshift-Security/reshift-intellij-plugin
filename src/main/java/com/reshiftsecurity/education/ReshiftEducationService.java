@@ -1,23 +1,3 @@
-/*
- * Copyright 2020 SpotBugs plugin contributors
- *
- * This file is part of IntelliJ SpotBugs plugin.
- *
- * IntelliJ SpotBugs plugin is free software: you can redistribute it
- * and/or modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation, either version 3 of
- * the License, or (at your option) any later version.
- *
- * IntelliJ SpotBugs plugin is distributed in the hope that it will
- * be useful, but WITHOUT ANY WARRANTY; without even the implied
- * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
- * See the GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with IntelliJ SpotBugs plugin.
- * If not, see <http://www.gnu.org/licenses/>.
- */
-
 package com.reshiftsecurity.education;
 
 import org.apache.commons.lang.StringUtils;
@@ -25,6 +5,8 @@ import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
 
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -55,7 +37,13 @@ public class ReshiftEducationService {
         if (StringUtils.isEmpty(reshiftEduBaseUrl)) {
             reshiftEduBaseUrl = "https://d20h2meksv6k0s.cloudfront.net";
         }
-        final String bugEduUrl = String.format("%s/%s/index.html", reshiftEduBaseUrl, vulnerabilityType);
+        URI eduBaseUri = null;
+        try {
+            eduBaseUri = new URI(reshiftEduBaseUrl);
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
+        final String bugEduUrl = eduBaseUri.resolve(String.format("/%s/index.html", vulnerabilityType)).toString();
         try {
             html = Jsoup.connect(bugEduUrl).get().html();
             if (!StringUtils.isEmpty(html)) {

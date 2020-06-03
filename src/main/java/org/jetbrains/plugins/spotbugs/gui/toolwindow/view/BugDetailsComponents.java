@@ -40,12 +40,14 @@ import org.jetbrains.plugins.spotbugs.resources.GuiResources;
 import javax.swing.*;
 import javax.swing.event.HyperlinkEvent;
 import javax.swing.text.html.HTMLEditorKit;
+import javax.swing.text.html.Option;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.io.*;
 import java.net.URL;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @SuppressWarnings("MagicNumber")
@@ -451,9 +453,9 @@ public final class BugDetailsComponents {
 		}
 
 		if (_reshiftVulnDetails != null) {
-			ReshiftDevContent bugDevContent = _reshiftVulnDetails.getDevContentByTitle(_currentReshiftSection);
-			if (bugDevContent != null) {
-				return bugDevContent.getSectionHtml();
+			Optional<ReshiftDevContent> bugDevContent = _reshiftVulnDetails.getDevContentByTitle(_currentReshiftSection);
+			if (bugDevContent.isPresent()) {
+				return bugDevContent.get().getSectionHtml();
 			}
 		}
 		return "";
