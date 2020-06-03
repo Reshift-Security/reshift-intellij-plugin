@@ -36,7 +36,7 @@ import org.jetbrains.plugins.spotbugs.gui.tree.GroupBy;
 import java.util.Map;
 
 @State(
-		name = "FindBugs-IDEA-Workspace",
+		name = "ReshiftSecurity-IDEA-Workspace",
 		storages = {@Storage(file /*IDEA 2016: switch to value()*/ = StoragePathMacros.WORKSPACE_FILE)}
 )
 public final class WorkspaceSettings implements PersistentStateComponent<WorkspaceSettings> {

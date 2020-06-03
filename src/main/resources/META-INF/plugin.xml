@@ -117,17 +117,17 @@
     </project-components>
 
     <actions>
-        <group id="SpotBugs.AnalyzeMenu" text="Reshift Security" popup="true">
+        <group id="Reshift.AnalyzeMenu" text="Reshift Security" popup="true">
             <add-to-group anchor="last" group-id="AnalyzeMenu"/>
             <add-to-group anchor="after" group-id="EditorPopupMenu" relative-to-action="AnalyzeMenu"/>
             <add-to-group anchor="after" group-id="ProjectViewPopupMenu" relative-to-action="AnalyzeMenu"/>
         </group>
 
-        <group id="SpotBugs.ToolBarActions.left" text="Reshift Security Analyze Actions" popup="true">
+        <group id="Reshift.ToolBarActions.left" text="Reshift Security Analyze Actions" popup="true">
             <!--<add-to-group anchor="last" group-id="EditorPopupMenu"/>-->
             <!--<add-to-group group-id="SpotBugsEditorPopup" anchor="last"/>-->
 
-<!--            <action id="SpotBugs.SelectedFilesAction"-->
+<!--            <action id="Reshift.SelectedFilesAction"-->
 <!--                    class="org.jetbrains.plugins.spotbugs.actions.AnalyzeSelectedFiles"-->
 <!--                    text="Analyze Selected Files"-->
 <!--                    description="Run security analysis on the current editor file."-->
@@ -137,10 +137,10 @@
 
 <!--                &lt;!&ndash;<add-to-group group-id="EditorPopupMenu" anchor="last"/>&ndash;&gt;-->
 <!--                &lt;!&ndash;<add-to-group group-id="SpotBugsProjectViewPopupMenu" anchor="last"/>&ndash;&gt;-->
-<!--                <add-to-group group-id="SpotBugs.AnalyzeMenu" anchor="last"/>-->
+<!--                <add-to-group group-id="Reshift.AnalyzeMenu" anchor="last"/>-->
 <!--            </action>-->
 
-<!--            <action id="SpotBugs.ClassUnderCursorAction"-->
+<!--            <action id="Reshift.ClassUnderCursorAction"-->
 <!--                    class="org.jetbrains.plugins.spotbugs.actions.AnalyzeClassUnderCursor"-->
 <!--                    text="Analyze Class (Non-Anonymous) Under Cursor"-->
 <!--                    description="Run security analysis on the class (non-anonymous) under the editor cursor."-->
@@ -150,87 +150,87 @@
 
 <!--                &lt;!&ndash;<add-to-group group-id="EditorPopupMenu" anchor="last"/>&ndash;&gt;-->
 <!--                &lt;!&ndash;<add-to-group group-id="SpotBugsProjectViewPopupMenu" anchor="last"/>&ndash;&gt;-->
-<!--                <add-to-group group-id="SpotBugs.AnalyzeMenu" anchor="last"/>-->
+<!--                <add-to-group group-id="Reshift.AnalyzeMenu" anchor="last"/>-->
 <!--            </action>-->
 
-<!--            <action id="SpotBugs.AnalysePackage"-->
+<!--            <action id="Reshift.AnalysePackage"-->
 <!--                    class="org.jetbrains.plugins.spotbugs.actions.AnalyzePackageFiles"-->
 <!--                    text="Analyze Package(S) Files"-->
 <!--                    description="Run security analysis on files off the selected package(s)."-->
 <!--                    icon="PluginIcons.ANALYZE_PACKAGE_FILES_ICON">-->
 
 <!--                &lt;!&ndash;<add-to-group group-id="EditorPopupMenu" anchor="last"/>&ndash;&gt;-->
-<!--                <add-to-group group-id="SpotBugs.AnalyzeMenu" anchor="last"/>-->
+<!--                <add-to-group group-id="Reshift.AnalyzeMenu" anchor="last"/>-->
 <!--            </action>-->
 
-<!--            <action id="SpotBugs.ModuleFilesNotIncludingTestsAction"-->
+<!--            <action id="Reshift.ModuleFilesNotIncludingTestsAction"-->
 <!--                    class="org.jetbrains.plugins.spotbugs.actions.AnalyzeModuleFilesNotIncludingTests"-->
 <!--                    text="Analyze Module Files Not Including Test Sources"-->
 <!--                    description="Run security analysis on all module files not including test sources."-->
 <!--                    icon="PluginIcons.ANALYZE_MODULE_FILES_NOT_INCLUDING_TESTS_ICON">-->
 
 <!--                &lt;!&ndash;<add-to-group group-id="EditorPopupMenu" anchor="last"/>&ndash;&gt;-->
-<!--                <add-to-group group-id="SpotBugs.AnalyzeMenu" anchor="last"/>-->
+<!--                <add-to-group group-id="Reshift.AnalyzeMenu" anchor="last"/>-->
 <!--            </action>-->
 
-<!--            <action id="SpotBugs.ModuleFilesIncludingTestsAction"-->
+<!--            <action id="Reshift.ModuleFilesIncludingTestsAction"-->
 <!--                    class="org.jetbrains.plugins.spotbugs.actions.AnalyzeModuleFilesIncludingTests"-->
 <!--                    text="Analyze Module Files Including Test Sources"-->
 <!--                    description="Run security analysis on all module files including test sources."-->
 <!--                    icon="PluginIcons.ANALYZE_MODULE_FILES_INCLUDING_TESTS_ICON">-->
 
 <!--                &lt;!&ndash;<add-to-group group-id="EditorPopupMenu" anchor="last"/>&ndash;&gt;-->
-<!--                <add-to-group group-id="SpotBugs.AnalyzeMenu" anchor="last"/>-->
+<!--                <add-to-group group-id="Reshift.AnalyzeMenu" anchor="last"/>-->
 <!--            </action>-->
 
-            <action id="SpotBugs.ProjectFilesNotIncludingTestsAction"
+            <action id="Reshift.ProjectFilesNotIncludingTestsAction"
                     class="org.jetbrains.plugins.spotbugs.actions.AnalyzeProjectFilesNotIncludingTests"
                     text="Scan Project Files Not Including Test Sources."
                     description="Run security analysis on all project files not including test sources."
                     icon="PluginIcons.ANALYZE_PROJECT_FILES_NOT_INCLUDING_TESTS_ICON">
 
                 <!--<add-to-group group-id="EditorPopupMenu" anchor="last"/>-->
-                <add-to-group group-id="SpotBugs.AnalyzeMenu" anchor="last"/>
+                <add-to-group group-id="Reshift.AnalyzeMenu" anchor="last"/>
             </action>
 
-<!--            <action id="SpotBugs.ProjectFilesIncludingTestsAction"-->
+<!--            <action id="Reshift.ProjectFilesIncludingTestsAction"-->
 <!--                    class="org.jetbrains.plugins.spotbugs.actions.AnalyzeProjectFilesIncludingTests"-->
 <!--                    text="Analyze Project Files Including Test Sources."-->
 <!--                    description="Run security analysis on all project files including test sources."-->
 <!--                    icon="PluginIcons.ANALYZE_PROJECT_FILES_INCLUDING_TESTS_ICON">-->
 
 <!--                &lt;!&ndash;<add-to-group group-id="EditorPopupMenu" anchor="last"/>&ndash;&gt;-->
-<!--                <add-to-group group-id="SpotBugs.AnalyzeMenu" anchor="last"/>-->
+<!--                <add-to-group group-id="Reshift.AnalyzeMenu" anchor="last"/>-->
 <!--            </action>-->
 
-<!--            <action id="SpotBugs.AnalyseScope"-->
+<!--            <action id="Reshift.AnalyseScope"-->
 <!--                    class="org.jetbrains.plugins.spotbugs.actions.AnalyzeScopeFiles"-->
 <!--                    text="Analyze Scope Files"-->
 <!--                    description="Run security analysis on files of the specified scope."-->
 <!--                    icon="PluginIcons.ANALYZE_SCOPE_FILES_ICON">-->
 
-<!--                <add-to-group group-id="SpotBugs.AnalyzeMenu" anchor="last"/>-->
+<!--                <add-to-group group-id="Reshift.AnalyzeMenu" anchor="last"/>-->
 <!--            </action>-->
 
-<!--            <action id="SpotBugs.DefaultChangeListAction"-->
+<!--            <action id="Reshift.DefaultChangeListAction"-->
 <!--                    class="org.jetbrains.plugins.spotbugs.actions.AnalyzeAllModifiedFiles"-->
 <!--                    text="Analyze All Modified Files"-->
 <!--                    description="Run security analysis on all modified files. (Changelists)"-->
 <!--                    icon="PluginIcons.ANALYZE_ALL_MODIFIED_FILES_ICON">-->
 
-<!--                <add-to-group group-id="SpotBugs.AnalyzeMenu" anchor="last"/>-->
+<!--                <add-to-group group-id="Reshift.AnalyzeMenu" anchor="last"/>-->
 
 <!--                <keyboard-shortcut keymap="$default" first-keystroke="alt shift C"/>-->
 <!--            </action>-->
 
-<!--            <action id="SpotBugs.ActiveChangeListAction"-->
+<!--            <action id="Reshift.ActiveChangeListAction"-->
 <!--                    class="org.jetbrains.plugins.spotbugs.actions.AnalyzeChangelistFiles"-->
 <!--                    text="Analyze Changelist Files"-->
 <!--                    description="Run security analysis on selected changelist(s)."-->
 <!--                    icon="PluginIcons.ANALYZE_CHANGELIST_FILES_ICON">-->
 
 <!--                &lt;!&ndash;<add-to-group group-id="EditorPopupMenu" anchor="last"/>&ndash;&gt;-->
-<!--                <add-to-group group-id="SpotBugs.AnalyzeMenu" anchor="last"/>-->
+<!--                <add-to-group group-id="Reshift.AnalyzeMenu" anchor="last"/>-->
 
 <!--                <keyboard-shortcut keymap="$default" first-keystroke="alt shift A"/>-->
 <!--            </action>-->
@@ -238,19 +238,19 @@
 
             <separator/>
 
-            <action id="SpotBugs.StopAction"
+            <action id="Reshift.StopAction"
                     class="org.jetbrains.plugins.spotbugs.actions.StopAction"
                     text="Stop running scan"
                     description="Stop the currently running analysis."
                     icon="AllIcons.Actions.Suspend"/>
 
-            <action id="SpotBugs.CloseAction"
+            <action id="Reshift.CloseAction"
                     class="org.jetbrains.plugins.spotbugs.actions.ClearAndCloseToolWindow"
                     text="Clear and Close Reshift Security Tool Window"
                     description="Clear and close the Reshift Security tool window panel."
                     icon="AllIcons.Actions.Cancel"/>
 
-            <action id="SpotBugs.HelpAction"
+            <action id="Reshift.HelpAction"
                     class="org.jetbrains.plugins.spotbugs.actions.HelpAction"
                     text="IntelliJ SpotBugs Plugin Help"
                     description="Show the IntelliJ Reshift Security plugin help."
@@ -258,13 +258,13 @@
 
             <separator/>
 
-            <action id="SpotBugs.Preferences"
+            <action id="Reshift.Preferences"
                     class="org.jetbrains.plugins.spotbugs.actions.ShowPreferencesPage"
                     text="Plugin Settings"
                     description="Reshift Security plugin settings page."
                     icon="PluginIcons.PLUGIN_SETTINGS_ICON"/>
 
-            <action id="SpotBugs.ReshiftSignup"
+            <action id="Reshift.ReshiftSignup"
                     class="com.reshiftsecurity.plugins.intellij.ReshiftSignupAction"
                     text="Reshift Security + CI/CD"
                     description="Integrate Security into your CI/CD practice! Checkout Reshift Security online!"
@@ -273,7 +273,7 @@
         </group>
 
 
-        <action id="SpotBugs.ChangesViewToolbar.ActiveChangeListAction"
+        <action id="Reshift.ChangesViewToolbar.ActiveChangeListAction"
                 class="org.jetbrains.plugins.spotbugs.actions.AnalyzeChangelistFiles"
                 text="SpotBugs - Analyze Changelist Files"
                 description="Run security analysis on selected changelist(s)."
@@ -285,56 +285,56 @@
             <keyboard-shortcut keymap="$default" first-keystroke="alt shift C"/>
         </action>
 
-        <group id="SpotBugs.ToolBarActions.right" text="SpotBugs Group By Actions" popup="true">
+        <group id="Reshift.ToolBarActions.right" text="SpotBugs Group By Actions" popup="true">
 
-            <action id="SpotBugs.GroupByBugCategory"
+            <action id="Reshift.GroupByBugCategory"
                     class="org.jetbrains.plugins.spotbugs.actions.GroupByBugCategory"
                     text="Group by Bug Category"
                     description="Group by bug category."
                     icon="PluginIcons.GROUP_BY_CATEGORY_ICON"/>
 
-            <action id="SpotBugs.GroupByClass"
+            <action id="Reshift.GroupByClass"
                     class="org.jetbrains.plugins.spotbugs.actions.GroupByClass"
                     text="Group by Class"
                     description="Group by class."
                     icon="PluginIcons.GROUP_BY_CLASS_ICON"/>
 
-            <action id="SpotBugs.GroupByPackage"
+            <action id="Reshift.GroupByPackage"
                     class="org.jetbrains.plugins.spotbugs.actions.GroupByPackage"
                     text="Group by Package"
                     description="Group by package."
                     icon="PluginIcons.GROUP_BY_PACKAGE_ICON"/>
 <!--
 
-            <action id="SpotBugs.GroupByPriority"
+            <action id="Reshift.GroupByPriority"
                     class="org.jetbrains.plugins.spotbugs.actions.GroupByPriority"
                     text="Group by priority"
                     description="Group by priority."
                     icon="/org/jetbrains/plugins/spotbugs/resources/icons/actions/groupByPriority.png"/>
 -->
 
-            <action id="SpotBugs.GroupByRank"
+            <action id="Reshift.GroupByRank"
                     class="org.jetbrains.plugins.spotbugs.actions.GroupByRank"
                     text="Group by Bug Rank"
                     description="Group by bug rank."
                     icon="PluginIcons.GROUP_BY_PRIORITY_ICON"/>
 
-            <!-- <action id="SpotBugs.GroupByFilter"
+            <!-- <action id="Reshift.GroupByFilter"
                class="org.jetbrains.plugins.spotbugs.actions.GroupByFilter"
                text="Filter/Group bugs"
                description="Filter bugs."
                popup="true"
                icon="/icons/inspector/useFilter.png"/>-->
         </group>
-        <group id="SpotBugs.ToolBarActions.navigation" text="SpotBugs Navigation Actions" popup="true">
+        <group id="Reshift.ToolBarActions.navigation" text="SpotBugs Navigation Actions" popup="true">
 
-            <action id="SpotBugs.ScrollToSourceAction"
+            <action id="Reshift.ScrollToSourceAction"
                     class="org.jetbrains.plugins.spotbugs.actions.ScrollToSource"
                     text="Autoscroll to Source"
                     description="Autoscroll to the source location of possible bugs."
                     icon="AllIcons.General.AutoscrollToSource"/>
 
-            <action id="SpotBugs.PreviewSelectBugInstance"
+            <action id="Reshift.PreviewSelectBugInstance"
                     class="org.jetbrains.plugins.spotbugs.actions.PreviewSelectBugInstance"
                     text="Preview the Current Selected Bug."
                     description="Preview the current selected bug."
@@ -344,7 +344,7 @@
                 <mouse-shortcut keymap="$default" keystroke="alt button1"/>
             </action>
 
-            <action id="SpotBugs.ShowQuickSearch"
+            <action id="Reshift.ShowQuickSearch"
                     class="org.jetbrains.plugins.spotbugs.actions.ShowQuickSearch"
                     text="Find a Matching String in the Current Analysis Results."
                     description="Find a matching string in the current analysis results."
@@ -353,19 +353,19 @@
                 <keyboard-shortcut keymap="$default" first-keystroke="ctrl F"/>
              </action>
 
-            <action id="SpotBugs.ExpandAllAction"
+            <action id="Reshift.ExpandAllAction"
                     class="org.jetbrains.plugins.spotbugs.actions.ExpandAll"
                     text="Expand All"
                     description="Expand all elements in the tool window."
                     icon="AllIcons.Actions.Expandall"/>
 
-            <action id="SpotBugs.CollapseAllAction"
+            <action id="Reshift.CollapseAllAction"
                     class="org.jetbrains.plugins.spotbugs.actions.CollapseAll"
                     text="Collapse All"
                     description="Collapse all elements in the tool window"
                     icon="AllIcons.Actions.Collapseall"/>
 
-            <!--<action id="SpotBugs.TreePreviousOccurence"
+            <!--<action id="Reshift.TreePreviousOccurence"
 					class="org.jetbrains.plugins.spotbugs.actions.TreePreviousOccurence"
 					text="Next Bug"
 					description="Navigate to the previous occurence"
@@ -373,7 +373,7 @@
                 <keyboard-shortcut keymap="$default" first-keystroke="ctrl alt UP"/>
             </action>
 
-            <action id="SpotBugs.TreeNextOccurence"
+            <action id="Reshift.TreeNextOccurence"
 					class="org.jetbrains.plugins.spotbugs.actions.TreeNextOccurence"
 					text="Previous Bug"
 					description="Navigate to the next oocurence"
@@ -383,15 +383,15 @@
 
         </group>
 
-        <group id="SpotBugs.ToolBarActions.utils" text="SpotBugs Export/Import Actions" popup="true">
+        <group id="Reshift.ToolBarActions.utils" text="SpotBugs Export/Import Actions" popup="true">
 
-            <action id="SpotBugs.ExportBugCollection"
+            <action id="Reshift.ExportBugCollection"
                     class="org.jetbrains.plugins.spotbugs.actions.ExportBugCollection"
                     text="Export Bug Collection to XML/HTML"
                     description="SpotBugs plugin Export to XML/HTML."
                     icon="AllIcons.ToolbarDecorator.Export"/>
 
-            <action id="SpotBugs.ImportBugCollection"
+            <action id="Reshift.ImportBugCollection"
                     class="org.jetbrains.plugins.spotbugs.actions.ImportBugCollection"
                     text="Import Previous Saved Bug Collection"
                     description="SpotBugs plugin import previous saved bug collection."
@@ -400,7 +400,7 @@
         </group>
 
 
-        <action id="SpotBugs.GutterPoup"
+        <action id="Reshift.GutterPoup"
                 class="org.jetbrains.plugins.spotbugs.actions.ShowPreferencesPage"
                 text="Plugin Preferences"
                 description="Reshift Security plugin preferences page."
