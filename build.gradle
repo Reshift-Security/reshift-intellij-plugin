@@ -84,7 +84,7 @@ dependencies {
 task copyGradleProperties(type: Copy) {
     description 'Copy gradle.properties to project resources.'
     from 'gradle.properties'
-    into 'build/resources/main/org/jetbrains/plugins/spotbugs/common'
+    into 'build/resources/main/com/reshiftsecurity/plugins/intellij/common'
     rename { _ -> 'version.properties' }
 }
 
@@ -92,14 +92,14 @@ task downloadThirdPartyPlugins(type: Copy) {
     description 'Downloads third-party plugins Find Security Bugs and FB-Contrib.'
     from configurations.thirdPartyPlugins
     from configurations.fbContribJava6
-    into 'build/resources/main/org/jetbrains/plugins/spotbugs/plugins'
+    into 'build/resources/main/com/reshiftsecurity/plugins/intellij/plugins'
 }
 
 task copyThirdPartyPlugins(type: Copy) {
     dependsOn(downloadThirdPartyPlugins, prepareSandbox)
     description 'Copy plugins into sandbox.'
-    from 'build/resources/main/org/jetbrains/plugins/spotbugs/plugins'
-    into 'build/idea-sandbox/plugins/spotbugs-idea/customPlugins'
+    from 'build/resources/main/com/reshiftsecurity/plugins/intellij/plugins'
+    into 'build/idea-sandbox/plugins/reshiftsecurity-intellij/customPlugins'
 }
 
 tasks.compileJava.dependsOn(downloadThirdPartyPlugins, copyGradleProperties)

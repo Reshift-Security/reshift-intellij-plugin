@@ -68,51 +68,51 @@
     <depends>com.intellij.modules.lang</depends>
     <depends>com.intellij.modules.java</depends>
 
-    <resource-bundle>org.jetbrains.plugins.spotbugs.resources.i18n.Messages</resource-bundle>
+    <resource-bundle>com.reshiftsecurity.plugins.intellij.resources.i18n.Messages</resource-bundle>
     <extensions defaultExtensionNs="com.intellij">
         <toolWindow anchor="bottom" id="reshift" icon="PluginIcons.RESHIFT_LOGO_13X13"
-                    factoryClass="org.jetbrains.plugins.spotbugs.core.ToolWindowFactoryImpl"/>
+                    factoryClass="com.reshiftsecurity.plugins.intellij.core.ToolWindowFactoryImpl"/>
 
-        <projectService serviceImplementation="org.jetbrains.plugins.spotbugs.core.WorkspaceSettings"/>
-        <projectService serviceImplementation="org.jetbrains.plugins.spotbugs.core.ProjectSettings"/>
-        <projectService serviceImplementation="org.jetbrains.plugins.spotbugs.gui.preferences.LegacyProjectSettings"/>
-        <projectConfigurable groupId="tools" provider="org.jetbrains.plugins.spotbugs.core.ProjectConfigurableProvider"
+        <projectService serviceImplementation="com.reshiftsecurity.plugins.intellij.core.WorkspaceSettings"/>
+        <projectService serviceImplementation="com.reshiftsecurity.plugins.intellij.core.ProjectSettings"/>
+        <projectService serviceImplementation="com.reshiftsecurity.plugins.intellij.gui.preferences.LegacyProjectSettings"/>
+        <projectConfigurable groupId="tools" provider="com.reshiftsecurity.plugins.intellij.core.ProjectConfigurableProvider"
                              displayName="Reshift Security"/>
-        <search.optionContributor implementation="org.jetbrains.plugins.spotbugs.gui.settings.SearchableOptionContributorImpl"/>
+        <search.optionContributor implementation="com.reshiftsecurity.plugins.intellij.gui.settings.SearchableOptionContributorImpl"/>
 
-        <moduleService serviceImplementation="org.jetbrains.plugins.spotbugs.core.ModuleSettings"/>
-        <moduleService serviceImplementation="org.jetbrains.plugins.spotbugs.gui.preferences.LegacyModuleSettings"/>
-        <moduleConfigurable provider="org.jetbrains.plugins.spotbugs.core.ModuleConfigurableProvider"
+        <moduleService serviceImplementation="com.reshiftsecurity.plugins.intellij.core.ModuleSettings"/>
+        <moduleService serviceImplementation="com.reshiftsecurity.plugins.intellij.gui.preferences.LegacyModuleSettings"/>
+        <moduleConfigurable provider="com.reshiftsecurity.plugins.intellij.core.ModuleConfigurableProvider"
                             displayName="Reshift Security"/>
-        <checkinHandlerFactory implementation="org.jetbrains.plugins.spotbugs.core.CheckinHandlerFactoryImpl"/>
-        <projectService serviceImplementation="org.jetbrains.plugins.spotbugs.core.ProblemCacheService"/>
+        <checkinHandlerFactory implementation="com.reshiftsecurity.plugins.intellij.core.CheckinHandlerFactoryImpl"/>
+        <projectService serviceImplementation="com.reshiftsecurity.plugins.intellij.core.ProblemCacheService"/>
     </extensions>
     <extensions defaultExtensionNs="com.intellij">
-        <errorHandler implementation="org.jetbrains.plugins.spotbugs.core.ErrorReportSubmitterImpl"/>
-        <annotator language="JAVA" implementationClass="org.jetbrains.plugins.spotbugs.gui.editor.BugAnnotator"/>
-        <codeInsight.lineMarkerProvider language="JAVA" implementationClass="org.jetbrains.plugins.spotbugs.gui.editor.BugsLineMarkerProvider"/>
+        <errorHandler implementation="com.reshiftsecurity.plugins.intellij.core.ErrorReportSubmitterImpl"/>
+        <annotator language="JAVA" implementationClass="com.reshiftsecurity.plugins.intellij.gui.editor.BugAnnotator"/>
+        <codeInsight.lineMarkerProvider language="JAVA" implementationClass="com.reshiftsecurity.plugins.intellij.gui.editor.BugsLineMarkerProvider"/>
     </extensions>
     <extensions defaultExtensionNs="com.intellij">
-        <annotator language="Scala" implementationClass="org.jetbrains.plugins.spotbugs.gui.editor.BugAnnotator"/>
-        <codeInsight.lineMarkerProvider language="Scala" implementationClass="org.jetbrains.plugins.spotbugs.gui.editor.BugsLineMarkerProvider"/>
+        <annotator language="Scala" implementationClass="com.reshiftsecurity.plugins.intellij.gui.editor.BugAnnotator"/>
+        <codeInsight.lineMarkerProvider language="Scala" implementationClass="com.reshiftsecurity.plugins.intellij.gui.editor.BugsLineMarkerProvider"/>
     </extensions>
     <extensions defaultExtensionNs="com.intellij">
-        <annotator language="Groovy" implementationClass="org.jetbrains.plugins.spotbugs.gui.editor.BugAnnotator"/>
-        <codeInsight.lineMarkerProvider language="Groovy" implementationClass="org.jetbrains.plugins.spotbugs.gui.editor.BugsLineMarkerProvider"/>
+        <annotator language="Groovy" implementationClass="com.reshiftsecurity.plugins.intellij.gui.editor.BugAnnotator"/>
+        <codeInsight.lineMarkerProvider language="Groovy" implementationClass="com.reshiftsecurity.plugins.intellij.gui.editor.BugsLineMarkerProvider"/>
     </extensions>
     <project-components>
         <component>
-            <implementation-class>org.jetbrains.plugins.spotbugs.core.FindBugsCompileAfterHook</implementation-class>
+            <implementation-class>com.reshiftsecurity.plugins.intellij.core.FindBugsCompileAfterHook</implementation-class>
         </component>
     </project-components>
     <project-components>
         <component>
-            <implementation-class>org.jetbrains.plugins.spotbugs.core.PluginSuggestion</implementation-class>
+            <implementation-class>com.reshiftsecurity.plugins.intellij.core.PluginSuggestion</implementation-class>
         </component>
     </project-components>
     <project-components>
         <component>
-            <implementation-class>org.jetbrains.plugins.spotbugs.gui.preferences.LegacyProjectSettingsConverter</implementation-class>
+            <implementation-class>com.reshiftsecurity.plugins.intellij.gui.preferences.LegacyProjectSettingsConverter</implementation-class>
         </component>
     </project-components>
 
@@ -128,7 +128,7 @@
             <!--<add-to-group group-id="SpotBugsEditorPopup" anchor="last"/>-->
 
 <!--            <action id="Reshift.SelectedFilesAction"-->
-<!--                    class="org.jetbrains.plugins.spotbugs.actions.AnalyzeSelectedFiles"-->
+<!--                    class="com.reshiftsecurity.plugins.intellij.actions.AnalyzeSelectedFiles"-->
 <!--                    text="Analyze Selected Files"-->
 <!--                    description="Run security analysis on the current editor file."-->
 <!--                    icon="PluginIcons.ANALYZE_SELECTED_FILE_ICON">-->
@@ -141,7 +141,7 @@
 <!--            </action>-->
 
 <!--            <action id="Reshift.ClassUnderCursorAction"-->
-<!--                    class="org.jetbrains.plugins.spotbugs.actions.AnalyzeClassUnderCursor"-->
+<!--                    class="com.reshiftsecurity.plugins.intellij.actions.AnalyzeClassUnderCursor"-->
 <!--                    text="Analyze Class (Non-Anonymous) Under Cursor"-->
 <!--                    description="Run security analysis on the class (non-anonymous) under the editor cursor."-->
 <!--                    icon="PluginIcons.ANALYZE_CLASS_UNDER_CURSOR_ICON">-->
@@ -154,7 +154,7 @@
 <!--            </action>-->
 
 <!--            <action id="Reshift.AnalysePackage"-->
-<!--                    class="org.jetbrains.plugins.spotbugs.actions.AnalyzePackageFiles"-->
+<!--                    class="com.reshiftsecurity.plugins.intellij.actions.AnalyzePackageFiles"-->
 <!--                    text="Analyze Package(S) Files"-->
 <!--                    description="Run security analysis on files off the selected package(s)."-->
 <!--                    icon="PluginIcons.ANALYZE_PACKAGE_FILES_ICON">-->
@@ -164,7 +164,7 @@
 <!--            </action>-->
 
 <!--            <action id="Reshift.ModuleFilesNotIncludingTestsAction"-->
-<!--                    class="org.jetbrains.plugins.spotbugs.actions.AnalyzeModuleFilesNotIncludingTests"-->
+<!--                    class="com.reshiftsecurity.plugins.intellij.actions.AnalyzeModuleFilesNotIncludingTests"-->
 <!--                    text="Analyze Module Files Not Including Test Sources"-->
 <!--                    description="Run security analysis on all module files not including test sources."-->
 <!--                    icon="PluginIcons.ANALYZE_MODULE_FILES_NOT_INCLUDING_TESTS_ICON">-->
@@ -174,7 +174,7 @@
 <!--            </action>-->
 
 <!--            <action id="Reshift.ModuleFilesIncludingTestsAction"-->
-<!--                    class="org.jetbrains.plugins.spotbugs.actions.AnalyzeModuleFilesIncludingTests"-->
+<!--                    class="com.reshiftsecurity.plugins.intellij.actions.AnalyzeModuleFilesIncludingTests"-->
 <!--                    text="Analyze Module Files Including Test Sources"-->
 <!--                    description="Run security analysis on all module files including test sources."-->
 <!--                    icon="PluginIcons.ANALYZE_MODULE_FILES_INCLUDING_TESTS_ICON">-->
@@ -184,7 +184,7 @@
 <!--            </action>-->
 
             <action id="Reshift.ProjectFilesNotIncludingTestsAction"
-                    class="org.jetbrains.plugins.spotbugs.actions.AnalyzeProjectFilesNotIncludingTests"
+                    class="com.reshiftsecurity.plugins.intellij.actions.AnalyzeProjectFilesNotIncludingTests"
                     text="Scan Project Files Not Including Test Sources."
                     description="Run security analysis on all project files not including test sources."
                     icon="PluginIcons.ANALYZE_PROJECT_FILES_NOT_INCLUDING_TESTS_ICON">
@@ -194,7 +194,7 @@
             </action>
 
 <!--            <action id="Reshift.ProjectFilesIncludingTestsAction"-->
-<!--                    class="org.jetbrains.plugins.spotbugs.actions.AnalyzeProjectFilesIncludingTests"-->
+<!--                    class="com.reshiftsecurity.plugins.intellij.actions.AnalyzeProjectFilesIncludingTests"-->
 <!--                    text="Analyze Project Files Including Test Sources."-->
 <!--                    description="Run security analysis on all project files including test sources."-->
 <!--                    icon="PluginIcons.ANALYZE_PROJECT_FILES_INCLUDING_TESTS_ICON">-->
@@ -204,7 +204,7 @@
 <!--            </action>-->
 
 <!--            <action id="Reshift.AnalyseScope"-->
-<!--                    class="org.jetbrains.plugins.spotbugs.actions.AnalyzeScopeFiles"-->
+<!--                    class="com.reshiftsecurity.plugins.intellij.actions.AnalyzeScopeFiles"-->
 <!--                    text="Analyze Scope Files"-->
 <!--                    description="Run security analysis on files of the specified scope."-->
 <!--                    icon="PluginIcons.ANALYZE_SCOPE_FILES_ICON">-->
@@ -213,7 +213,7 @@
 <!--            </action>-->
 
 <!--            <action id="Reshift.DefaultChangeListAction"-->
-<!--                    class="org.jetbrains.plugins.spotbugs.actions.AnalyzeAllModifiedFiles"-->
+<!--                    class="com.reshiftsecurity.plugins.intellij.actions.AnalyzeAllModifiedFiles"-->
 <!--                    text="Analyze All Modified Files"-->
 <!--                    description="Run security analysis on all modified files. (Changelists)"-->
 <!--                    icon="PluginIcons.ANALYZE_ALL_MODIFIED_FILES_ICON">-->
@@ -224,7 +224,7 @@
 <!--            </action>-->
 
 <!--            <action id="Reshift.ActiveChangeListAction"-->
-<!--                    class="org.jetbrains.plugins.spotbugs.actions.AnalyzeChangelistFiles"-->
+<!--                    class="com.reshiftsecurity.plugins.intellij.actions.AnalyzeChangelistFiles"-->
 <!--                    text="Analyze Changelist Files"-->
 <!--                    description="Run security analysis on selected changelist(s)."-->
 <!--                    icon="PluginIcons.ANALYZE_CHANGELIST_FILES_ICON">-->
@@ -239,19 +239,19 @@
             <separator/>
 
             <action id="Reshift.StopAction"
-                    class="org.jetbrains.plugins.spotbugs.actions.StopAction"
+                    class="com.reshiftsecurity.plugins.intellij.actions.StopAction"
                     text="Stop running scan"
                     description="Stop the currently running analysis."
                     icon="AllIcons.Actions.Suspend"/>
 
             <action id="Reshift.CloseAction"
-                    class="org.jetbrains.plugins.spotbugs.actions.ClearAndCloseToolWindow"
+                    class="com.reshiftsecurity.plugins.intellij.actions.ClearAndCloseToolWindow"
                     text="Clear and Close Reshift Security Tool Window"
                     description="Clear and close the Reshift Security tool window panel."
                     icon="AllIcons.Actions.Cancel"/>
 
             <action id="Reshift.HelpAction"
-                    class="org.jetbrains.plugins.spotbugs.actions.HelpAction"
+                    class="com.reshiftsecurity.plugins.intellij.actions.HelpAction"
                     text="IntelliJ SpotBugs Plugin Help"
                     description="Show the IntelliJ Reshift Security plugin help."
                     icon="AllIcons.Actions.Help"/>
@@ -259,13 +259,13 @@
             <separator/>
 
             <action id="Reshift.Preferences"
-                    class="org.jetbrains.plugins.spotbugs.actions.ShowPreferencesPage"
+                    class="com.reshiftsecurity.plugins.intellij.actions.ShowPreferencesPage"
                     text="Plugin Settings"
                     description="Reshift Security plugin settings page."
                     icon="PluginIcons.PLUGIN_SETTINGS_ICON"/>
 
             <action id="Reshift.ReshiftSignup"
-                    class="com.reshiftsecurity.plugins.intellij.ReshiftSignupAction"
+                    class="com.reshiftsecurity.plugins.intellij.actions.ReshiftSignupAction"
                     text="Reshift Security + CI/CD"
                     description="Integrate Security into your CI/CD practice! Checkout Reshift Security online!"
                     icon="PluginIcons.RESHIFT_LOGO_13X13"/>
@@ -274,7 +274,7 @@
 
 
         <action id="Reshift.ChangesViewToolbar.ActiveChangeListAction"
-                class="org.jetbrains.plugins.spotbugs.actions.AnalyzeChangelistFiles"
+                class="com.reshiftsecurity.plugins.intellij.actions.AnalyzeChangelistFiles"
                 text="SpotBugs - Analyze Changelist Files"
                 description="Run security analysis on selected changelist(s)."
                 icon="PluginIcons.ANALYZE_SELECTED_FILE_ICON">
@@ -288,39 +288,39 @@
         <group id="Reshift.ToolBarActions.right" text="SpotBugs Group By Actions" popup="true">
 
             <action id="Reshift.GroupByBugCategory"
-                    class="org.jetbrains.plugins.spotbugs.actions.GroupByBugCategory"
+                    class="com.reshiftsecurity.plugins.intellij.actions.GroupByBugCategory"
                     text="Group by Bug Category"
                     description="Group by bug category."
                     icon="PluginIcons.GROUP_BY_CATEGORY_ICON"/>
 
             <action id="Reshift.GroupByClass"
-                    class="org.jetbrains.plugins.spotbugs.actions.GroupByClass"
+                    class="com.reshiftsecurity.plugins.intellij.actions.GroupByClass"
                     text="Group by Class"
                     description="Group by class."
                     icon="PluginIcons.GROUP_BY_CLASS_ICON"/>
 
             <action id="Reshift.GroupByPackage"
-                    class="org.jetbrains.plugins.spotbugs.actions.GroupByPackage"
+                    class="com.reshiftsecurity.plugins.intellij.actions.GroupByPackage"
                     text="Group by Package"
                     description="Group by package."
                     icon="PluginIcons.GROUP_BY_PACKAGE_ICON"/>
 <!--
 
             <action id="Reshift.GroupByPriority"
-                    class="org.jetbrains.plugins.spotbugs.actions.GroupByPriority"
+                    class="com.reshiftsecurity.plugins.intellij.actions.GroupByPriority"
                     text="Group by priority"
                     description="Group by priority."
                     icon="/org/jetbrains/plugins/spotbugs/resources/icons/actions/groupByPriority.png"/>
 -->
 
             <action id="Reshift.GroupByRank"
-                    class="org.jetbrains.plugins.spotbugs.actions.GroupByRank"
+                    class="com.reshiftsecurity.plugins.intellij.actions.GroupByRank"
                     text="Group by Bug Rank"
                     description="Group by bug rank."
                     icon="PluginIcons.GROUP_BY_PRIORITY_ICON"/>
 
             <!-- <action id="Reshift.GroupByFilter"
-               class="org.jetbrains.plugins.spotbugs.actions.GroupByFilter"
+               class="com.reshiftsecurity.plugins.intellij.actions.GroupByFilter"
                text="Filter/Group bugs"
                description="Filter bugs."
                popup="true"
@@ -329,13 +329,13 @@
         <group id="Reshift.ToolBarActions.navigation" text="SpotBugs Navigation Actions" popup="true">
 
             <action id="Reshift.ScrollToSourceAction"
-                    class="org.jetbrains.plugins.spotbugs.actions.ScrollToSource"
+                    class="com.reshiftsecurity.plugins.intellij.actions.ScrollToSource"
                     text="Autoscroll to Source"
                     description="Autoscroll to the source location of possible bugs."
                     icon="AllIcons.General.AutoscrollToSource"/>
 
             <action id="Reshift.PreviewSelectBugInstance"
-                    class="org.jetbrains.plugins.spotbugs.actions.PreviewSelectBugInstance"
+                    class="com.reshiftsecurity.plugins.intellij.actions.PreviewSelectBugInstance"
                     text="Preview the Current Selected Bug."
                     description="Preview the current selected bug."
                     icon="AllIcons.Actions.Preview">
@@ -345,7 +345,7 @@
             </action>
 
             <action id="Reshift.ShowQuickSearch"
-                    class="org.jetbrains.plugins.spotbugs.actions.ShowQuickSearch"
+                    class="com.reshiftsecurity.plugins.intellij.actions.ShowQuickSearch"
                     text="Find a Matching String in the Current Analysis Results."
                     description="Find a matching string in the current analysis results."
                     icon="AllIcons.Actions.Find">
@@ -354,19 +354,19 @@
              </action>
 
             <action id="Reshift.ExpandAllAction"
-                    class="org.jetbrains.plugins.spotbugs.actions.ExpandAll"
+                    class="com.reshiftsecurity.plugins.intellij.actions.ExpandAll"
                     text="Expand All"
                     description="Expand all elements in the tool window."
                     icon="AllIcons.Actions.Expandall"/>
 
             <action id="Reshift.CollapseAllAction"
-                    class="org.jetbrains.plugins.spotbugs.actions.CollapseAll"
+                    class="com.reshiftsecurity.plugins.intellij.actions.CollapseAll"
                     text="Collapse All"
                     description="Collapse all elements in the tool window"
                     icon="AllIcons.Actions.Collapseall"/>
 
             <!--<action id="Reshift.TreePreviousOccurence"
-					class="org.jetbrains.plugins.spotbugs.actions.TreePreviousOccurence"
+					class="com.reshiftsecurity.plugins.intellij.actions.TreePreviousOccurence"
 					text="Next Bug"
 					description="Navigate to the previous occurence"
 					icon="/org/jetbrains/plugins/spotbugs/resources/icons/actions/moveUp.png">
@@ -374,7 +374,7 @@
             </action>
 
             <action id="Reshift.TreeNextOccurence"
-					class="org.jetbrains.plugins.spotbugs.actions.TreeNextOccurence"
+					class="com.reshiftsecurity.plugins.intellij.actions.TreeNextOccurence"
 					text="Previous Bug"
 					description="Navigate to the next oocurence"
 					icon="/org/jetbrains/plugins/spotbugs/resources/icons/actions/moveDown.png">
@@ -386,13 +386,13 @@
         <group id="Reshift.ToolBarActions.utils" text="SpotBugs Export/Import Actions" popup="true">
 
             <action id="Reshift.ExportBugCollection"
-                    class="org.jetbrains.plugins.spotbugs.actions.ExportBugCollection"
+                    class="com.reshiftsecurity.plugins.intellij.actions.ExportBugCollection"
                     text="Export Bug Collection to XML/HTML"
                     description="SpotBugs plugin Export to XML/HTML."
                     icon="AllIcons.ToolbarDecorator.Export"/>
 
             <action id="Reshift.ImportBugCollection"
-                    class="org.jetbrains.plugins.spotbugs.actions.ImportBugCollection"
+                    class="com.reshiftsecurity.plugins.intellij.actions.ImportBugCollection"
                     text="Import Previous Saved Bug Collection"
                     description="SpotBugs plugin import previous saved bug collection."
                     icon="AllIcons.ToolbarDecorator.Import"/>
@@ -401,7 +401,7 @@
 
 
         <action id="Reshift.GutterPoup"
-                class="org.jetbrains.plugins.spotbugs.actions.ShowPreferencesPage"
+                class="com.reshiftsecurity.plugins.intellij.actions.ShowPreferencesPage"
                 text="Plugin Preferences"
                 description="Reshift Security plugin preferences page."
                 icon="AllIcons.General.Settings"/>
