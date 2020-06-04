@@ -1,20 +1,20 @@
 /*
- * Copyright 2020 SpotBugs plugin contributors
+ * Copyright 2020 Reshift Security Intellij plugin contributors
  *
- * This file is part of IntelliJ SpotBugs plugin.
+ * This file is part of Reshift Security Intellij plugin.
  *
- * IntelliJ SpotBugs plugin is free software: you can redistribute it 
+ * Reshift Security Intellij plugin is free software: you can redistribute it
  * and/or modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation, either version 3 of 
+ * as published by the Free Software Foundation, either version 3 of
  * the License, or (at your option) any later version.
  *
- * IntelliJ SpotBugs plugin is distributed in the hope that it will
- * be useful, but WITHOUT ANY WARRANTY; without even the implied 
+ * Reshift Security Intellij plugin is distributed in the hope that it will
+ * be useful, but WITHOUT ANY WARRANTY; without even the implied
  * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * See the GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with IntelliJ SpotBugs plugin.
+ * along with Reshift Security Intellij plugin.
  * If not, see <http://www.gnu.org/licenses/>.
  */
 package com.reshiftsecurity.plugins.intellij.core;
@@ -57,7 +57,7 @@ final class PluginVersionChecker {
 	@NotNull
 	private static String getLatestReleaseUrl() {
 		// https support only
-		return "https://api.github.com/repos/reshift-projects/reshift-intellij-plugin/releases/latest";
+		return "https://api.github.com/repos/softwaresecured/reshift-intellij-plugin/releases/latest";
 	}
 
 	private static class LatestRelease {
