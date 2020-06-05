@@ -38,7 +38,7 @@ import java.util.Map;
 public final class FindBugsUtil {
 	public static final Map<String, String> ARCHIVE_EXTENSION_SET;
 	public static final Map<String, String> XML_EXTENSIONS_SET = Collections.singletonMap(".xml", "");
-	public static final Map<String, String> PLUGINS_EXTENSIONS_SET = Collections.singletonMap(".jar", "SpotBugs Plugins");
+	public static final Map<String, String> PLUGINS_EXTENSIONS_SET = Collections.singletonMap(".jar", "Reshift Plugins");
 
 	// TODO: fill proper values
 	private static final int VERSION_MAJOR = 3;

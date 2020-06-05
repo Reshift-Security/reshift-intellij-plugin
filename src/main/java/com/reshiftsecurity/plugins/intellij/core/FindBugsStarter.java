@@ -149,7 +149,7 @@ public abstract class FindBugsStarter implements AnalysisAbortingListener {
 
 		final ToolWindow toolWindow = ToolWindowPanel.getWindow(project);
 		if (toolWindow == null) {
-			throw new IllegalStateException("No SpotBugs ToolWindow");
+			throw new IllegalStateException("No Reshift ToolWindow");
 		}
 		/*
 		 * Important: Make sure the tool window is initialized.
@@ -187,7 +187,7 @@ public abstract class FindBugsStarter implements AnalysisAbortingListener {
 
 	private void asyncStart(@NotNull final ProgressIndicator indicator, final boolean justCompiled) {
 		indicator.setIndeterminate(true);
-		indicator.setText("Configure SpotBugs...");
+		indicator.setText("Configure Reshift...");
 		try {
 			asyncStartImpl(indicator, justCompiled);
 		} catch (final ProcessCanceledException ignore) {

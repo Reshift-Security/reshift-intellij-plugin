@@ -237,7 +237,7 @@ public abstract class AbstractPluginLoaderLegacy {
 			if (_project == null) {
 				currentProject = ProjectManager.getInstance().getDefaultProject();
 			}
-			new Notification("SpotBugs Custom Plugin Load Error", "Error while loading custom FindBugs plugins", _message, NotificationType.ERROR).notify(currentProject);
+			new Notification("Reshift Custom Plugin Load Error", "Error while loading custom FindBugs plugins", _message, NotificationType.ERROR).notify(currentProject);
 		}
 	}
 }

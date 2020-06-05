@@ -85,14 +85,14 @@ public enum Plugins {
 			// PathManager.getSystemPath() may return relative path
 			final File pluginsPath = new File(PathManager.getPluginsPath()).getAbsoluteFile();
 			if (!pluginsPath.isDirectory() || !pluginsPath.canWrite()) {
-				throw new IllegalStateException("No accessible SpotBugs plugin directory found. Tested candidates:\n" +
+				throw new IllegalStateException("No accessible Reshift plugin directory found. Tested candidates:\n" +
 						"'" + ret.getAbsolutePath() + "': isDirectory=" + ret.isDirectory() + ", canWrite=" + ret.canWrite() + "\n" +
 						"'" + pluginsPath.getAbsolutePath() + "': isDirectory=" + pluginsPath.isDirectory() + ", canWrite=" + pluginsPath.canWrite());
 			}
 			ret = new File(pluginsPath, "reshiftsecurity-intellij");
 			if (!ret.isDirectory()) {
 				if (!ret.mkdirs()) {
-					throw new IllegalStateException("Could not create alternative SpotBugs plugin directory: " + ret.getAbsolutePath());
+					throw new IllegalStateException("Could not create alternative Reshift plugin directory: " + ret.getAbsolutePath());
 				}
 			}
 		}
@@ -105,7 +105,7 @@ public enum Plugins {
 		final File dir = new File(homeDir, "customPlugins");
 		if (!dir.isDirectory()) {
 			if (!dir.mkdirs()) {
-				throw new IllegalStateException("Could not create SpotBugs custom plugins directory: " + dir.getAbsolutePath());
+				throw new IllegalStateException("Could not create Reshift custom plugins directory: " + dir.getAbsolutePath());
 			}
 		}
 		return dir;

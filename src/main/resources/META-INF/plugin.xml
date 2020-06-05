@@ -251,7 +251,7 @@
 
             <action id="Reshift.HelpAction"
                     class="com.reshiftsecurity.plugins.intellij.actions.HelpAction"
-                    text="IntelliJ SpotBugs Plugin Help"
+                    text="Reshift IntelliJ Plugin Help"
                     description="Show the IntelliJ Reshift Security plugin help."
                     icon="AllIcons.Actions.Help"/>
 

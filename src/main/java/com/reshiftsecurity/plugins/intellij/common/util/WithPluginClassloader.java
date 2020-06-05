@@ -28,7 +28,7 @@ import com.reshiftsecurity.plugins.intellij.core.ProjectSettings;
  * This must be used when FindBugs will create a SAXReader because this use the default DocumentFactory instance
  * (org.dom4j.DocumentFactory#getInstance) which is created by createSingleton which uses Class.forName.
  * <p>
- * Note that all our classes (incl transitive) must be loaded by the PluginClassLoader instance of SpotBugs-IDEA plugin.
+ * Note that all our classes (incl transitive) must be loaded by the PluginClassLoader instance of ReshiftSecurity-Intellij plugin.
  * Check: DebugUtil.dumpClasses(TheClass.class);
  */
 public final class WithPluginClassloader {

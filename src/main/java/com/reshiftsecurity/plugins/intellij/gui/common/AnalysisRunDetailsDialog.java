@@ -129,7 +129,7 @@ public class AnalysisRunDetailsDialog {
 
 		final DialogBuilder dialogBuilder = new DialogBuilder(project);
 		dialogBuilder.addCloseButton();
-		dialogBuilder.setTitle(StringUtil.capitalizeWords("SpotBugs analysis settings", true));
+		dialogBuilder.setTitle(StringUtil.capitalizeWords("Reshift analysis settings", true));
 		final JComponent panel = new JPanel(new BorderLayout());
 		panel.setBorder(JBUI.Borders.empty(10));
 

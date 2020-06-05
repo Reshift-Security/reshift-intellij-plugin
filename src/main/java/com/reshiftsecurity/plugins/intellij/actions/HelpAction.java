@@ -116,8 +116,8 @@ public final class HelpAction extends AbstractAction {
 
 		final StringBuilder ret = new StringBuilder("\n");
 		ret.append("Product Infos");
-		ret.append("\n    SpotBugs: ").append(FindBugsUtil.getFindBugsFullVersion());
-		ret.append("\n    IntelliJ SpotBugs plugin: ").append(VersionManager.getVersion());
+		ret.append("\n    Reshift Security: ").append(FindBugsUtil.getFindBugsFullVersion());
+		ret.append("\n    Reshift IntelliJ plugin: ").append(VersionManager.getVersion());
 
 		boolean ideaVersionAvailable = false;
 		try {
