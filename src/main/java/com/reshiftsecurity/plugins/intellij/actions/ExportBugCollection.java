@@ -1,0 +1,250 @@
+/*
+ * Copyright 2020 Reshift Security Intellij plugin contributors
+ *
+ * This file is part of Reshift Security Intellij plugin.
+ *
+ * Reshift Security Intellij plugin is free software: you can redistribute it
+ * and/or modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation, either version 3 of
+ * the License, or (at your option) any later version.
+ *
+ * Reshift Security Intellij plugin is distributed in the hope that it will
+ * be useful, but WITHOUT ANY WARRANTY; without even the implied
+ * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Reshift Security Intellij plugin.
+ * If not, see <http://www.gnu.org/licenses/>.
+ */
+package com.reshiftsecurity.plugins.intellij.actions;
+
+import com.intellij.ide.BrowserUtil;
+import com.intellij.openapi.actionSystem.AnActionEvent;
+import com.intellij.openapi.diagnostic.Logger;
+import com.intellij.openapi.progress.*;
+import com.intellij.openapi.project.Project;
+import com.intellij.openapi.ui.Messages;
+import com.intellij.openapi.util.text.StringUtil;
+import com.intellij.openapi.wm.ToolWindow;
+import com.reshiftsecurity.plugins.intellij.common.util.ErrorUtil;
+import com.reshiftsecurity.plugins.intellij.common.util.FileUtilFb;
+import com.reshiftsecurity.plugins.intellij.common.util.IoUtil;
+import com.reshiftsecurity.plugins.intellij.core.FindBugsProject;
+import com.reshiftsecurity.plugins.intellij.core.FindBugsResult;
+import com.reshiftsecurity.plugins.intellij.core.FindBugsState;
+import com.reshiftsecurity.plugins.intellij.core.WorkspaceSettings;
+import edu.umd.cs.findbugs.*;
+import org.dom4j.Document;
+import org.dom4j.io.DocumentSource;
+import org.jetbrains.annotations.NotNull;
+import com.reshiftsecurity.plugins.intellij.common.EventDispatchThreadHelper;
+import com.reshiftsecurity.plugins.intellij.gui.export.ExportBugCollectionDialog;
+import com.reshiftsecurity.plugins.intellij.gui.toolwindow.view.ToolWindowPanel;
+import com.reshiftsecurity.plugins.intellij.resources.ResourcesLoader;
+
+import javax.xml.transform.*;
+import javax.xml.transform.stream.*;
+import java.io.*;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
+import java.text.SimpleDateFormat;
+import java.util.*;
+
+public final class ExportBugCollection extends AbstractAction {
+
+	private static final Logger LOGGER = Logger.getInstance(ExportBugCollection.class);
+	private static final String FINDBUGS_PLAIN_XSL = "plain.xsl";
+
+	@Override
+	void updateImpl(
+			@NotNull final AnActionEvent e,
+			@NotNull final Project project,
+			@NotNull final ToolWindow toolWindow,
+			@NotNull final FindBugsState state
+	) {
+
+		boolean enable = false;
+		if (state.isIdle()) {
+			final ToolWindowPanel panel = ToolWindowPanel.getInstance(toolWindow);
+			if (panel != null) {
+				final FindBugsResult result = panel.getResult();
+				enable = result != null && !result.isBugCollectionEmpty();
+			}
+		}
+
+		e.getPresentation().setEnabled(enable);
+		e.getPresentation().setVisible(true);
+	}
+
+	@Override
+	void actionPerformedImpl(
+			@NotNull final AnActionEvent e,
+			@NotNull final Project project,
+			@NotNull final ToolWindow toolWindow,
+			@NotNull final FindBugsState state
+	) {
+
+		final ToolWindowPanel panel = ToolWindowPanel.getInstance(toolWindow);
+		if (panel == null) {
+			return;
+		}
+
+		final ExportBugCollectionDialog dialog = new ExportBugCollectionDialog(project);
+		dialog.reset();
+		if (!dialog.showAndGet()) {
+			return;
+		}
+		dialog.apply();
+
+		final WorkspaceSettings workspaceSettings = WorkspaceSettings.getInstance(project);
+		final String exportDir = workspaceSettings.exportBugCollectionDirectory;
+		final boolean exportXml = workspaceSettings.exportBugCollectionAsXml;
+		final boolean exportHtml = workspaceSettings.exportBugCollectionAsHtml;
+		final boolean createSubDir = workspaceSettings.exportBugCollectionCreateSubDirectory;
+		final boolean openInBrowser = workspaceSettings.openExportedHtmlBugCollectionInBrowser;
+
+		if (StringUtil.isEmptyOrSpaces(exportDir)) {
+			showError(ResourcesLoader.getString("export.error.emptyPath"));
+			return;
+		}
+		final File exportDirPath = new File(exportDir);
+		if (exportDirPath.exists()) {
+			if (!exportDirPath.isDirectory()) {
+				showError(ResourcesLoader.getString("error.directory.type", exportDirPath));
+				return;
+			}
+		}
+
+		final FindBugsResult result = panel.getResult();
+
+		new Task.Backgroundable(project, ResourcesLoader.getString("export.progress.title"), false) {
+			@Override
+			public void run(@NotNull final ProgressIndicator indicator) {
+				try {
+					FileUtilFb.mkdirs(exportDirPath);
+					File finalExportDir = exportDirPath;
+					final String currentTime = new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss", Locale.ENGLISH).format(new Date());
+					if (createSubDir) {
+						final String dirName = "findbugs-result-" + project.getName() + "_" + currentTime;
+						finalExportDir = new File(exportDirPath, dirName);
+						FileUtilFb.mkdirs(finalExportDir);
+					}
+					final boolean multiModule = result.getResults().size() > 1;
+
+					for (final Map.Entry<edu.umd.cs.findbugs.Project, SortedBugCollection> entry : result.getResults().entrySet()) {
+						final String fileName;
+						if (createSubDir) {
+							if (multiModule && entry.getKey() instanceof FindBugsProject) {
+								fileName = ((FindBugsProject) entry.getKey()).getModule().getName();
+							} else {
+								fileName = "result";
+							}
+						} else {
+							fileName = "findbugs-result-" + entry.getKey().getProjectName() + "_" + currentTime;
+						}
+						exportImpl(
+								entry.getValue(),
+								finalExportDir,
+								fileName,
+								exportXml,
+								exportHtml,
+								openInBrowser
+						);
+					}
+				} catch (final Exception e) {
+					throw ErrorUtil.toUnchecked(e);
+				}
+			}
+		}.queue();
+	}
+
+	private void exportImpl(
+			@NotNull final SortedBugCollection bugCollection,
+			@NotNull final File exportDir,
+			@NotNull final String fileName,
+			final boolean exportXml,
+			final boolean exportHtml,
+			final boolean openInBrowser
+	) throws Exception {
+		final boolean withMessages = bugCollection.getWithMessages();
+		try {
+			bugCollection.setWithMessages(true);
+			if (exportXml) {
+				final File xml = new File(exportDir, fileName + ".xml");
+				exportXml(bugCollection, xml.getPath());
+			}
+			if (exportHtml) {
+				final File html = new File(exportDir, fileName + ".html");
+				exportHtml(bugCollection, html);
+				if (openInBrowser) {
+					openInBrowser(html);
+				}
+			}
+		} finally {
+			bugCollection.setWithMessages(withMessages);
+		}
+	}
+
+	private void exportXml(@NotNull final BugCollection bugCollection, @NotNull final String fileName) throws IOException {
+		// Issue 77: workaround internal FindBugs NPE
+		// As of my point of view, the NPE is a FindBugs bug
+		bugCollection.writeXML(fileName);
+	}
+
+	private void exportHtml(@NotNull final BugCollection bugCollection, @NotNull final File file) throws IOException, TransformerException {
+		final Document document = bugCollection.toDocument();
+		final InputStream stylesheet = getStylesheetStream(FINDBUGS_PLAIN_XSL);
+		try {
+			final Source xsl = new StreamSource(stylesheet);
+			xsl.setSystemId(FINDBUGS_PLAIN_XSL);
+
+			// Create a transformer using the stylesheet
+			final Transformer transformer = TransformerFactory.newInstance().newTransformer(xsl);
+
+			// Source document is the XML generated from the BugCollection
+			final Source source = new DocumentSource(document);
+
+			// Write result to output stream
+			final OutputStreamWriter writer = new OutputStreamWriter(new FileOutputStream(file), StandardCharsets.UTF_8);
+			try {
+				final Result result = new StreamResult(writer);
+				// Do the transformation
+				transformer.transform(source, result);
+			} finally {
+				IoUtil.safeClose(writer);
+			}
+		} finally {
+			IoUtil.safeClose(stylesheet);
+		}
+	}
+
+	private static void openInBrowser(@NotNull final File file) {
+		EventDispatchThreadHelper.invokeLater(() -> BrowserUtil.browse(file));
+	}
+
+	private static void showError(@NotNull final String message) {
+		EventDispatchThreadHelper.invokeLater(
+				() -> Messages.showErrorDialog(
+						message, StringUtil.capitalizeWords(ResourcesLoader.getString("export.title"), true)));
+	}
+
+	@NotNull
+	private static InputStream getStylesheetStream(@NotNull final String stylesheet) throws IOException {
+		try {
+			final URL url = new URL(stylesheet);
+			return url.openStream();
+		} catch (final Exception e) {
+			LOGGER.info("xls read failed.", e);
+		}
+		try {
+			return new BufferedInputStream(new FileInputStream(stylesheet));
+		} catch (final Exception ignored) {
+		}
+		final InputStream xslInputStream = HTMLBugReporter.class.getResourceAsStream('/' + stylesheet);
+		if (xslInputStream == null) {
+			throw new IOException("Could not load HTML generation stylesheet " + stylesheet);
+		}
+		return xslInputStream;
+	}
+}

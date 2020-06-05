@@ -1,21 +1,20 @@
-#!groovy
 /*
- * Copyright 2020 SpotBugs plugin contributors
+ * Copyright 2020 Reshift Security Intellij plugin contributors
  *
- * This file is part of IntelliJ SpotBugs plugin.
+ * This file is part of Reshift Security Intellij plugin.
  *
- * IntelliJ SpotBugs plugin is free software: you can redistribute it 
+ * Reshift Security Intellij plugin is free software: you can redistribute it
  * and/or modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation, either version 3 of 
+ * as published by the Free Software Foundation, either version 3 of
  * the License, or (at your option) any later version.
  *
- * IntelliJ SpotBugs plugin is distributed in the hope that it will
- * be useful, but WITHOUT ANY WARRANTY; without even the implied 
+ * Reshift Security Intellij plugin is distributed in the hope that it will
+ * be useful, but WITHOUT ANY WARRANTY; without even the implied
  * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * See the GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with IntelliJ SpotBugs plugin.
+ * along with Reshift Security Intellij plugin.
  * If not, see <http://www.gnu.org/licenses/>.
  */
 
@@ -84,7 +83,7 @@ dependencies {
 task copyGradleProperties(type: Copy) {
     description 'Copy gradle.properties to project resources.'
     from 'gradle.properties'
-    into 'build/resources/main/org/jetbrains/plugins/spotbugs/common'
+    into 'build/resources/main/com/reshiftsecurity/plugins/intellij/common'
     rename { _ -> 'version.properties' }
 }
 
@@ -92,14 +91,14 @@ task downloadThirdPartyPlugins(type: Copy) {
     description 'Downloads third-party plugins Find Security Bugs and FB-Contrib.'
     from configurations.thirdPartyPlugins
     from configurations.fbContribJava6
-    into 'build/resources/main/org/jetbrains/plugins/spotbugs/plugins'
+    into 'build/resources/main/com/reshiftsecurity/plugins/intellij/plugins'
 }
 
 task copyThirdPartyPlugins(type: Copy) {
     dependsOn(downloadThirdPartyPlugins, prepareSandbox)
     description 'Copy plugins into sandbox.'
-    from 'build/resources/main/org/jetbrains/plugins/spotbugs/plugins'
-    into 'build/idea-sandbox/plugins/spotbugs-idea/customPlugins'
+    from 'build/resources/main/com/reshiftsecurity/plugins/intellij/plugins'
+    into 'build/idea-sandbox/plugins/reshiftsecurity-intellij/customPlugins'
 }
 
 tasks.compileJava.dependsOn(downloadThirdPartyPlugins, copyGradleProperties)
