@@ -18,17 +18,8 @@
  * If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.reshiftsecurity.plugins.intellij.actions;
+package com.reshiftsecurity.plugins.intellij.common;
 
-import com.intellij.ide.BrowserUtil;
-import com.intellij.openapi.actionSystem.AnAction;
-import com.intellij.openapi.actionSystem.AnActionEvent;
-import com.reshiftsecurity.plugins.intellij.common.PluginConstants;
-import org.jetbrains.annotations.NotNull;
-
-public final class ReshiftSignupAction extends AnAction {
-    @Override
-    public void actionPerformed(@NotNull AnActionEvent e) {
-        BrowserUtil.browse(PluginConstants.RESHIFT_SITE_URL);
-    }
+public class PluginConstants {
+    public static final String RESHIFT_SITE_URL = "https://www.reshiftsecurity.com/?utm_source=plugin&utm_medium=IntelliJ&utm_campaign=intellij_plugin_reshift";
 }

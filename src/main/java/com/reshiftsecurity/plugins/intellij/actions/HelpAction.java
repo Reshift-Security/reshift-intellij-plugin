@@ -26,6 +26,7 @@ import com.intellij.openapi.ide.CopyPasteManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.wm.ToolWindow;
 import com.intellij.util.text.DateFormatUtil;
+import com.reshiftsecurity.plugins.intellij.common.PluginConstants;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import com.reshiftsecurity.plugins.intellij.common.VersionManager;
@@ -94,7 +95,9 @@ public final class HelpAction extends AbstractAction {
 		ret.append("Support & Feedback: <a href='mailto:dev@reshiftsecurity.com'>dev@reshiftsecurity.com</a>");
 		ret.append("<br/>");
 		ret.append("<br/>");
-		ret.append("Would you like to integrate Reshift into your CI pipline? Sign up today for free on <a href='https://reshiftsecurity.com'>reshiftsecurity.com</a>");
+		ret.append("Would you like to integrate Reshift into your CI pipline? Sign up today for free on <a href='")
+				.append(PluginConstants.RESHIFT_SITE_URL)
+				.append("'>reshiftsecurity.com</a>");
 //		ret.append("Issue tracker: <a href='").append(VersionManager.getIssueTracker()).append("'>").append(VersionManager.getIssueTracker()).append("</a>");
 //		ret.append("<h3>SpotBugs ").append(FindBugsUtil.getFindBugsFullVersion()).append("</h3>");
 //		ret.append("Website: <a href='").append(Version.WEBSITE).append("'>").append(Version.WEBSITE).append("</a>");
