@@ -315,6 +315,8 @@ public class BugTree extends Tree implements DataProvider, OccurenceNavigator {
 			}
 			if (_bugTreePanel.isPreviewEnabled()) {
 				_bugTreePanel.setPreview(path);
+			} else {
+				_bugTreePanel.setPreview(null);
 			}
 		}
 	}
