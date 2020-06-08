@@ -34,10 +34,7 @@ import com.intellij.openapi.wm.*;
 import com.intellij.psi.PsiFile;
 import com.intellij.ui.content.*;
 import com.intellij.util.ui.JBUI;
-import com.reshiftsecurity.plugins.intellij.common.EventDispatchThreadHelper;
-import com.reshiftsecurity.plugins.intellij.common.ExtendedProblemDescriptor;
-import com.reshiftsecurity.plugins.intellij.common.FindBugsPluginConstants;
-import com.reshiftsecurity.plugins.intellij.common.VersionManager;
+import com.reshiftsecurity.plugins.intellij.common.*;
 import com.reshiftsecurity.plugins.intellij.messages.AnalysisStateListener;
 import com.reshiftsecurity.plugins.intellij.messages.ClearListener;
 import com.reshiftsecurity.plugins.intellij.messages.MessageBusManager;
@@ -272,7 +269,9 @@ public final class ToolWindowPanel extends JPanel implements AnalysisStateListen
 		}
 		// message.append("<font size='10px'>using ").append(VersionManager.getFullVersion()).append("<br/>");
 		message.append("<br/>");
-		message.append("Would you like to integrate Reshift into your CI pipline? Sign up today for free on <a href='https://reshiftsecurity.com'>reshiftsecurity.com</a>");
+		message.append("Would you like to integrate Reshift into your CI pipline? Sign up today for free on <a href='")
+				.append(PluginConstants.RESHIFT_SITE_URL)
+				.append("'>reshiftsecurity.com</a>");
 		message.append("<br/>");
 
 		if (error != null) {
