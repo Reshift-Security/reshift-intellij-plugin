@@ -237,7 +237,9 @@ public class TreeNodeCellRenderer extends JPanel implements TreeCellRenderer/*, 
 				}
 
 				setToolTipText(bugInstanceNode.getTooltip());
-				setTitle(bugInstanceNode.getSimpleName());
+				setTitle(
+						String.format("%s:%s",
+								bugInstanceNode.getSourceFilename(), bugInstanceNode.getSourceLines()[0]));
 				setHits("");
 
 			} else if (value instanceof RootNode) {

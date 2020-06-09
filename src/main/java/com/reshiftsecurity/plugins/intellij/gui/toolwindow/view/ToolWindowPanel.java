@@ -186,10 +186,11 @@ public final class ToolWindowPanel extends JPanel implements AnalysisStateListen
 	}
 
 	void setPreviewEditor(@Nullable final Editor editor, final PsiFile psiFile) {
-		updateLayout(true);
 		if (editor != null) {
 			getPreviewPanel().add(editor, psiFile);
+			updateLayout(true);
 		} else {
+			updateLayout(false);
 			getPreviewPanel().clear();
 		}
 		resizeSplitNodes(this);
@@ -318,13 +319,13 @@ public final class ToolWindowPanel extends JPanel implements AnalysisStateListen
 		final int width = component.getWidth();
 		final int height = component.getHeight();
 		if (isPreviewEnabled() && getPreviewPanel().getEditor() != null) {
-			_bugDetailsComponents.adaptSize((int) (width * 0.3), height);
-			_bugTreePanel.adaptSize((int) (width * 0.3), height);
+			_bugDetailsComponents.adaptSize((int) (width * 0.5), height);
+			_bugTreePanel.adaptSize((int) (width * 0.2), height);
+			getPreviewPanel().adaptSize((int) (width * 0.3), height);
 		} else {
 			_bugDetailsComponents.adaptSize((int) (width * 0.6), height);
 			_bugTreePanel.adaptSize((int) (width * 0.4), height);
 		}
-		getPreviewPanel().adaptSize((int) (width * 0.4), height);
 		_multiSplitPane.validate();
 	}
 
