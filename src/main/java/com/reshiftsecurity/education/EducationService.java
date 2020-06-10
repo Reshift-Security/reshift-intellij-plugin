@@ -20,59 +20,55 @@
 
 package com.reshiftsecurity.education;
 
+import com.google.gson.Gson;
+import com.google.gson.internal.LinkedTreeMap;
+import com.google.gson.reflect.TypeToken;
 import org.apache.commons.lang.StringUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
 
-import java.io.IOException;
+import java.io.*;
+import java.lang.reflect.Type;
+import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
 public class EducationService {
+
+    private static final String reshiftEduBaseUrl = "https://d20h2meksv6k0s.cloudfront.net";
+    private static final Type devContentType = new TypeToken<List<DevContent>>() {}.getType();
+
     public static VulnerabilityDetails getVulnerabilityDetails(String vulnerabilityType) {
         List<DevContent> devContent = new ArrayList<>();
-        String rawHtml = getRawVulnerabilityDetails(vulnerabilityType);
-        String[] sections = rawHtml.split("<h1>\\|");
-        for (String section : sections) {
-            if (!StringUtils.isEmpty(section)) {
-                String titleEnd = "||</h1>";
-                int titleEndIndex = section.indexOf(titleEnd);
-                String sectionTitle = section.substring(1, titleEndIndex);
-                String sectionContent = section.substring(titleEndIndex + titleEnd.length());
-                String sectionTitleH1 = String.format("<h1>%s</h1>", sectionTitle);
-                devContent.add(new DevContent(sectionTitle,sectionTitleH1 + sectionContent));
-            }
+        Gson gson = new Gson();
+        InputStream input = null;
+        try {
+            input = new URL(getDevContentURL(vulnerabilityType)).openStream();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+        Reader jsonReader = null;
+        try {
+            jsonReader = new InputStreamReader(input, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        devContent = gson.fromJson(jsonReader, devContentType);
         VulnerabilityDetails details = new VulnerabilityDetails(vulnerabilityType);
         details.getDevContent().addAll(devContent);
         return details;
     }
 
-    public static String getRawVulnerabilityDetails(String vulnerabilityType) {
-        // TODO: look into switching source data to JSON
-        String html = "";
-        String reshiftEduBaseUrl = System.getenv("RESHIFT_EDU_BASE_URL");
-        if (StringUtils.isEmpty(reshiftEduBaseUrl)) {
-            reshiftEduBaseUrl = "https://d20h2meksv6k0s.cloudfront.net";
-        }
+    private static String getDevContentURL(String vulnerabilityType) {
         URI eduBaseUri = null;
         try {
             eduBaseUri = new URI(reshiftEduBaseUrl);
         } catch (URISyntaxException e) {
             e.printStackTrace();
         }
-        final String bugEduUrl = eduBaseUri.resolve(String.format("/%s/index.html", vulnerabilityType)).toString();
-        try {
-            html = Jsoup.connect(bugEduUrl).get().html();
-            if (!StringUtils.isEmpty(html)) {
-                Whitelist htmlTagWhiteList = Whitelist.relaxed();
-                html = Jsoup.clean(html, htmlTagWhiteList);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return html;
+        return eduBaseUri.resolve(String.format("/%s/data.json", vulnerabilityType)).toString();
     }
 }

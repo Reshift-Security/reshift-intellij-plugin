@@ -20,20 +20,27 @@
 
 package com.reshiftsecurity.education;
 
+import com.google.gson.annotations.SerializedName;
+
 public class DevContent {
-    private String sectionTitle;
-    private String sectionHtml;
+    @SerializedName("title")
+    private String title;
+    @SerializedName("content")
+    private String content;
 
-    public DevContent(String sectionTitle, String sectionHtml) {
-        this.sectionTitle = sectionTitle;
-        this.sectionHtml = sectionHtml;
+    public DevContent(String title, String content) {
+        this.title = title;
+        this.content = content;
     }
 
-    public String getSectionHtml() {
-        return sectionHtml;
+    public String getContent() { return content; }
+
+    public String getTitle() {
+        return title;
     }
 
-    public String getSectionTitle() {
-        return sectionTitle;
+    public String getContentWithTitle() {
+        return String.format("<h1>%s</h1>", this.title) +
+                this.getContent();
     }
 }

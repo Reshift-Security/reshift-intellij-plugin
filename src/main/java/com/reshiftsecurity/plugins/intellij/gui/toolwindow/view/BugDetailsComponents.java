@@ -20,13 +20,14 @@
 package com.reshiftsecurity.plugins.intellij.gui.toolwindow.view;
 
 import com.intellij.ide.BrowserUtil;
+import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.util.SystemInfo;
 import com.intellij.ui.components.JBTabbedPane;
 import com.intellij.util.ui.*;
 import com.reshiftsecurity.education.DevContent;
-import com.reshiftsecurity.education.EducationService;
 import com.reshiftsecurity.education.VulnerabilityDetails;
+import com.reshiftsecurity.plugins.intellij.service.EducationCachingService;
 import edu.umd.cs.findbugs.*;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import icons.PluginIcons;
@@ -70,12 +71,14 @@ public final class BugDetailsComponents {
 	private VulnerabilityDetails _reshiftVulnDetails;
 	private String _currentReshiftSection;
 	private HashMap<String, Component> _reshiftContentPanes;
+	private EducationCachingService _eduCacheService;
 
 
 	BugDetailsComponents(final ToolWindowPanel toolWindowPanel) {
 		_parent = toolWindowPanel;
 		_htmlEditorKit = GuiResources.createHtmlEditorKit();
 		_reshiftContentPanes = new HashMap<>();
+		_eduCacheService = ServiceManager.getService(EducationCachingService.class);
 	}
 
 	JTabbedPane getTabbedPane() {
@@ -106,7 +109,7 @@ public final class BugDetailsComponents {
 		reshiftContentPane.setContentType("text/html");
 		reshiftContentPane.setEditorKit(_htmlEditorKit);
 		reshiftContentPane.addHyperlinkListener(this::editorPaneHyperlinkUpdate);
-		try (StringReader reader = new StringReader(reshiftContent.getSectionHtml())) {
+		try (StringReader reader = new StringReader(reshiftContent.getContentWithTitle())) {
 			reshiftContentPane.setToolTipText(edu.umd.cs.findbugs.L10N
 					.getLocalString("tooltip.longer_description", "This gives more details on the detected vulnerability"));
 			reshiftContentPane.read(reader, "html bug description");
@@ -125,13 +128,13 @@ public final class BugDetailsComponents {
 		reshiftPanel.setLayout(new BorderLayout());
 		reshiftPanel.add(scrollPane, BorderLayout.CENTER);
 
-		_reshiftContentPanes.put(reshiftContent.getSectionTitle(), reshiftPanel);
+		_reshiftContentPanes.put(reshiftContent.getTitle(), reshiftPanel);
 
 		return reshiftPanel;
 	}
 
 	private Icon getReshiftSectionIcon(DevContent devContent) {
-		switch (devContent.getSectionTitle()) {
+		switch (devContent.getTitle()) {
 			case "Fixes":
 				return PluginIcons.RESHIFT_FIXES;
 			case "Impact":
@@ -200,7 +203,7 @@ public final class BugDetailsComponents {
 			int tabIndex = 0;
 			for (DevContent reshiftSection : _reshiftVulnDetails.getDevContent()) {
 				Icon tabIcon = getReshiftSectionIcon(reshiftSection);
-				String tabTooltip = reshiftSection.getSectionTitle();
+				String tabTooltip = reshiftSection.getTitle();
 				Component tabComponent = getReshiftContentPane(reshiftSection);
 				_jTabbedPane.insertTab(
 					null,
@@ -455,9 +458,9 @@ public final class BugDetailsComponents {
 	private void populateReshiftDevContent() {
 		if (_lastBugInstance != null) {
 			if (_reshiftVulnDetails == null) {
-				_reshiftVulnDetails = EducationService.getVulnerabilityDetails(_lastBugInstance.getType());
+				_reshiftVulnDetails = _eduCacheService.getEducationContent(_lastBugInstance.getType());
 			} else if (!_reshiftVulnDetails.getVulnerabilityType().equalsIgnoreCase(_lastBugInstance.getType())) {
-				_reshiftVulnDetails = EducationService.getVulnerabilityDetails(_lastBugInstance.getType());
+				_reshiftVulnDetails = _eduCacheService.getEducationContent(_lastBugInstance.getType());
 			}
 		}
 	}
@@ -471,7 +474,7 @@ public final class BugDetailsComponents {
 		if (_reshiftVulnDetails != null) {
 			Optional<DevContent> bugDevContent = _reshiftVulnDetails.getDevContentByTitle(_currentReshiftSection);
 			if (bugDevContent.isPresent()) {
-				return bugDevContent.get().getSectionHtml();
+				return bugDevContent.get().getContentWithTitle();
 			}
 		}
 		return "";

@@ -22,6 +22,7 @@ package com.reshiftsecurity.plugins.intellij.gui.editor;
 import com.intellij.codeInsight.daemon.GutterIconNavigationHandler;
 import com.intellij.codeInsight.daemon.LineMarkerInfo;
 import com.intellij.codeInsight.daemon.LineMarkerProvider;
+import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.editor.markup.GutterIconRenderer;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.popup.JBPopup;
@@ -30,6 +31,7 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.intellij.ui.awt.RelativePoint;
 import com.intellij.util.Function;
+import com.reshiftsecurity.plugins.intellij.service.EducationCachingService;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import com.reshiftsecurity.plugins.intellij.common.ExtendedProblemDescriptor;
@@ -191,24 +193,27 @@ public final class BugsLineMarkerProvider implements LineMarkerProvider {
 		@SuppressWarnings({"HardcodedFileSeparator"})
 		private static String getTooltipText(final List<ExtendedProblemDescriptor> problemDescriptors) {
 			final StringBuilder buffer = new StringBuilder();
+			EducationCachingService _eduCacheService = ServiceManager.getService(EducationCachingService.class);
 			buffer.append("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\">");
-			buffer.append("<HTML><HEAD><TITLE>");
 
 			final int problemDescriptorsSize = problemDescriptors.size();
-			for (int i = 0; i < problemDescriptorsSize; i++) {
-				final ExtendedProblemDescriptor problemDescriptor = problemDescriptors.get(i);
-				buffer.append("");
-				buffer.append("</TITLE></HEAD><BODY><H3>");
-				buffer.append(BugInstanceUtil.getBugPatternShortDescription(problemDescriptor.getBug().getInstance()));
-				buffer.append("</H3>");
-				buffer.append(PATTERN.matcher(BugInstanceUtil.getDetailText(problemDescriptor.getBug().getInstance())).replaceAll(""));
-				if (i < problemDescriptors.size() - 1) {
-					buffer.append("<HR>");
-				}
-
+			if (problemDescriptorsSize > 0) {
+				buffer.append(_eduCacheService.getOverviewContent(problemDescriptors.get(0).getBug().getInstance().getType()));
 			}
-
-			buffer.append("</BODY></HTML>");
+//			for (int i = 0; i < problemDescriptorsSize; i++) {
+//				final ExtendedProblemDescriptor problemDescriptor = problemDescriptors.get(i);
+//				buffer.append("");
+//				buffer.append("</TITLE></HEAD><BODY><H3>");
+//				buffer.append(BugInstanceUtil.getBugPatternShortDescription(problemDescriptor.getBug().getInstance()));
+//				buffer.append("</H3>");
+//				buffer.append(PATTERN.matcher(BugInstanceUtil.getDetailText(problemDescriptor.getBug().getInstance())).replaceAll(""));
+//				if (i < problemDescriptors.size() - 1) {
+//					buffer.append("<HR>");
+//				}
+//
+//			}
+//
+//			buffer.append("</BODY></HTML>");
 			return buffer.toString();
 		}
 
