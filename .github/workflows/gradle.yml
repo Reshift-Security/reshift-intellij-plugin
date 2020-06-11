@@ -24,8 +24,3 @@ jobs:
       run: chmod +x gradlew
     - name: Build with Gradle
       run: ./gradlew buildPlugin
-    - name: Retrieve version
-      run: |
-        RAW_VERSION=`./gradlew properties | grep version`
-        VERSION=`echo "${RAW_VERSION/'version: '/''}"`
-        echo ::set-env name=TAG_NAME::$VERSION
