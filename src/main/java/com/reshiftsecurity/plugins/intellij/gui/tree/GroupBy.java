@@ -88,10 +88,10 @@ public enum GroupBy {
 				groupName = BugInstanceComparator.BugInstancePackageComparator.getPackageName(bug);
 				break;
 			case Priority:
-				groupName = BugInstanceComparator.BugInstancePriorityComparator.getPriorityString(bug);
+				groupName = FindBugsRankRenamer.getRankNameByPriorityValue(bug.getInstance().getPriority());
 				break;
 			case BugRank:
-				groupName = FindBugsRankRenamer.rename(BugRankCategory.getRank(bug.getInstance().getBugRank()));
+				groupName = FindBugsRankRenamer.rename(bug.getInstance().getBugRankCategory());
 				break;
 			default:
 				throw new IllegalStateException("Unknown group order: " + groupBy);
@@ -109,8 +109,8 @@ public enum GroupBy {
 	 */
 	public static GroupBy[] getSortOrderGroup(final GroupBy groupBy) {
 
-		// Always group by rank
-		return new GroupBy[]{BugRank, BugType};
+		// Always group by Priority
+		return new GroupBy[]{Priority, BugType};
 //		switch (groupBy) {
 //
 //			case BugCategory:

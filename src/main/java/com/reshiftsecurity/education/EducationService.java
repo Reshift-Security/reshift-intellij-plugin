@@ -47,28 +47,28 @@ public class EducationService {
         InputStream input = null;
         try {
             input = new URL(getDevContentURL(vulnerabilityType)).openStream();
+            Reader jsonReader = null;
+            try {
+                jsonReader = new InputStreamReader(input, "UTF-8");
+                devContent = gson.fromJson(jsonReader, devContentType);
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
-        Reader jsonReader = null;
-        try {
-            jsonReader = new InputStreamReader(input, "UTF-8");
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-        devContent = gson.fromJson(jsonReader, devContentType);
         VulnerabilityDetails details = new VulnerabilityDetails(vulnerabilityType);
         details.getDevContent().addAll(devContent);
         return details;
     }
 
     private static String getDevContentURL(String vulnerabilityType) {
-        URI eduBaseUri = null;
         try {
-            eduBaseUri = new URI(reshiftEduBaseUrl);
+            URI eduBaseUri = new URI(reshiftEduBaseUrl);
+            return eduBaseUri.resolve(String.format("/%s/data.json", vulnerabilityType)).toString();
         } catch (URISyntaxException e) {
             e.printStackTrace();
         }
-        return eduBaseUri.resolve(String.format("/%s/data.json", vulnerabilityType)).toString();
+        return "";
     }
 }

@@ -113,11 +113,11 @@ public interface PluginIcons {
             "OF CONCERN", GROUP_BY_RANK_OF_CONCERN_ICON
     );
 
-    Icon GROUP_BY_PRIORITY_HIGH_ICON = ResourcesLoader.loadIcon("priority/priorityHigh.png");
-    Icon GROUP_BY_PRIORITY_MEDIUM_ICON = ResourcesLoader.loadIcon("priority/priorityMedium.png");
-    Icon GROUP_BY_PRIORITY_LOW_ICON = ResourcesLoader.loadIcon("priority/priorityLow.png");
-    Icon GROUP_BY_PRIORITY_EXP_ICON = ResourcesLoader.loadIcon("priority/priorityExp.png");
-    Icon GROUP_BY_PRIORITY_IGNORE_ICON = ResourcesLoader.loadIcon("priority/priorityIgnore.png");
+    Icon GROUP_BY_PRIORITY_HIGH_ICON = ResourcesLoader.loadIcon("priority/rankScariest.svg");
+    Icon GROUP_BY_PRIORITY_MEDIUM_ICON = ResourcesLoader.loadIcon("priority/rankScary.svg");
+    Icon GROUP_BY_PRIORITY_LOW_ICON = ResourcesLoader.loadIcon("priority/rankTroubling.svg");
+    Icon GROUP_BY_PRIORITY_EXP_ICON = ResourcesLoader.loadIcon("priority/rankOfConcern.svg");
+    Icon GROUP_BY_PRIORITY_IGNORE_ICON = ResourcesLoader.loadIcon("priority/priorityExp.png");
 
     Map<String, Icon> GROUP_BY_PRIORITY_ICONS = Map.of(
             "Low", GROUP_BY_PRIORITY_LOW_ICON,

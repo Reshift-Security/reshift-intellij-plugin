@@ -205,17 +205,6 @@ public final class BugAnnotator implements Annotator {
 		EducationCachingService _eduCacheService = ServiceManager.getService(EducationCachingService.class);
 		final StringBuilder buffer = new StringBuilder();
 		buffer.append(_eduCacheService.getBriefOverview(problemDescriptors, true));
-//		for (//noinspection LocalCanBeFinal
-//				int i = 0, problemDescriptorsSize = problemDescriptors.size(); i < problemDescriptorsSize; i++) {
-//			final ExtendedProblemDescriptor problemDescriptor = problemDescriptors.get(i);
-//			buffer.append(ResourcesLoader.getString("findbugs.name")).append(": ").append(StringUtilFb.html2text(BugInstanceUtil.getBugPatternShortDescription(problemDescriptor.getBug().getInstance()))).append('\n');
-//			buffer.append(StringUtilFb.html2text(BugInstanceUtil.getDetailText(problemDescriptor.getBug().getInstance())));
-//			if (i < problemDescriptors.size() - 1) {
-//				//noinspection HardcodedLineSeparator
-//				buffer.append("\n\n");
-//			}
-//		}
-//
 		return StringUtilFb.addLineSeparatorAt(buffer, 250).toString();
 	}
 

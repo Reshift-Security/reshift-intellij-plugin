@@ -68,6 +68,9 @@ public class EducationCachingService {
             contentSection = String.format("<b>%s</b>: %s", details.getFriendlyTypeName(), devContent.get().getContent());
             if (textOnly) {
                 contentSection = Jsoup.parse(contentSection).text();
+            } else {
+                // sanitize for XSS
+                contentSection = Jsoup.clean(contentSection, Whitelist.basic());
             }
         }
         return contentSection;

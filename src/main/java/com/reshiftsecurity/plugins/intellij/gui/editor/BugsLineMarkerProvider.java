@@ -131,11 +131,11 @@ public final class BugsLineMarkerProvider implements LineMarkerProvider {
 
 			for (final ExtendedProblemDescriptor problemDescriptor : _descriptors) {
 				final List<SuppressReportBugIntentionAction> intentionActions = new ArrayList<SuppressReportBugIntentionAction>(_descriptors.size());
-
-				intentionActions.add(new SuppressReportBugIntentionAction(problemDescriptor));
-				intentionActions.add(new SuppressReportBugForClassIntentionAction(problemDescriptor));
+// TODO: look into adding Reshift actions in the future
+//				intentionActions.add(new SuppressReportBugIntentionAction(problemDescriptor));
+//				intentionActions.add(new SuppressReportBugForClassIntentionAction(problemDescriptor));
+//				intentionActions.add(new ClearAndSuppressBugIntentionAction(problemDescriptor));
 				intentionActions.add(new ClearBugIntentionAction(problemDescriptor));
-				intentionActions.add(new ClearAndSuppressBugIntentionAction(problemDescriptor));
 
 				final GroupBugIntentionListPopupStep intentionActionGroup = new GroupBugIntentionListPopupStep(_psiElement, intentionActions);
 				intentionGroups.add(intentionActionGroup);
@@ -195,22 +195,6 @@ public final class BugsLineMarkerProvider implements LineMarkerProvider {
 			EducationCachingService _eduCacheService = ServiceManager.getService(EducationCachingService.class);
 			buffer.append("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\">");
 			buffer.append(_eduCacheService.getBriefOverview(problemDescriptors, false));
-
-//			final int problemDescriptorsSize = problemDescriptors.size();
-//			for (int i = 0; i < problemDescriptorsSize; i++) {
-//				final ExtendedProblemDescriptor problemDescriptor = problemDescriptors.get(i);
-//				buffer.append("");
-//				buffer.append("</TITLE></HEAD><BODY><H3>");
-//				buffer.append(BugInstanceUtil.getBugPatternShortDescription(problemDescriptor.getBug().getInstance()));
-//				buffer.append("</H3>");
-//				buffer.append(PATTERN.matcher(BugInstanceUtil.getDetailText(problemDescriptor.getBug().getInstance())).replaceAll(""));
-//				if (i < problemDescriptors.size() - 1) {
-//					buffer.append("<HR>");
-//				}
-//
-//			}
-//
-//			buffer.append("</BODY></HTML>");
 			return buffer.toString();
 		}
 
