@@ -319,8 +319,8 @@ public final class ToolWindowPanel extends JPanel implements AnalysisStateListen
 		final int width = component.getWidth();
 		final int height = component.getHeight();
 		if (isPreviewEnabled() && getPreviewPanel().getEditor() != null) {
-			_bugDetailsComponents.adaptSize((int) (width * 0.5), height);
-			_bugTreePanel.adaptSize((int) (width * 0.2), height);
+			_bugDetailsComponents.adaptSize((int) (width * 0.3), height);
+			_bugTreePanel.adaptSize((int) (width * 0.3), height);
 			getPreviewPanel().adaptSize((int) (width * 0.3), height);
 		} else {
 			_bugDetailsComponents.adaptSize((int) (width * 0.6), height);

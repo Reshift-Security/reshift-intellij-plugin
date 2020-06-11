@@ -23,6 +23,19 @@ package com.reshiftsecurity.results;
 import edu.umd.cs.findbugs.BugRankCategory;
 
 public class FindBugsRankRenamer {
+    public static String getRankNameByPriorityValue(int priority) {
+        switch (priority) {
+            case 1:
+                return FindBugsRankRenamer.rename(BugRankCategory.SCARIEST);
+            case 2:
+                return FindBugsRankRenamer.rename(BugRankCategory.SCARY);
+            case 3:
+                return FindBugsRankRenamer.rename(BugRankCategory.TROUBLING);
+            default:
+                return "LOW";
+        }
+    }
+
     public static String rename(BugRankCategory bugRank) {
         if (bugRank == null) {
             return null;
