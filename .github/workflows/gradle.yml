@@ -1,7 +1,7 @@
 # This workflow will build a Java project with Gradle
 # For more information see: https://help.github.com/actions/language-and-framework-guides/building-and-testing-java-with-gradle
 
-name: Java CI with Gradle
+name: Build Reshift Intellij Plugin
 
 on:
   push:
@@ -23,4 +23,9 @@ jobs:
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
     - name: Build with Gradle
-      run: ./gradlew build
+      run: ./gradlew buildPlugin
+    - name: Retrieve version
+      run: |
+        RAW_VERSION=`./gradlew properties | grep version`
+        VERSION=`echo "${RAW_VERSION/'version: '/''}"`
+        echo ::set-env name=TAG_NAME::$VERSION
