@@ -21,6 +21,7 @@
 package com.reshiftsecurity.education;
 
 import com.google.gson.annotations.SerializedName;
+import org.apache.commons.text.StringEscapeUtils;
 
 public class DevContent {
     @SerializedName("title")
@@ -40,7 +41,7 @@ public class DevContent {
     }
 
     public String getContentWithTitle() {
-        return String.format("<h1>%s</h1>", this.title) +
+        return String.format("<h1>%s</h1>", StringEscapeUtils.escapeHtml4(this.title)) +
                 this.getContent();
     }
 }
