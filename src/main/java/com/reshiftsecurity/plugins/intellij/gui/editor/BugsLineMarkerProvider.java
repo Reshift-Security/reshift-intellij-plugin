@@ -35,7 +35,6 @@ import com.reshiftsecurity.plugins.intellij.service.EducationCachingService;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import com.reshiftsecurity.plugins.intellij.common.ExtendedProblemDescriptor;
-import com.reshiftsecurity.plugins.intellij.common.util.BugInstanceUtil;
 import com.reshiftsecurity.plugins.intellij.common.util.GuiUtil;
 import com.reshiftsecurity.plugins.intellij.common.util.IdeaUtilImpl;
 import com.reshiftsecurity.plugins.intellij.core.FindBugsState;
@@ -195,11 +194,9 @@ public final class BugsLineMarkerProvider implements LineMarkerProvider {
 			final StringBuilder buffer = new StringBuilder();
 			EducationCachingService _eduCacheService = ServiceManager.getService(EducationCachingService.class);
 			buffer.append("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\">");
+			buffer.append(_eduCacheService.getBriefOverview(problemDescriptors, false));
 
-			final int problemDescriptorsSize = problemDescriptors.size();
-			if (problemDescriptorsSize > 0) {
-				buffer.append(_eduCacheService.getOverviewContent(problemDescriptors.get(0).getBug().getInstance().getType()));
-			}
+//			final int problemDescriptorsSize = problemDescriptors.size();
 //			for (int i = 0; i < problemDescriptorsSize; i++) {
 //				final ExtendedProblemDescriptor problemDescriptor = problemDescriptors.get(i);
 //				buffer.append("");

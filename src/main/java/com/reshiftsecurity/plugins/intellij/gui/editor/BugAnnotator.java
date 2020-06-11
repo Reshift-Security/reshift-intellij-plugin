@@ -22,6 +22,7 @@ package com.reshiftsecurity.plugins.intellij.gui.editor;
 import com.intellij.lang.annotation.Annotation;
 import com.intellij.lang.annotation.AnnotationHolder;
 import com.intellij.lang.annotation.Annotator;
+import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.editor.markup.EffectType;
 import com.intellij.openapi.editor.markup.TextAttributes;
 import com.intellij.openapi.project.Project;
@@ -31,12 +32,12 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.ui.JBColor;
+import com.reshiftsecurity.plugins.intellij.common.util.StringUtilFb;
+import com.reshiftsecurity.plugins.intellij.service.EducationCachingService;
 import edu.umd.cs.findbugs.BugInstance;
 import edu.umd.cs.findbugs.Detector;
 import org.jetbrains.annotations.NotNull;
 import com.reshiftsecurity.plugins.intellij.common.ExtendedProblemDescriptor;
-import com.reshiftsecurity.plugins.intellij.common.util.BugInstanceUtil;
-import com.reshiftsecurity.plugins.intellij.common.util.StringUtilFb;
 import com.reshiftsecurity.plugins.intellij.core.FindBugsState;
 import com.reshiftsecurity.plugins.intellij.core.ProblemCacheService;
 import com.reshiftsecurity.plugins.intellij.core.WorkspaceSettings;
@@ -44,7 +45,6 @@ import com.reshiftsecurity.plugins.intellij.intentions.ClearAndSuppressBugIntent
 import com.reshiftsecurity.plugins.intellij.intentions.ClearBugIntentionAction;
 import com.reshiftsecurity.plugins.intellij.intentions.SuppressReportBugForClassIntentionAction;
 import com.reshiftsecurity.plugins.intellij.intentions.SuppressReportBugIntentionAction;
-import com.reshiftsecurity.plugins.intellij.resources.ResourcesLoader;
 
 import java.awt.Font;
 import java.util.ArrayList;
@@ -202,18 +202,20 @@ public final class BugAnnotator implements Annotator {
 	}
 
 	private static String getAnnotationText(final List<ExtendedProblemDescriptor> problemDescriptors) {
+		EducationCachingService _eduCacheService = ServiceManager.getService(EducationCachingService.class);
 		final StringBuilder buffer = new StringBuilder();
-		for (//noinspection LocalCanBeFinal
-				int i = 0, problemDescriptorsSize = problemDescriptors.size(); i < problemDescriptorsSize; i++) {
-			final ExtendedProblemDescriptor problemDescriptor = problemDescriptors.get(i);
-			buffer.append(ResourcesLoader.getString("findbugs.name")).append(": ").append(StringUtilFb.html2text(BugInstanceUtil.getBugPatternShortDescription(problemDescriptor.getBug().getInstance()))).append('\n');
-			buffer.append(StringUtilFb.html2text(BugInstanceUtil.getDetailText(problemDescriptor.getBug().getInstance())));
-			if (i < problemDescriptors.size() - 1) {
-				//noinspection HardcodedLineSeparator
-				buffer.append("\n\n");
-			}
-		}
-
+		buffer.append(_eduCacheService.getBriefOverview(problemDescriptors, true));
+//		for (//noinspection LocalCanBeFinal
+//				int i = 0, problemDescriptorsSize = problemDescriptors.size(); i < problemDescriptorsSize; i++) {
+//			final ExtendedProblemDescriptor problemDescriptor = problemDescriptors.get(i);
+//			buffer.append(ResourcesLoader.getString("findbugs.name")).append(": ").append(StringUtilFb.html2text(BugInstanceUtil.getBugPatternShortDescription(problemDescriptor.getBug().getInstance()))).append('\n');
+//			buffer.append(StringUtilFb.html2text(BugInstanceUtil.getDetailText(problemDescriptor.getBug().getInstance())));
+//			if (i < problemDescriptors.size() - 1) {
+//				//noinspection HardcodedLineSeparator
+//				buffer.append("\n\n");
+//			}
+//		}
+//
 		return StringUtilFb.addLineSeparatorAt(buffer, 250).toString();
 	}
 

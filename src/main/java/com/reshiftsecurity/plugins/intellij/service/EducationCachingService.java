@@ -24,6 +24,9 @@ import com.intellij.openapi.components.Service;
 import com.reshiftsecurity.education.DevContent;
 import com.reshiftsecurity.education.EducationService;
 import com.reshiftsecurity.education.VulnerabilityDetails;
+import com.reshiftsecurity.plugins.intellij.common.ExtendedProblemDescriptor;
+import org.jsoup.Jsoup;
+import org.jsoup.safety.Whitelist;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,6 +35,7 @@ import java.util.Optional;
 @Service
 public class EducationCachingService {
     private List<VulnerabilityDetails> contentCache;
+    private final String SECTION_OVERVIEW="Overview";
 
     public EducationCachingService() {
         this.contentCache = new ArrayList<>();
@@ -56,11 +60,22 @@ public class EducationCachingService {
         return details;
     }
 
-    public String getOverviewContent(String issueType) {
+    public String getContentSection(String issueType, String sectionName, boolean textOnly) {
         VulnerabilityDetails details = getEducationContent(issueType);
-        Optional<DevContent> devContent = details.getDevContentByTitle("Overview");
+        Optional<DevContent> devContent = details.getDevContentByTitle(sectionName);
+        String contentSection = "";
         if (devContent.isPresent()) {
-            return devContent.get().getContent();
+            contentSection = String.format("<b>%s</b>: %s", details.getFriendlyTypeName(), devContent.get().getContent());
+            if (textOnly) {
+                contentSection = Jsoup.parse(contentSection).text();
+            }
+        }
+        return contentSection;
+    }
+
+    public String getBriefOverview(final List<ExtendedProblemDescriptor> problemDescriptors, boolean textOnly) {
+        if (problemDescriptors.size() > 0) {
+            return getContentSection(problemDescriptors.get(0).getBug().getInstance().getType(), SECTION_OVERVIEW, textOnly);
         }
         return "";
     }
