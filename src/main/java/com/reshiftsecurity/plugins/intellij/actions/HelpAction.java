@@ -118,8 +118,7 @@ public final class HelpAction extends AbstractAction {
 	public static StringBuilder createProductInfo() {
 
 		final StringBuilder ret = new StringBuilder("\n");
-		ret.append("Product Infos");
-		ret.append("\n    Reshift Security: ").append(FindBugsUtil.getFindBugsFullVersion());
+		ret.append("Product Info");
 		ret.append("\n    Reshift IntelliJ plugin: ").append(VersionManager.getVersion());
 
 		boolean ideaVersionAvailable = false;
