@@ -48,6 +48,8 @@ public class AnalyticsService {
     private final String PROTOCOL_VERSION_KEY = "v";
     private final String HIT_TYPE = "event";
     private final String HIT_TYPE_KEY = "t";
+    private final String EVENT_ACTION_DEFAULT = "click";
+    private final String EVENT_ACTION_KEY = "ea";
     private final String USER_ID_KEY = "uid";
     private final String MEASUREMENT_ID_KEY = "tid";
     private final String SCAN_RESULTS_METRIC_KEY = "cm1";
@@ -115,6 +117,7 @@ public class AnalyticsService {
             .append(HIT_TYPE_KEY + "=" + HIT_TYPE + "&")
             .append(USER_ID_KEY + "=" + this.userID + "&")
             .append(APP_VERSION_KEY + "=" + this.applicationVersion + "&")
+            .append(EVENT_ACTION_KEY + "=" + EVENT_ACTION_DEFAULT + "&")
             .append(MEASUREMENT_ID_KEY + "=" + this.measurementID + "&");
         if (action.getMetric() != null) {
             actionBuilder.append( SCAN_RESULTS_METRIC_KEY + "=" + action.getMetric() + "&");
@@ -137,7 +140,8 @@ public class AnalyticsService {
             // FIXME: how to handle this scenario?
             return;
         }
-        if (actions.size() == 20) { // 20 is a limit on batch uploads by Google
+        // FIXME: look into setting date time of each event since we are sending in bulk
+        if (actions.size() >= 20) { // 20 is a limit on batch uploads by Google.
             new Thread(() -> {
                 String batchPayload = this.buildBatchPayload();
                 try {
