@@ -20,33 +20,25 @@
 
 package com.reshiftsecurity.analytics;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+public enum AnalyticsActionCategory {
+    SCAN_RESULTS_METRIC,
+    OPEN_PLUGIN_WINDOW,
+    START_SCAN,
+    STOP_SCAN,
+    CLEAR_AND_CLOSE_WINDOW,
+    OPEN_HELP,
+    OPEN_SETTINGS,
+    OPEN_RESHIFT_WEBSITE,
+    ISSUE_REPORT_BROWSE,
+    ISSUE_REPORT_BUG_DETAILS,
+    ISSUE_REPORT_EDU,
+    ISSUE_REPORT_MORE_SCAN_INFO,
+    CODE_VIEW_BUG_DETAILS,
+    COPY_PLUGIN_INFO,
+    OPEN_MORE_SCAN_INFO;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class AnalyticsService {
-    List<AnalyticsAction> actions;
-    Gson jsonSerializer;
-
-    public AnalyticsService() {
-        this.actions = new ArrayList<>();
-        this.jsonSerializer = new GsonBuilder().setPrettyPrinting().create();
-    }
-
-    public void recordAction(AnalyticsAction action) {
-        this.actions.add(action);
-        this.processActions();
-    }
-
-    private void processActions() {
-        if (actions.size() >= 100) {
-            new Thread(() -> {
-                // TODO: send actions async and reset
-                String actionsJson = this.jsonSerializer.toJson(this.actions);
-                this.actions = new ArrayList<>();
-            }).start();
-        }
+    @Override
+    public String toString() {
+        return name();
     }
 }

@@ -24,6 +24,7 @@ import com.intellij.execution.configurations.RunConfiguration;
 import com.intellij.facet.FacetManager;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.compiler.*;
+import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.module.*;
@@ -37,8 +38,10 @@ import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.openapi.wm.ToolWindow;
 import com.intellij.openapi.wm.impl.ToolWindowImpl;
 import com.intellij.util.Consumer;
+import com.reshiftsecurity.analytics.AnalyticsActionCategory;
 import com.reshiftsecurity.plugins.intellij.messages.AnalysisAbortingListener;
 import com.reshiftsecurity.plugins.intellij.messages.MessageBusManager;
+import com.reshiftsecurity.plugins.intellij.service.AnalyticsService;
 import edu.umd.cs.findbugs.*;
 import edu.umd.cs.findbugs.config.*;
 import org.dom4j.DocumentException;
@@ -242,6 +245,9 @@ public abstract class FindBugsStarter implements AnalysisAbortingListener {
 			final int analyzedClassCountOffset
 	) throws IOException, InterruptedException {
 
+		AnalyticsService _analyticsService = ServiceManager.getService(AnalyticsService.class);
+		_analyticsService.recordAction(AnalyticsActionCategory.START_SCAN);
+
 		final ModuleSettings moduleSettings = ModuleSettings.getInstance(module);
 		AbstractSettings settings = new ProjectSettings();
 		PluginSettings findSecBugsPlugin = new PluginSettings();
@@ -333,6 +339,8 @@ public abstract class FindBugsStarter implements AnalysisAbortingListener {
 		}
 
 		bugCollection.setTimestamp(System.currentTimeMillis());
+
+		_analyticsService.recordMetric(AnalyticsActionCategory.SCAN_RESULTS_METRIC, bugCollection.getCollection().size());
 
 		return Pair.create(bugCollection, reporter);
 	}

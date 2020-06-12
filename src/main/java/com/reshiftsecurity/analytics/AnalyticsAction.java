@@ -20,24 +20,29 @@
 
 package com.reshiftsecurity.analytics;
 
-import java.time.ZonedDateTime;
-
 public class AnalyticsAction {
-    private AnalyticsActionType actionType;
-    private ZonedDateTime actionDateTime;
-    private String actionResultComments;
-    private int actionResultCount;
+    private AnalyticsActionCategory category;
+    private Integer metric;
 
-    public AnalyticsAction(AnalyticsActionType type) {
-        this.actionType = type;
-        this.actionDateTime = ZonedDateTime.now();
+    public AnalyticsAction(AnalyticsActionCategory category) {
+        this.category = category;
+    }
+    public AnalyticsAction(AnalyticsActionCategory category, Integer metric) {
+        this.category = category;
+        this.metric = metric;
     }
 
-    public void setActionResultComments(String comments) {
-        this.actionResultComments = comments;
+    public AnalyticsActionCategory getCategory() {
+        return category;
     }
-
-    public void setActionResultCount(int actionResultCount) {
-        this.actionResultCount = actionResultCount;
+    public void setCategory(AnalyticsActionCategory category) {
+        this.category = category;
+    }
+    
+    public Integer getMetric() {
+        return this.metric;
+    }
+    public void setMetric(Integer metric) {
+        this.metric = metric;
     }
 }

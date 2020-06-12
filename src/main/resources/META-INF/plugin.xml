@@ -86,6 +86,7 @@
         <checkinHandlerFactory implementation="com.reshiftsecurity.plugins.intellij.core.CheckinHandlerFactoryImpl"/>
         <projectService serviceImplementation="com.reshiftsecurity.plugins.intellij.core.ProblemCacheService"/>
         <applicationService serviceImplementation="com.reshiftsecurity.plugins.intellij.service.EducationCachingService" />
+        <applicationService serviceImplementation="com.reshiftsecurity.plugins.intellij.service.AnalyticsService" />
     </extensions>
     <extensions defaultExtensionNs="com.intellij">
         <errorHandler implementation="com.reshiftsecurity.plugins.intellij.core.ErrorReportSubmitterImpl"/>
