@@ -114,13 +114,16 @@ public class AnalyticsService {
             .append(PROTOCOL_VERSION_KEY + "=" + PROTOCOL_VERSION + "&")
             .append(APP_ID_KEY + "=" + APP_ID + "&")
             .append(APP_NAME_KEY + "=" + APP_NAME + "&")
-            .append(HIT_TYPE_KEY + "=" + HIT_TYPE + "&")
             .append(USER_ID_KEY + "=" + this.userID + "&")
             .append(APP_VERSION_KEY + "=" + this.applicationVersion + "&")
-            .append(EVENT_ACTION_KEY + "=" + EVENT_ACTION_DEFAULT + "&")
             .append(MEASUREMENT_ID_KEY + "=" + this.measurementID + "&");
         if (action.getMetric() != null) {
-            actionBuilder.append( SCAN_RESULTS_METRIC_KEY + "=" + action.getMetric() + "&");
+            actionBuilder.append(SCAN_RESULTS_METRIC_KEY + "=" + action.getMetric() + "&");
+            actionBuilder.append(EVENT_ACTION_KEY + "=report&");
+            actionBuilder.append(HIT_TYPE_KEY + "=transaction&");
+        } else {
+            actionBuilder.append(HIT_TYPE_KEY + "=" + HIT_TYPE + "&");
+            actionBuilder.append(EVENT_ACTION_KEY + "=" + EVENT_ACTION_DEFAULT + "&");
         }
         actionBuilder.append(ACTION_CATEGORY_KEY + "=" + action.getCategory().toString());
 
@@ -141,6 +144,7 @@ public class AnalyticsService {
             return;
         }
         // FIXME: look into setting date time of each event since we are sending in bulk
+        // Checkout "Queue Time" https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#qt
         if (actions.size() >= 20) { // 20 is a limit on batch uploads by Google.
             new Thread(() -> {
                 String batchPayload = this.buildBatchPayload();
