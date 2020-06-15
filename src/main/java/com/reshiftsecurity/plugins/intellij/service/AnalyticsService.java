@@ -27,10 +27,7 @@ import org.apache.commons.lang.StringUtils;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.net.HttpURLConnection;
-import java.net.InetAddress;
-import java.net.NetworkInterface;
-import java.net.URL;
+import java.net.*;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.util.ArrayList;
@@ -38,7 +35,7 @@ import java.util.List;
 
 public class AnalyticsService {
     List<AnalyticsAction> actions;
-    private final String ANALYTICS_BASE_URL = "https://www.google-analytics.com/batch";
+    private final String ANALYTICS_BASE_URL = "https://www.google-analytics.com/collect";
     private final String APP_ID = "com.reshiftsecurity.plugins.intellij";
     private final String APP_ID_KEY = "aid";
     private final String APP_NAME = "Reshift Intellij Plugin";
@@ -63,7 +60,7 @@ public class AnalyticsService {
         this.actions = new ArrayList<>();
         this.applicationVersion = VersionManager.getVersion();
         this.userID = getUserIdentifier();
-        this.measurementID = "UA-XXXX-Y"; // TODO: confirm this value
+        this.measurementID = "236063447";
     }
 
     public void recordAction(AnalyticsActionCategory category) {
@@ -113,7 +110,7 @@ public class AnalyticsService {
         StringBuilder actionBuilder = new StringBuilder()
             .append(PROTOCOL_VERSION_KEY + "=" + PROTOCOL_VERSION + "&")
             .append(APP_ID_KEY + "=" + APP_ID + "&")
-            .append(APP_NAME_KEY + "=" + APP_NAME + "&")
+            .append(APP_NAME_KEY + "=" + URLEncoder.encode(APP_NAME, StandardCharsets.UTF_8) + "&")
             .append(USER_ID_KEY + "=" + this.userID + "&")
             .append(APP_VERSION_KEY + "=" + this.applicationVersion + "&")
             .append(MEASUREMENT_ID_KEY + "=" + this.measurementID + "&");
@@ -139,32 +136,24 @@ public class AnalyticsService {
     }
 
     private void processActions() {
-        if (StringUtils.isEmpty(this.userID)) {
-            // FIXME: how to handle this scenario?
-            return;
-        }
-        // FIXME: look into setting date time of each event since we are sending in bulk
-        // Checkout "Queue Time" https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#qt
-        if (actions.size() >= 20) { // 20 is a limit on batch uploads by Google.
-            new Thread(() -> {
-                String batchPayload = this.buildBatchPayload();
-                try {
-                    URL obj = new URL(ANALYTICS_BASE_URL);
-                    HttpURLConnection httpURLConnection = (HttpURLConnection) obj.openConnection();
-                    httpURLConnection.setRequestMethod("POST");
-                    // For POST only - START
-                    httpURLConnection.setDoOutput(true);
-                    OutputStream os = httpURLConnection.getOutputStream();
-                    os.write(batchPayload.getBytes());
-                    os.flush();
-                    os.close();
-                    // For POST only - END
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } finally {
-                    this.actions = new ArrayList<>();
-                }
-            }).start();
-        }
+        new Thread(() -> {
+            try {
+                String requestPayload = buildActionParameters(this.actions.get(0));
+                URL requestURL = new URL(ANALYTICS_BASE_URL);
+                HttpURLConnection httpURLConnection = (HttpURLConnection) requestURL.openConnection();
+                httpURLConnection.setRequestMethod("POST");
+                // set payload - START
+                httpURLConnection.setDoOutput(true);
+                OutputStream os = httpURLConnection.getOutputStream();
+                os.write(requestPayload.getBytes());
+                os.flush();
+                os.close();
+                // set payload - END
+            } catch (IOException e) {
+                e.printStackTrace();
+            } finally {
+                this.actions = new ArrayList<>();
+            }
+        }).start();
     }
 }
