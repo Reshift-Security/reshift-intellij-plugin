@@ -87,6 +87,7 @@
         <projectService serviceImplementation="com.reshiftsecurity.plugins.intellij.core.ProblemCacheService"/>
         <applicationService serviceImplementation="com.reshiftsecurity.plugins.intellij.service.EducationCachingService" />
         <applicationService serviceImplementation="com.reshiftsecurity.plugins.intellij.service.AnalyticsService" />
+        <applicationService serviceImplementation="com.reshiftsecurity.plugins.intellij.service.AnalyticsServiceSettings" />
     </extensions>
     <extensions defaultExtensionNs="com.intellij">
         <errorHandler implementation="com.reshiftsecurity.plugins.intellij.core.ErrorReportSubmitterImpl"/>

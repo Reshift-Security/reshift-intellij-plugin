@@ -35,7 +35,8 @@ public enum AnalyticsActionCategory {
     ISSUE_REPORT_MORE_SCAN_INFO,
     CODE_VIEW_BUG_DETAILS,
     COPY_PLUGIN_INFO,
-    OPEN_MORE_SCAN_INFO;
+    OPEN_MORE_SCAN_INFO,
+    SETTINGS_UPDATED;
 
     @Override
     public String toString() {

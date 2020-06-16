@@ -24,6 +24,7 @@ import com.intellij.openapi.actionSystem.ActionManager;
 import com.intellij.openapi.actionSystem.CommonDataKeys;
 import com.intellij.openapi.actionSystem.DataProvider;
 import com.intellij.openapi.actionSystem.DefaultActionGroup;
+import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.fileEditor.OpenFileDescriptor;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.DialogBuilder;
@@ -34,6 +35,8 @@ import com.intellij.ui.PopupHandler;
 import com.intellij.util.EditSourceOnDoubleClickHandler;
 import com.intellij.util.OpenSourceUtil;
 import com.intellij.util.ui.UIUtil;
+import com.reshiftsecurity.analytics.AnalyticsActionCategory;
+import com.reshiftsecurity.plugins.intellij.service.AnalyticsService;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.Nullable;
@@ -318,6 +321,8 @@ public class BugTree extends Tree implements DataProvider, OccurenceNavigator {
 			} else {
 				_bugTreePanel.setPreview(null);
 			}
+
+			AnalyticsService.getInstance().recordAction(AnalyticsActionCategory.ISSUE_REPORT_BROWSE);
 		}
 	}
 }

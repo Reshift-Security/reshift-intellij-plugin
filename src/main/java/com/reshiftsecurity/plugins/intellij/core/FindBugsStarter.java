@@ -245,8 +245,7 @@ public abstract class FindBugsStarter implements AnalysisAbortingListener {
 			final int analyzedClassCountOffset
 	) throws IOException, InterruptedException {
 
-		AnalyticsService _analyticsService = ServiceManager.getService(AnalyticsService.class);
-		_analyticsService.recordAction(AnalyticsActionCategory.START_SCAN);
+		AnalyticsService.getInstance().recordAction(AnalyticsActionCategory.START_SCAN);
 
 		final ModuleSettings moduleSettings = ModuleSettings.getInstance(module);
 		AbstractSettings settings = new ProjectSettings();
@@ -340,7 +339,7 @@ public abstract class FindBugsStarter implements AnalysisAbortingListener {
 
 		bugCollection.setTimestamp(System.currentTimeMillis());
 
-		_analyticsService.recordMetric(AnalyticsActionCategory.SCAN_RESULTS_METRIC, bugCollection.getCollection().size());
+		AnalyticsService.getInstance().recordMetric(AnalyticsActionCategory.SCAN_RESULTS_METRIC, bugCollection.getCollection().size());
 
 		return Pair.create(bugCollection, reporter);
 	}

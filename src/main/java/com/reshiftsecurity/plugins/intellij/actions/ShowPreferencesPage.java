@@ -20,8 +20,11 @@
 package com.reshiftsecurity.plugins.intellij.actions;
 
 import com.intellij.openapi.actionSystem.AnActionEvent;
+import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.wm.ToolWindow;
+import com.reshiftsecurity.analytics.AnalyticsActionCategory;
+import com.reshiftsecurity.plugins.intellij.service.AnalyticsService;
 import org.jetbrains.annotations.NotNull;
 import com.reshiftsecurity.plugins.intellij.core.FindBugsState;
 import com.reshiftsecurity.plugins.intellij.gui.settings.ProjectConfigurableImpl;
@@ -47,6 +50,8 @@ public final class ShowPreferencesPage extends AbstractAction {
 			@NotNull final ToolWindow toolWindow,
 			@NotNull final FindBugsState state
 	) {
+
+		AnalyticsService.getInstance().recordAction(AnalyticsActionCategory.OPEN_SETTINGS);
 		ProjectConfigurableImpl.show(project);
 	}
 }

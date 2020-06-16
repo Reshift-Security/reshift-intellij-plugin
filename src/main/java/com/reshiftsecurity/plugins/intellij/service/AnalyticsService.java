@@ -20,10 +20,14 @@
 
 package com.reshiftsecurity.plugins.intellij.service;
 
+import com.intellij.openapi.actionSystem.AnActionEvent;
+import com.intellij.openapi.components.ServiceManager;
+import com.intellij.openapi.project.Project;
 import com.reshiftsecurity.analytics.AnalyticsAction;
 import com.reshiftsecurity.analytics.AnalyticsActionCategory;
 import com.reshiftsecurity.plugins.intellij.common.VersionManager;
-import org.apache.commons.lang.StringUtils;
+import com.reshiftsecurity.plugins.intellij.core.WorkspaceSettings;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -35,6 +39,7 @@ import java.util.List;
 
 public class AnalyticsService {
     List<AnalyticsAction> actions;
+    // NOTE: use https://www.google-analytics.com/debug/collect for debugging
     private final String ANALYTICS_BASE_URL = "https://www.google-analytics.com/collect";
     private final String APP_ID = "com.reshiftsecurity.plugins.intellij";
     private final String APP_ID_KEY = "aid";
@@ -47,10 +52,11 @@ public class AnalyticsService {
     private final String HIT_TYPE_KEY = "t";
     private final String EVENT_ACTION_DEFAULT = "click";
     private final String EVENT_ACTION_KEY = "ea";
-    private final String USER_ID_KEY = "uid";
+    private final String USER_ID_KEY = "cid";
     private final String MEASUREMENT_ID_KEY = "tid";
-    private final String SCAN_RESULTS_METRIC_KEY = "cm1";
+    private final String ACTION_VALUE_KEY = "ev";
     private final String ACTION_CATEGORY_KEY = "ec";
+    private final String ACTION_LABEL_KEY = "ec";
 
     private String userID;
     private String applicationVersion;
@@ -60,7 +66,16 @@ public class AnalyticsService {
         this.actions = new ArrayList<>();
         this.applicationVersion = VersionManager.getVersion();
         this.userID = getUserIdentifier();
-        this.measurementID = "236063447";
+        this.measurementID = "UA-149586212-2";
+    }
+
+    public static AnalyticsService getInstance() {
+        return ServiceManager.getService(AnalyticsService.class);
+    }
+
+    public void recordAction(AnalyticsActionCategory category, String label) {
+        this.actions.add(new AnalyticsAction(category));
+        this.processActions();
     }
 
     public void recordAction(AnalyticsActionCategory category) {
@@ -113,9 +128,10 @@ public class AnalyticsService {
             .append(APP_NAME_KEY + "=" + URLEncoder.encode(APP_NAME, StandardCharsets.UTF_8) + "&")
             .append(USER_ID_KEY + "=" + this.userID + "&")
             .append(APP_VERSION_KEY + "=" + this.applicationVersion + "&")
-            .append(MEASUREMENT_ID_KEY + "=" + this.measurementID + "&");
+            .append(MEASUREMENT_ID_KEY + "=" + this.measurementID + "&")
+            .append(ACTION_LABEL_KEY + "=" + action.getLabel());
         if (action.getMetric() != null) {
-            actionBuilder.append(SCAN_RESULTS_METRIC_KEY + "=" + action.getMetric() + "&");
+            actionBuilder.append(ACTION_VALUE_KEY + "=" + action.getMetric() + "&");
             actionBuilder.append(EVENT_ACTION_KEY + "=report&");
             actionBuilder.append(HIT_TYPE_KEY + "=transaction&");
         } else {
@@ -136,24 +152,25 @@ public class AnalyticsService {
     }
 
     private void processActions() {
-        new Thread(() -> {
-            try {
-                String requestPayload = buildActionParameters(this.actions.get(0));
-                URL requestURL = new URL(ANALYTICS_BASE_URL);
-                HttpURLConnection httpURLConnection = (HttpURLConnection) requestURL.openConnection();
-                httpURLConnection.setRequestMethod("POST");
-                // set payload - START
-                httpURLConnection.setDoOutput(true);
-                OutputStream os = httpURLConnection.getOutputStream();
-                os.write(requestPayload.getBytes());
-                os.flush();
-                os.close();
-                // set payload - END
-            } catch (IOException e) {
-                e.printStackTrace();
-            } finally {
-                this.actions = new ArrayList<>();
-            }
-        }).start();
+        if (!AnalyticsServiceSettings.getInstance().sendAnonymousUsage) {
+            return;
+        }
+        try {
+            String requestPayload = buildActionParameters(this.actions.get(0));
+            URL requestURL = new URL(ANALYTICS_BASE_URL);
+            HttpURLConnection httpURLConnection = (HttpURLConnection) requestURL.openConnection();
+            httpURLConnection.setRequestMethod("POST");
+            // set payload - START
+            httpURLConnection.setDoOutput(true);
+            OutputStream os = httpURLConnection.getOutputStream();
+            os.write(requestPayload.getBytes());
+            os.flush();
+            os.close();
+            // set payload - END
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            this.actions = new ArrayList<>();
+        }
     }
 }

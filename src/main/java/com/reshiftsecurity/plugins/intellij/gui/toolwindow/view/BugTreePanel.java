@@ -20,6 +20,7 @@
 package com.reshiftsecurity.plugins.intellij.gui.toolwindow.view;
 
 import com.intellij.debugger.impl.DebuggerUtilsEx;
+import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.editor.EditorFactory;
@@ -39,6 +40,8 @@ import com.intellij.psi.PsiDocumentManager;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.intellij.ui.JBColor;
+import com.reshiftsecurity.analytics.AnalyticsActionCategory;
+import com.reshiftsecurity.plugins.intellij.service.AnalyticsService;
 import edu.umd.cs.findbugs.BugInstance;
 import edu.umd.cs.findbugs.MethodAnnotation;
 import edu.umd.cs.findbugs.SortedBugCollection;
@@ -278,6 +281,8 @@ public class BugTreePanel extends JPanel {
 	 */
 	public void collapseTree() {
 		_bugTree.getTreeHelper().collapseTree();
+
+		AnalyticsService.getInstance().recordAction(AnalyticsActionCategory.ISSUE_REPORT_BROWSE);
 	}
 
 	/**
@@ -285,6 +290,8 @@ public class BugTreePanel extends JPanel {
 	 */
 	public void expandTree() {
 		_bugTree.getTreeHelper().expandTree(3);
+
+		AnalyticsService.getInstance().recordAction(AnalyticsActionCategory.ISSUE_REPORT_BROWSE);
 	}
 
 	public void setResult(final FindBugsResult result) {

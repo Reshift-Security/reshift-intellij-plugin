@@ -19,16 +19,19 @@
  */
 package com.reshiftsecurity.plugins.intellij.gui.common;
 
+import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.DialogBuilder;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.util.ui.JBUI;
+import com.reshiftsecurity.analytics.AnalyticsActionCategory;
 import com.reshiftsecurity.plugins.intellij.common.VersionManager;
 import com.reshiftsecurity.plugins.intellij.common.util.FindBugsUtil;
 import com.reshiftsecurity.plugins.intellij.common.util.New;
 import com.reshiftsecurity.plugins.intellij.core.FindBugsProject;
 import com.reshiftsecurity.plugins.intellij.core.FindBugsResult;
 import com.reshiftsecurity.plugins.intellij.resources.GuiResources;
+import com.reshiftsecurity.plugins.intellij.service.AnalyticsService;
 
 import javax.swing.JComponent;
 import javax.swing.JEditorPane;
@@ -60,7 +63,9 @@ public class AnalysisRunDetailsDialog {
 		final StringBuilder html = new StringBuilder();
 		html.append("<html><body>");
 		html.append("<p><h2>").append(VersionManager.getName()).append(": <b>found ").append(bugCount).append(" vulnerabilities in ").append(numClasses).append(numClasses > 1 ? " classes" : " class").append("</b>").append("</h2></p>");
-		html.append("<p>").append("<font size='10px'>using ").append(VersionManager.getFullVersion()).append(" with SpotBugs version ").append(FindBugsUtil.getFindBugsFullVersion()).append("</font>").append("</p>");
+		html.append("<p>").append("<font size='10px'>using ").append(VersionManager.getFullVersion())
+				// .append(" with SpotBugs version ").append(FindBugsUtil.getFindBugsFullVersion())
+				.append("</font>").append("</p>");
 
 		for (final edu.umd.cs.findbugs.Project bugsProject : result.getProjects()) {
 
@@ -161,6 +166,8 @@ public class AnalysisRunDetailsDialog {
 				jEditorPane.scrollRectToVisible(new Rectangle(0, 0));
 			}
 		});
+
+		AnalyticsService.getInstance().recordAction(AnalyticsActionCategory.ISSUE_REPORT_MORE_SCAN_INFO);
 
 		return dialogBuilder;
 	}

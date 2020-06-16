@@ -23,13 +23,24 @@ package com.reshiftsecurity.analytics;
 public class AnalyticsAction {
     private AnalyticsActionCategory category;
     private Integer metric;
+    private String label;
+
+    private void setLabelFromCategory() {
+        this.label = this.category.toString();
+    }
 
     public AnalyticsAction(AnalyticsActionCategory category) {
         this.category = category;
+        setLabelFromCategory();
     }
     public AnalyticsAction(AnalyticsActionCategory category, Integer metric) {
         this.category = category;
+        setLabelFromCategory();
         this.metric = metric;
+    }
+    public AnalyticsAction(AnalyticsActionCategory category, String label) {
+        this.category = category;
+        this.label = label;
     }
 
     public AnalyticsActionCategory getCategory() {
@@ -42,7 +53,5 @@ public class AnalyticsAction {
     public Integer getMetric() {
         return this.metric;
     }
-    public void setMetric(Integer metric) {
-        this.metric = metric;
-    }
+    public String getLabel() { return this.label; }
 }

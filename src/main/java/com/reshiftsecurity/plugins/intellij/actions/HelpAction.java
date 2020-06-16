@@ -22,11 +22,14 @@ package com.reshiftsecurity.plugins.intellij.actions;
 import com.intellij.ide.BrowserUtil;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.application.ex.ApplicationInfoEx;
+import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.ide.CopyPasteManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.wm.ToolWindow;
 import com.intellij.util.text.DateFormatUtil;
+import com.reshiftsecurity.analytics.AnalyticsActionCategory;
 import com.reshiftsecurity.plugins.intellij.common.PluginConstants;
+import com.reshiftsecurity.plugins.intellij.service.AnalyticsService;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import com.reshiftsecurity.plugins.intellij.common.VersionManager;
@@ -67,6 +70,9 @@ public final class HelpAction extends AbstractAction {
 			@NotNull final FindBugsState state
 	) {
 
+
+		AnalyticsService.getInstance().recordAction(AnalyticsActionCategory.OPEN_HELP);
+
 		toolWindow.setShowStripeButton(true);
 
 		BalloonTipFactory.showToolWindowInfoNotifier(
@@ -77,6 +83,7 @@ public final class HelpAction extends AbstractAction {
 						if (A_HREF_COPY.equals(evt.getDescription())) {
 							final String info = createProductInfo().toString();
 							CopyPasteManager.getInstance().setContents(new StringSelection(info));
+							AnalyticsService.getInstance().recordAction(AnalyticsActionCategory.COPY_PLUGIN_INFO);
 						} else {
 							BrowserUtil.browse(evt.getURL());
 						}
