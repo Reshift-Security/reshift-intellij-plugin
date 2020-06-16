@@ -20,14 +20,10 @@
 
 package com.reshiftsecurity.plugins.intellij.service;
 
-import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.components.ServiceManager;
-import com.intellij.openapi.project.Project;
 import com.reshiftsecurity.analytics.AnalyticsAction;
 import com.reshiftsecurity.analytics.AnalyticsActionCategory;
 import com.reshiftsecurity.plugins.intellij.common.VersionManager;
-import com.reshiftsecurity.plugins.intellij.core.WorkspaceSettings;
-import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -56,7 +52,9 @@ public class AnalyticsService {
     private final String MEASUREMENT_ID_KEY = "tid";
     private final String ACTION_VALUE_KEY = "ev";
     private final String ACTION_CATEGORY_KEY = "ec";
-    private final String ACTION_LABEL_KEY = "ec";
+    private final String ACTION_LABEL_KEY = "el";
+    private final String DOC_PATH = "%2Fintellij";
+    private final String DOC_PATH_KEY = "dp";
 
     private String userID;
     private String applicationVersion;
@@ -129,7 +127,8 @@ public class AnalyticsService {
             .append(USER_ID_KEY + "=" + this.userID + "&")
             .append(APP_VERSION_KEY + "=" + this.applicationVersion + "&")
             .append(MEASUREMENT_ID_KEY + "=" + this.measurementID + "&")
-            .append(ACTION_LABEL_KEY + "=" + action.getLabel());
+            .append(ACTION_LABEL_KEY + "=" + action.getLabel() + "&")
+            .append(DOC_PATH_KEY + "=" + DOC_PATH);
         if (action.getMetric() != null) {
             actionBuilder.append(ACTION_VALUE_KEY + "=" + action.getMetric() + "&");
             actionBuilder.append(EVENT_ACTION_KEY + "=report&");
