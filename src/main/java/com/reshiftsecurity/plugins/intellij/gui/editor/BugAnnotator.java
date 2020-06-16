@@ -41,10 +41,7 @@ import com.reshiftsecurity.plugins.intellij.common.ExtendedProblemDescriptor;
 import com.reshiftsecurity.plugins.intellij.core.FindBugsState;
 import com.reshiftsecurity.plugins.intellij.core.ProblemCacheService;
 import com.reshiftsecurity.plugins.intellij.core.WorkspaceSettings;
-import com.reshiftsecurity.plugins.intellij.intentions.ClearAndSuppressBugIntentionAction;
 import com.reshiftsecurity.plugins.intellij.intentions.ClearBugIntentionAction;
-import com.reshiftsecurity.plugins.intellij.intentions.SuppressReportBugForClassIntentionAction;
-import com.reshiftsecurity.plugins.intellij.intentions.SuppressReportBugIntentionAction;
 
 import java.awt.Font;
 import java.util.ArrayList;
@@ -116,10 +113,7 @@ public final class BugAnnotator implements Annotator {
 					annotation.setEnforcedTextAttributes(new TextAttributes(null, null, JBColor.RED, EffectType.WAVE_UNDERSCORE, Font.PLAIN));
 				}
 
-				annotation.registerFix(new SuppressReportBugIntentionAction(problemDescriptor), textRange);
-				annotation.registerFix(new SuppressReportBugForClassIntentionAction(problemDescriptor), textRange);
 				annotation.registerFix(new ClearBugIntentionAction(problemDescriptor), textRange);
-				annotation.registerFix(new ClearAndSuppressBugIntentionAction(problemDescriptor), textRange);
 
 				break;
 
@@ -135,10 +129,7 @@ public final class BugAnnotator implements Annotator {
 				// FIXME: use color from annotation configuration
 				annotation.setEnforcedTextAttributes(new TextAttributes(null, null, JBColor.YELLOW.darker(), EffectType.WAVE_UNDERSCORE, Font.PLAIN));
 
-				annotation.registerFix(new SuppressReportBugIntentionAction(problemDescriptor), textRange);
-				annotation.registerFix(new SuppressReportBugForClassIntentionAction(problemDescriptor), textRange);
 				annotation.registerFix(new ClearBugIntentionAction(problemDescriptor), textRange);
-				annotation.registerFix(new ClearAndSuppressBugIntentionAction(problemDescriptor), textRange);
 
 				break;
 
@@ -154,10 +145,7 @@ public final class BugAnnotator implements Annotator {
 				// FIXME: use color from annotation configuration
 				annotation.setEnforcedTextAttributes(new TextAttributes(null, null, JBColor.GRAY, EffectType.WAVE_UNDERSCORE, Font.PLAIN));
 
-				annotation.registerFix(new SuppressReportBugIntentionAction(problemDescriptor), textRange);
-				annotation.registerFix(new SuppressReportBugForClassIntentionAction(problemDescriptor), textRange);
 				annotation.registerFix(new ClearBugIntentionAction(problemDescriptor), textRange);
-				annotation.registerFix(new ClearAndSuppressBugIntentionAction(problemDescriptor), textRange);
 
 				break;
 			case Detector.LOW_PRIORITY:
@@ -172,10 +160,7 @@ public final class BugAnnotator implements Annotator {
 				// FIXME: use color from annotation configuration
 				annotation.setEnforcedTextAttributes(new TextAttributes(null, null, JBColor.GREEN, EffectType.WAVE_UNDERSCORE, Font.PLAIN));
 
-				annotation.registerFix(new SuppressReportBugIntentionAction(problemDescriptor), textRange);
-				annotation.registerFix(new SuppressReportBugForClassIntentionAction(problemDescriptor), textRange);
 				annotation.registerFix(new ClearBugIntentionAction(problemDescriptor), textRange);
-				annotation.registerFix(new ClearAndSuppressBugIntentionAction(problemDescriptor), textRange);
 
 				break;
 			case Detector.IGNORE_PRIORITY:
@@ -190,10 +175,7 @@ public final class BugAnnotator implements Annotator {
 				// FIXME: use color from annotation configuration
 				annotation.setEnforcedTextAttributes(new TextAttributes(null, null, JBColor.MAGENTA, EffectType.WAVE_UNDERSCORE, Font.PLAIN));
 
-				annotation.registerFix(new SuppressReportBugIntentionAction(problemDescriptor), textRange);
-				annotation.registerFix(new SuppressReportBugForClassIntentionAction(problemDescriptor), textRange);
 				annotation.registerFix(new ClearBugIntentionAction(problemDescriptor), textRange);
-				annotation.registerFix(new ClearAndSuppressBugIntentionAction(problemDescriptor), textRange);
 
 				break;
 			default:
