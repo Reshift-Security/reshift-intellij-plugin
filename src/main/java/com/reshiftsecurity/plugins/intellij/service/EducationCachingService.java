@@ -76,17 +76,14 @@ public class EducationCachingService {
         return contentSection;
     }
 
-    public String getBriefOverview(final List<ExtendedProblemDescriptor> problemDescriptors, boolean textOnly) {
+    public String getBriefOverview(final ExtendedProblemDescriptor problemDescriptor, boolean textOnly) {
         StringBuilder content = new StringBuilder();
-        List<String> bugTypesCovered = new ArrayList<>();
-        String lineBreak = textOnly ? "\r\n" : "";
-        for (ExtendedProblemDescriptor problemDescriptor : problemDescriptors) {
-            String bugType = problemDescriptor.getBug().getInstance().getType();
-            if (!bugTypesCovered.contains(bugType)) {
-                content.append(getContentSection(bugType, SECTION_OVERVIEW, textOnly) + lineBreak);
-                bugTypesCovered.add(bugType);
-            }
+        if (problemDescriptor == null) {
+            return content.toString();
         }
+        String bugType = problemDescriptor.getBug().getInstance().getType();
+        content.append(getContentSection(bugType, SECTION_OVERVIEW, textOnly));
+
         return content.toString();
     }
 }

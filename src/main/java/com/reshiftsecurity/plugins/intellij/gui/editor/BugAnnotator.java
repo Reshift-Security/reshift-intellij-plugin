@@ -104,11 +104,11 @@ public final class BugAnnotator implements Annotator {
 
 				if (psiElement instanceof PsiAnonymousClass) {
 					final PsiElement firstChild = psiElement.getFirstChild();
-					annotation = annotationHolder.createWarningAnnotation(firstChild == null ? psiElement : firstChild, getAnnotationText(matchingDescriptors));
+					annotation = annotationHolder.createWarningAnnotation(firstChild == null ? psiElement : firstChild, getAnnotationText(problemDescriptor));
 					// FIXME: use color from annotation configuration
 					annotation.setEnforcedTextAttributes(new TextAttributes(null, null, JBColor.RED.brighter(), EffectType.BOXED, Font.PLAIN));
 				} else {
-					annotation = annotationHolder.createWarningAnnotation(textRange, getAnnotationText(matchingDescriptors));
+					annotation = annotationHolder.createWarningAnnotation(textRange, getAnnotationText(problemDescriptor));
 					// FIXME: use color from annotation configuration
 					annotation.setEnforcedTextAttributes(new TextAttributes(null, null, JBColor.RED, EffectType.WAVE_UNDERSCORE, Font.PLAIN));
 				}
@@ -121,9 +121,9 @@ public final class BugAnnotator implements Annotator {
 
 				if (psiElement instanceof PsiAnonymousClass) {
 					final PsiElement firstChild = psiElement.getFirstChild();
-					annotation = annotationHolder.createWarningAnnotation(firstChild == null ? psiElement : firstChild, getAnnotationText(matchingDescriptors));
+					annotation = annotationHolder.createWarningAnnotation(firstChild == null ? psiElement : firstChild, getAnnotationText(problemDescriptor));
 				} else {
-					annotation = annotationHolder.createWarningAnnotation(textRange, getAnnotationText(matchingDescriptors));
+					annotation = annotationHolder.createWarningAnnotation(textRange, getAnnotationText(problemDescriptor));
 				}
 
 				// FIXME: use color from annotation configuration
@@ -137,9 +137,9 @@ public final class BugAnnotator implements Annotator {
 
 				if (problemElement instanceof PsiAnonymousClass) {
 					final PsiElement firstChild = psiElement.getFirstChild();
-					annotation = annotationHolder.createWarningAnnotation(firstChild == null ? psiElement : firstChild, getAnnotationText(matchingDescriptors));
+					annotation = annotationHolder.createWarningAnnotation(firstChild == null ? psiElement : firstChild, getAnnotationText(problemDescriptor));
 				} else {
-					annotation = annotationHolder.createWarningAnnotation(textRange, getAnnotationText(matchingDescriptors));
+					annotation = annotationHolder.createWarningAnnotation(textRange, getAnnotationText(problemDescriptor));
 				}
 
 				// FIXME: use color from annotation configuration
@@ -152,9 +152,9 @@ public final class BugAnnotator implements Annotator {
 
 				if (psiElement instanceof PsiAnonymousClass) {
 					final PsiElement firstChild = psiElement.getFirstChild();
-					annotation = annotationHolder.createInfoAnnotation(firstChild == null ? psiElement : firstChild, getAnnotationText(matchingDescriptors));
+					annotation = annotationHolder.createInfoAnnotation(firstChild == null ? psiElement : firstChild, getAnnotationText(problemDescriptor));
 				} else {
-					annotation = annotationHolder.createInfoAnnotation(textRange, getAnnotationText(matchingDescriptors));
+					annotation = annotationHolder.createInfoAnnotation(textRange, getAnnotationText(problemDescriptor));
 				}
 
 				// FIXME: use color from annotation configuration
@@ -166,10 +166,10 @@ public final class BugAnnotator implements Annotator {
 			case Detector.IGNORE_PRIORITY:
 				if (problemElement instanceof PsiAnonymousClass) {
 					final PsiElement firstChild = psiElement.getFirstChild();
-					annotation = annotationHolder.createWarningAnnotation(firstChild == null ? psiElement : firstChild, getAnnotationText(matchingDescriptors));
+					annotation = annotationHolder.createWarningAnnotation(firstChild == null ? psiElement : firstChild, getAnnotationText(problemDescriptor));
 					annotation.setEnforcedTextAttributes(new TextAttributes(null, null, JBColor.MAGENTA.brighter(), EffectType.WAVE_UNDERSCORE, Font.PLAIN));
 				} else {
-					annotation = annotationHolder.createWarningAnnotation(textRange, getAnnotationText(matchingDescriptors));
+					annotation = annotationHolder.createWarningAnnotation(textRange, getAnnotationText(problemDescriptor));
 				}
 
 				// FIXME: use color from annotation configuration
@@ -183,11 +183,9 @@ public final class BugAnnotator implements Annotator {
 		}
 	}
 
-	private static String getAnnotationText(final List<ExtendedProblemDescriptor> problemDescriptors) {
+	private static String getAnnotationText(final ExtendedProblemDescriptor problemDescriptor) {
 		EducationCachingService _eduCacheService = ServiceManager.getService(EducationCachingService.class);
-		final StringBuilder buffer = new StringBuilder();
-		buffer.append(_eduCacheService.getBriefOverview(problemDescriptors, true));
-		return StringUtilFb.addLineSeparatorAt(buffer, 250).toString();
+		return _eduCacheService.getBriefOverview(problemDescriptor, true);
 	}
 
 	/*private static class AnonymousInnerClassMayBeStaticVisitor extends BaseInspectionVisitor {
