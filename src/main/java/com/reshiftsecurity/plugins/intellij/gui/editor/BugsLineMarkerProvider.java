@@ -194,6 +194,8 @@ public final class BugsLineMarkerProvider implements LineMarkerProvider {
 			buffer.append("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\">");
 			for (ExtendedProblemDescriptor problemDescriptor : problemDescriptors) {
 				buffer.append(_eduCacheService.getBriefOverview(problemDescriptor, false));
+				buffer.append("<br/>");
+				buffer.append("<br/>");
 			}
 			return buffer.toString();
 		}

@@ -65,7 +65,8 @@ public class EducationCachingService {
         Optional<DevContent> devContent = details.getDevContentByTitle(sectionName);
         String contentSection = "";
         if (devContent.isPresent()) {
-            contentSection = String.format("<b>%s</b>: %s", details.getFriendlyTypeName(), devContent.get().getContent());
+            String devContentText = Jsoup.parse(devContent.get().getContent()).text();
+            contentSection = String.format("<b>%s</b>: %s", details.getFriendlyTypeName(), devContentText);
             if (textOnly) {
                 contentSection = Jsoup.parse(contentSection).text();
             } else {
