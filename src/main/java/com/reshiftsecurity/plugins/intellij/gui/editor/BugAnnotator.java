@@ -41,10 +41,7 @@ import com.reshiftsecurity.plugins.intellij.common.ExtendedProblemDescriptor;
 import com.reshiftsecurity.plugins.intellij.core.FindBugsState;
 import com.reshiftsecurity.plugins.intellij.core.ProblemCacheService;
 import com.reshiftsecurity.plugins.intellij.core.WorkspaceSettings;
-import com.reshiftsecurity.plugins.intellij.intentions.ClearAndSuppressBugIntentionAction;
 import com.reshiftsecurity.plugins.intellij.intentions.ClearBugIntentionAction;
-import com.reshiftsecurity.plugins.intellij.intentions.SuppressReportBugForClassIntentionAction;
-import com.reshiftsecurity.plugins.intellij.intentions.SuppressReportBugIntentionAction;
 
 import java.awt.Font;
 import java.util.ArrayList;
@@ -107,19 +104,16 @@ public final class BugAnnotator implements Annotator {
 
 				if (psiElement instanceof PsiAnonymousClass) {
 					final PsiElement firstChild = psiElement.getFirstChild();
-					annotation = annotationHolder.createWarningAnnotation(firstChild == null ? psiElement : firstChild, getAnnotationText(matchingDescriptors));
+					annotation = annotationHolder.createWarningAnnotation(firstChild == null ? psiElement : firstChild, getAnnotationText(problemDescriptor));
 					// FIXME: use color from annotation configuration
 					annotation.setEnforcedTextAttributes(new TextAttributes(null, null, JBColor.RED.brighter(), EffectType.BOXED, Font.PLAIN));
 				} else {
-					annotation = annotationHolder.createWarningAnnotation(textRange, getAnnotationText(matchingDescriptors));
+					annotation = annotationHolder.createWarningAnnotation(textRange, getAnnotationText(problemDescriptor));
 					// FIXME: use color from annotation configuration
 					annotation.setEnforcedTextAttributes(new TextAttributes(null, null, JBColor.RED, EffectType.WAVE_UNDERSCORE, Font.PLAIN));
 				}
 
-				annotation.registerFix(new SuppressReportBugIntentionAction(problemDescriptor), textRange);
-				annotation.registerFix(new SuppressReportBugForClassIntentionAction(problemDescriptor), textRange);
 				annotation.registerFix(new ClearBugIntentionAction(problemDescriptor), textRange);
-				annotation.registerFix(new ClearAndSuppressBugIntentionAction(problemDescriptor), textRange);
 
 				break;
 
@@ -127,18 +121,15 @@ public final class BugAnnotator implements Annotator {
 
 				if (psiElement instanceof PsiAnonymousClass) {
 					final PsiElement firstChild = psiElement.getFirstChild();
-					annotation = annotationHolder.createWarningAnnotation(firstChild == null ? psiElement : firstChild, getAnnotationText(matchingDescriptors));
+					annotation = annotationHolder.createWarningAnnotation(firstChild == null ? psiElement : firstChild, getAnnotationText(problemDescriptor));
 				} else {
-					annotation = annotationHolder.createWarningAnnotation(textRange, getAnnotationText(matchingDescriptors));
+					annotation = annotationHolder.createWarningAnnotation(textRange, getAnnotationText(problemDescriptor));
 				}
 
 				// FIXME: use color from annotation configuration
 				annotation.setEnforcedTextAttributes(new TextAttributes(null, null, JBColor.YELLOW.darker(), EffectType.WAVE_UNDERSCORE, Font.PLAIN));
 
-				annotation.registerFix(new SuppressReportBugIntentionAction(problemDescriptor), textRange);
-				annotation.registerFix(new SuppressReportBugForClassIntentionAction(problemDescriptor), textRange);
 				annotation.registerFix(new ClearBugIntentionAction(problemDescriptor), textRange);
-				annotation.registerFix(new ClearAndSuppressBugIntentionAction(problemDescriptor), textRange);
 
 				break;
 
@@ -146,54 +137,45 @@ public final class BugAnnotator implements Annotator {
 
 				if (problemElement instanceof PsiAnonymousClass) {
 					final PsiElement firstChild = psiElement.getFirstChild();
-					annotation = annotationHolder.createWarningAnnotation(firstChild == null ? psiElement : firstChild, getAnnotationText(matchingDescriptors));
+					annotation = annotationHolder.createWarningAnnotation(firstChild == null ? psiElement : firstChild, getAnnotationText(problemDescriptor));
 				} else {
-					annotation = annotationHolder.createWarningAnnotation(textRange, getAnnotationText(matchingDescriptors));
+					annotation = annotationHolder.createWarningAnnotation(textRange, getAnnotationText(problemDescriptor));
 				}
 
 				// FIXME: use color from annotation configuration
 				annotation.setEnforcedTextAttributes(new TextAttributes(null, null, JBColor.GRAY, EffectType.WAVE_UNDERSCORE, Font.PLAIN));
 
-				annotation.registerFix(new SuppressReportBugIntentionAction(problemDescriptor), textRange);
-				annotation.registerFix(new SuppressReportBugForClassIntentionAction(problemDescriptor), textRange);
 				annotation.registerFix(new ClearBugIntentionAction(problemDescriptor), textRange);
-				annotation.registerFix(new ClearAndSuppressBugIntentionAction(problemDescriptor), textRange);
 
 				break;
 			case Detector.LOW_PRIORITY:
 
 				if (psiElement instanceof PsiAnonymousClass) {
 					final PsiElement firstChild = psiElement.getFirstChild();
-					annotation = annotationHolder.createInfoAnnotation(firstChild == null ? psiElement : firstChild, getAnnotationText(matchingDescriptors));
+					annotation = annotationHolder.createInfoAnnotation(firstChild == null ? psiElement : firstChild, getAnnotationText(problemDescriptor));
 				} else {
-					annotation = annotationHolder.createInfoAnnotation(textRange, getAnnotationText(matchingDescriptors));
+					annotation = annotationHolder.createInfoAnnotation(textRange, getAnnotationText(problemDescriptor));
 				}
 
 				// FIXME: use color from annotation configuration
 				annotation.setEnforcedTextAttributes(new TextAttributes(null, null, JBColor.GREEN, EffectType.WAVE_UNDERSCORE, Font.PLAIN));
 
-				annotation.registerFix(new SuppressReportBugIntentionAction(problemDescriptor), textRange);
-				annotation.registerFix(new SuppressReportBugForClassIntentionAction(problemDescriptor), textRange);
 				annotation.registerFix(new ClearBugIntentionAction(problemDescriptor), textRange);
-				annotation.registerFix(new ClearAndSuppressBugIntentionAction(problemDescriptor), textRange);
 
 				break;
 			case Detector.IGNORE_PRIORITY:
 				if (problemElement instanceof PsiAnonymousClass) {
 					final PsiElement firstChild = psiElement.getFirstChild();
-					annotation = annotationHolder.createWarningAnnotation(firstChild == null ? psiElement : firstChild, getAnnotationText(matchingDescriptors));
+					annotation = annotationHolder.createWarningAnnotation(firstChild == null ? psiElement : firstChild, getAnnotationText(problemDescriptor));
 					annotation.setEnforcedTextAttributes(new TextAttributes(null, null, JBColor.MAGENTA.brighter(), EffectType.WAVE_UNDERSCORE, Font.PLAIN));
 				} else {
-					annotation = annotationHolder.createWarningAnnotation(textRange, getAnnotationText(matchingDescriptors));
+					annotation = annotationHolder.createWarningAnnotation(textRange, getAnnotationText(problemDescriptor));
 				}
 
 				// FIXME: use color from annotation configuration
 				annotation.setEnforcedTextAttributes(new TextAttributes(null, null, JBColor.MAGENTA, EffectType.WAVE_UNDERSCORE, Font.PLAIN));
 
-				annotation.registerFix(new SuppressReportBugIntentionAction(problemDescriptor), textRange);
-				annotation.registerFix(new SuppressReportBugForClassIntentionAction(problemDescriptor), textRange);
 				annotation.registerFix(new ClearBugIntentionAction(problemDescriptor), textRange);
-				annotation.registerFix(new ClearAndSuppressBugIntentionAction(problemDescriptor), textRange);
 
 				break;
 			default:
@@ -201,11 +183,9 @@ public final class BugAnnotator implements Annotator {
 		}
 	}
 
-	private static String getAnnotationText(final List<ExtendedProblemDescriptor> problemDescriptors) {
+	private static String getAnnotationText(final ExtendedProblemDescriptor problemDescriptor) {
 		EducationCachingService _eduCacheService = ServiceManager.getService(EducationCachingService.class);
-		final StringBuilder buffer = new StringBuilder();
-		buffer.append(_eduCacheService.getBriefOverview(problemDescriptors, true));
-		return StringUtilFb.addLineSeparatorAt(buffer, 250).toString();
+		return _eduCacheService.getBriefOverview(problemDescriptor, true);
 	}
 
 	/*private static class AnonymousInnerClassMayBeStaticVisitor extends BaseInspectionVisitor {
