@@ -7,3 +7,5 @@ The plugin is for developers looking to integrate security seamlessly into their
 *Based on SpotBugs IntelliJ plugin by Jetbrains
 
 To report any issues, please email dev@reshiftsecurity.com.
+
+License: https://www.gnu.org/licenses/lgpl-2.1.en.html

@@ -185,7 +185,7 @@
 
             <action id="Reshift.ProjectFilesNotIncludingTestsAction"
                     class="com.reshiftsecurity.plugins.intellij.actions.AnalyzeProjectFilesNotIncludingTests"
-                    text="Scan Project Files Not Including Test Sources."
+                    text="Scan Project"
                     description="Run security analysis on all project files not including test sources."
                     icon="PluginIcons.ANALYZE_PROJECT_FILES_NOT_INCLUDING_TESTS_ICON">
 
