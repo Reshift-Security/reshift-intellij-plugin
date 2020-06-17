@@ -40,6 +40,7 @@ import java.awt.*;
 import java.awt.datatransfer.StringSelection;
 import java.io.IOException;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -82,18 +83,22 @@ public final class HelpAction extends AbstractAction {
 							final String info = createProductInfo().toString();
 							CopyPasteManager.getInstance().setContents(new StringSelection(info));
 						} else {
-							URI eventURI = URI.create(evt.getURL().toString());
-							if (eventURI.getScheme().equalsIgnoreCase("mailto")) {
-								Desktop desktop = Desktop.getDesktop();
-								if (desktop.isSupported(Desktop.Action.MAIL)) {
-									try {
-										desktop.mail(eventURI);
-									} catch (IOException emailEx) {
-										emailEx.printStackTrace();
+							try {
+								URI eventURI = evt.getURL().toURI();
+								if (eventURI.getScheme().equalsIgnoreCase("mailto")) {
+									Desktop desktop = Desktop.getDesktop();
+									if (desktop.isSupported(Desktop.Action.MAIL)) {
+										try {
+											desktop.mail(eventURI);
+										} catch (IOException emailEx) {
+											emailEx.printStackTrace();
+										}
 									}
+								} else {
+									BrowserUtil.browse(evt.getURL());
 								}
-							} else {
-								BrowserUtil.browse(evt.getURL());
+							} catch (URISyntaxException uriSyntaxException) {
+								uriSyntaxException.printStackTrace();
 							}
 						}
 					}
