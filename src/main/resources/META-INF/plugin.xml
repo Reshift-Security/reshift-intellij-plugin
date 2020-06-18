@@ -19,7 +19,7 @@
   -->
 
 <idea-plugin url="https://reshiftsecurity.com">
-    <name>Reshift Security Intellij</name>
+    <name>Reshift Security</name>
     <description>
         <![CDATA[
 		<p>
@@ -252,8 +252,8 @@
 
             <action id="Reshift.HelpAction"
                     class="com.reshiftsecurity.plugins.intellij.actions.HelpAction"
-                    text="Reshift IntelliJ Plugin Help"
-                    description="Show the IntelliJ Reshift Security plugin help."
+                    text="Reshift Security Help"
+                    description="Show Reshift Security plugin help."
                     icon="AllIcons.Actions.Help"/>
 
             <separator/>
