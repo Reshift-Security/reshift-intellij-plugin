@@ -46,10 +46,10 @@
     </description>
     <change-notes>
         <![CDATA[<html>
-        <h3>1.0.0</h3>
+        <h3>1.0.1</h3>
         <ul>
             <li>Initial release; based on https://github.com/softwaresecured/reshift-intellij-plugin</li>
-            <li>Plugin compatibility: IDEA 2019.3</li>
+            <li>Plugin compatibility: IDEA 2019.3 and above</li>
         </ul>
 		<html>]]>
     </change-notes>
