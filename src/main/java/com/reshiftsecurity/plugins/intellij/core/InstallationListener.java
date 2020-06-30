@@ -54,11 +54,7 @@ public class InstallationListener implements StartupActivity {
             boolean isOk = builder.show() == DialogWrapper.OK_EXIT_CODE;
 
             if (isOk) {
-                if (usageDataConsent.isSelected()) {
-                    AnalyticsServiceSettings.getInstance().sendAnonymousUsage = true;
-                } else {
-                    AnalyticsServiceSettings.getInstance().sendAnonymousUsage = false;
-                }
+                AnalyticsServiceSettings.getInstance().sendAnonymousUsage = usageDataConsent.isSelected();
                 AnalyticsServiceSettings.getInstance().analyticsResponseReceived = true;
             }
         }
