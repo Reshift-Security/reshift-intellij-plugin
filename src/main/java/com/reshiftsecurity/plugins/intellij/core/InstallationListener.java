@@ -47,7 +47,6 @@ public class InstallationListener implements StartupActivity {
 
             DialogBuilder builder = new DialogBuilder(ToolWindowPanel.getInstance(project));
             builder.setCenterPanel(usageDataConsent);
-            builder.setDimensionServiceKey("GrepConsoleTailFileDialog");
             builder.setTitle(ResourcesLoader.getString("analytics.confirmation.title"));
             builder.removeAllActions();
             builder.addOkAction().setText(ResourcesLoader.getString("analytics.confirmation.save"));
