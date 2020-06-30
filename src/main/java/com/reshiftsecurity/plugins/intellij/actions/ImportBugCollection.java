@@ -39,7 +39,7 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.dom4j.DocumentException;
 import org.jetbrains.annotations.NotNull;
 import com.reshiftsecurity.plugins.intellij.common.EventDispatchThreadHelper;
-import com.reshiftsecurity.plugins.intellij.common.FindBugsPluginConstants;
+import com.reshiftsecurity.plugins.intellij.common.PluginConstants;
 import com.reshiftsecurity.plugins.intellij.common.util.New;
 import com.reshiftsecurity.plugins.intellij.core.Bug;
 import com.reshiftsecurity.plugins.intellij.core.FindBugsResult;
@@ -89,7 +89,7 @@ public final class ImportBugCollection extends AbstractAction {
 		dialogBuilder.setTitle("Import previous saved bug collection xml");
 
 		final WorkspaceSettings workspaceSettings = WorkspaceSettings.getInstance(project);
-		String exportDir = StringUtil.isEmptyOrSpaces(workspaceSettings.exportBugCollectionDirectory) ? FindBugsPluginConstants.DEFAULT_EXPORT_DIR : workspaceSettings.exportBugCollectionDirectory;
+		String exportDir = StringUtil.isEmptyOrSpaces(workspaceSettings.exportBugCollectionDirectory) ? PluginConstants.DEFAULT_EXPORT_DIR : workspaceSettings.exportBugCollectionDirectory;
 
 		final ImportFileDialog importFileDialog = new ImportFileDialog(exportDir, dialogBuilder);
 		dialogBuilder.showModal(true);

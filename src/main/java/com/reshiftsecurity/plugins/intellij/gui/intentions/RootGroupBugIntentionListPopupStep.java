@@ -24,7 +24,7 @@ import com.intellij.openapi.ui.popup.util.BaseListPopupStep;
 import com.intellij.openapi.util.Iconable;
 import icons.PluginIcons;
 import org.jetbrains.annotations.NotNull;
-import com.reshiftsecurity.plugins.intellij.common.FindBugsPluginConstants;
+import com.reshiftsecurity.plugins.intellij.common.PluginConstants;
 import com.reshiftsecurity.plugins.intellij.common.util.GuiUtil;
 import com.reshiftsecurity.plugins.intellij.resources.ResourcesLoader;
 
@@ -34,7 +34,7 @@ import java.util.List;
 public class RootGroupBugIntentionListPopupStep extends BaseListPopupStep<GroupBugIntentionListPopupStep> implements Iconable {
 
 	public RootGroupBugIntentionListPopupStep(final List<GroupBugIntentionListPopupStep> intentionGroups) {
-		super(FindBugsPluginConstants.PLUGIN_NAME, intentionGroups);
+		super(PluginConstants.PLUGIN_NAME, intentionGroups);
 	}
 
 

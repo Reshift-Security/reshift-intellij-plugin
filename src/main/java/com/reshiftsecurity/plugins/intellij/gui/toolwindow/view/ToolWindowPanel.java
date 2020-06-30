@@ -58,7 +58,7 @@ public final class ToolWindowPanel extends JPanel implements AnalysisStateListen
 	private static final String NOTIFICATION_GROUP_ID_ANALYSIS_FINISHED = "Reshift Security: Analysis Finished";
 	private static final NotificationGroup NOTIFICATION_GROUP_ANALYSIS_FINISHED = NotificationGroup.toolWindowGroup(
 			NOTIFICATION_GROUP_ID_ANALYSIS_FINISHED,
-			FindBugsPluginConstants.TOOL_WINDOW_ID,
+			PluginConstants.TOOL_WINDOW_ID,
 			false
 	);
 	private static final Logger LOGGER = Logger.getInstance(ToolWindowPanel.class.getName());
@@ -106,23 +106,23 @@ public final class ToolWindowPanel extends JPanel implements AnalysisStateListen
 		// Create the toolbars
 		//final DefaultActionGroup actionGroupLeft = new DefaultActionGroup();
 		//actionGroupLeft.add(new AnalyzeCurrentEditorFile());
-		final ActionGroup actionGroupLeft = (ActionGroup) ActionManager.getInstance().getAction(FindBugsPluginConstants.ACTION_GROUP_LEFT);
-		final ActionToolbar toolbarLeft1 = ActionManager.getInstance().createActionToolbar(FindBugsPluginConstants.TOOL_WINDOW_ID, actionGroupLeft, false);
+		final ActionGroup actionGroupLeft = (ActionGroup) ActionManager.getInstance().getAction(PluginConstants.ACTION_GROUP_LEFT);
+		final ActionToolbar toolbarLeft1 = ActionManager.getInstance().createActionToolbar(PluginConstants.TOOL_WINDOW_ID, actionGroupLeft, false);
 
-		final ActionGroup actionGroupRight = (ActionGroup) ActionManager.getInstance().getAction(FindBugsPluginConstants.ACTION_GROUP_RIGHT);
-		final ActionToolbar toolbarRight1 = ActionManager.getInstance().createActionToolbar(FindBugsPluginConstants.TOOL_WINDOW_ID, actionGroupRight, false);
+		final ActionGroup actionGroupRight = (ActionGroup) ActionManager.getInstance().getAction(PluginConstants.ACTION_GROUP_RIGHT);
+		final ActionToolbar toolbarRight1 = ActionManager.getInstance().createActionToolbar(PluginConstants.TOOL_WINDOW_ID, actionGroupRight, false);
 
-		final ActionGroup actionGroupNavigation = (ActionGroup) ActionManager.getInstance().getAction(FindBugsPluginConstants.ACTION_GROUP_NAVIGATION);
-		final ActionToolbar toolbarNavigation1 = ActionManager.getInstance().createActionToolbar(FindBugsPluginConstants.TOOL_WINDOW_ID, actionGroupNavigation, false);
+		final ActionGroup actionGroupNavigation = (ActionGroup) ActionManager.getInstance().getAction(PluginConstants.ACTION_GROUP_NAVIGATION);
+		final ActionToolbar toolbarNavigation1 = ActionManager.getInstance().createActionToolbar(PluginConstants.TOOL_WINDOW_ID, actionGroupNavigation, false);
 
-		final ActionGroup actionGroupUtils = (ActionGroup) ActionManager.getInstance().getAction(FindBugsPluginConstants.ACTION_GROUP_UTILS);
-		final ActionToolbar toolbarUtils1 = ActionManager.getInstance().createActionToolbar(FindBugsPluginConstants.TOOL_WINDOW_ID, actionGroupUtils, false);
+		final ActionGroup actionGroupUtils = (ActionGroup) ActionManager.getInstance().getAction(PluginConstants.ACTION_GROUP_UTILS);
+		final ActionToolbar toolbarUtils1 = ActionManager.getInstance().createActionToolbar(PluginConstants.TOOL_WINDOW_ID, actionGroupUtils, false);
 
 
-		final Component toolbarLeft = new ActionToolbarContainer(FindBugsPluginConstants.TOOL_WINDOW_ID + ": Analysis...", SwingConstants.VERTICAL, toolbarLeft1, true);
-		final Component toolbarRight = new ActionToolbarContainer(FindBugsPluginConstants.TOOL_WINDOW_ID + ": Grouping...", SwingConstants.VERTICAL, toolbarRight1, true);
-		final Component toolbarNavigation = new ActionToolbarContainer(FindBugsPluginConstants.TOOL_WINDOW_ID + ": Navigation...", SwingConstants.VERTICAL, toolbarNavigation1, true);
-		final Component toolbarUtils = new ActionToolbarContainer(FindBugsPluginConstants.TOOL_WINDOW_ID + ": Utils...", SwingConstants.VERTICAL, toolbarUtils1, true);
+		final Component toolbarLeft = new ActionToolbarContainer(PluginConstants.TOOL_WINDOW_ID + ": Analysis...", SwingConstants.VERTICAL, toolbarLeft1, true);
+		final Component toolbarRight = new ActionToolbarContainer(PluginConstants.TOOL_WINDOW_ID + ": Grouping...", SwingConstants.VERTICAL, toolbarRight1, true);
+		final Component toolbarNavigation = new ActionToolbarContainer(PluginConstants.TOOL_WINDOW_ID + ": Navigation...", SwingConstants.VERTICAL, toolbarNavigation1, true);
+		final Component toolbarUtils = new ActionToolbarContainer(PluginConstants.TOOL_WINDOW_ID + ": Utils...", SwingConstants.VERTICAL, toolbarUtils1, true);
 
 
 		add(toolbarLeft, NDockLayout.WEST);
@@ -281,7 +281,7 @@ public final class ToolWindowPanel extends JPanel implements AnalysisStateListen
 			if (findBugsError) {
 				impl = "SpotBugs";
 			} else {
-				impl = FindBugsPluginConstants.PLUGIN_NAME;
+				impl = PluginConstants.PLUGIN_NAME;
 			}
 			String errorText = "An " + impl + " error occurred.";
 
@@ -360,7 +360,7 @@ public final class ToolWindowPanel extends JPanel implements AnalysisStateListen
 
 	@Nullable
 	public static ToolWindow getWindow(@NotNull final Project project) {
-		return ToolWindowManager.getInstance(project).getToolWindow(FindBugsPluginConstants.TOOL_WINDOW_ID);
+		return ToolWindowManager.getInstance(project).getToolWindow(PluginConstants.TOOL_WINDOW_ID);
 	}
 
 	public static void showWindow(@NotNull final Project project) {

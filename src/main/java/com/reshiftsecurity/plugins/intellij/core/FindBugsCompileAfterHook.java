@@ -40,7 +40,7 @@ import com.intellij.util.io.storage.HeavyProcessLatch;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.jetbrains.annotations.NotNull;
 import com.reshiftsecurity.plugins.intellij.common.EventDispatchThreadHelper;
-import com.reshiftsecurity.plugins.intellij.common.FindBugsPluginConstants;
+import com.reshiftsecurity.plugins.intellij.common.PluginConstants;
 import com.reshiftsecurity.plugins.intellij.common.util.IdeaUtilImpl;
 import com.reshiftsecurity.plugins.intellij.common.util.New;
 
@@ -131,7 +131,7 @@ public class FindBugsCompileAfterHook implements CompilationStatusListener, Proj
 	@NotNull
 	@Override
 	public String getComponentName() {
-		return FindBugsPluginConstants.PLUGIN_ID + "#FindBugsCompileAfterHook";
+		return PluginConstants.PLUGIN_ID + "#FindBugsCompileAfterHook";
 	}
 
 	@Override

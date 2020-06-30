@@ -21,7 +21,7 @@ package com.reshiftsecurity.plugins.intellij.preferences;
 
 import com.reshiftsecurity.plugins.intellij.common.util.FindBugsCustomPluginUtil;
 import com.reshiftsecurity.plugins.intellij.gui.preferences.LegacyProjectSettingsConverter;
-import com.reshiftsecurity.plugins.intellij.common.FindBugsPluginConstants;
+import com.reshiftsecurity.plugins.intellij.common.PluginConstants;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -80,7 +80,7 @@ public class PersistencePreferencesBean {
 		_enabledModuleConfigs = new ArrayList<String>();
 
 		_annotationGutterIconEnabled = true;
-		_annotationSuppressWarningsClass = FindBugsPluginConstants.DEFAULT_SUPPRESS_WARNINGS_CLASSNAME;
+		_annotationSuppressWarningsClass = PluginConstants.DEFAULT_SUPPRESS_WARNINGS_CLASSNAME;
 		_annotationTextRangeMarkupEnabled = true;
 		_annotationTypeSettings = new HashMap<String, String>();
 	}

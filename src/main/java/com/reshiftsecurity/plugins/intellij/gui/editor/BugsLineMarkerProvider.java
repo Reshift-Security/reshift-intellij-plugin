@@ -142,7 +142,7 @@ public final class BugsLineMarkerProvider implements LineMarkerProvider {
 			}
 
 			final JBPopupFactory factory = JBPopupFactory.getInstance();
-			/*return factory.createListPopup(new BaseListPopupStep<SuppressIntentionAction>(FindBugsPluginConstants.PLUGIN_NAME, intentionActions) {
+			/*return factory.createListPopup(new BaseListPopupStep<SuppressIntentionAction>(PluginConstants.PLUGIN_NAME, intentionActions) {
 				@Override
 				public PopupStep<?> onChosen(final SuppressIntentionAction selectedValue, final boolean finalChoice) {
 					final Project project = _psiElement.getProject();

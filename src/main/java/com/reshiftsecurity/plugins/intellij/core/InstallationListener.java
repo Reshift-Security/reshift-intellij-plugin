@@ -25,15 +25,44 @@ import com.intellij.ide.plugins.IdeaPluginDescriptor;
 import com.intellij.ide.plugins.PluginStateListener;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.startup.StartupActivity;
+import com.intellij.openapi.ui.DialogBuilder;
+import com.intellij.openapi.ui.DialogWrapper;
+import com.intellij.ui.components.JBCheckBox;
 import com.reshiftsecurity.analytics.AnalyticsActionCategory;
 import com.reshiftsecurity.plugins.intellij.common.PluginConstants;
+import com.reshiftsecurity.plugins.intellij.resources.ResourcesLoader;
 import com.reshiftsecurity.plugins.intellij.service.AnalyticsService;
+import com.reshiftsecurity.plugins.intellij.service.AnalyticsServiceSettings;
 import org.jetbrains.annotations.NotNull;
 
 public class InstallationListener implements StartupActivity {
 
     @Override
     public void runActivity(@NotNull Project project) {
+        if (!AnalyticsServiceSettings.getInstance().analyticsResponseReceived) {
+            JBCheckBox usageDataConsent = new JBCheckBox();
+            usageDataConsent.setSelected(true);
+            usageDataConsent.setText(ResourcesLoader.getString("analytics.confirmation.text"));
+
+            DialogBuilder builder = new DialogBuilder(project);
+            builder.setCenterPanel(usageDataConsent);
+            builder.setDimensionServiceKey("GrepConsoleTailFileDialog");
+            builder.setTitle(ResourcesLoader.getString("analytics.confirmation.title"));
+            builder.removeAllActions();
+            builder.addOkAction().setText(ResourcesLoader.getString("analytics.confirmation.save"));
+
+            boolean isOk = builder.show() == DialogWrapper.OK_EXIT_CODE;
+
+            if (isOk) {
+                if (usageDataConsent.isSelected()) {
+                    AnalyticsServiceSettings.getInstance().sendAnonymousUsage = true;
+                } else {
+                    AnalyticsServiceSettings.getInstance().sendAnonymousUsage = false;
+                }
+                AnalyticsServiceSettings.getInstance().analyticsResponseReceived = true;
+            }
+        }
+
         com.intellij.ide.plugins.PluginInstaller.addStateListener(new PluginStateListener() {
             @Override
             public void install(@NotNull IdeaPluginDescriptor ideaPluginDescriptor) {

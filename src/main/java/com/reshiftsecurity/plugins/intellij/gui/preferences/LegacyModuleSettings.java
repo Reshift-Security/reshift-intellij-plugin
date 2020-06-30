@@ -27,7 +27,7 @@ import com.intellij.openapi.module.Module;
 import com.intellij.openapi.module.ModuleServiceManager;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import com.reshiftsecurity.plugins.intellij.common.FindBugsPluginConstants;
+import com.reshiftsecurity.plugins.intellij.common.PluginConstants;
 import com.reshiftsecurity.plugins.intellij.core.ModuleSettings;
 import com.reshiftsecurity.plugins.intellij.core.WorkspaceSettings;
 import com.reshiftsecurity.plugins.intellij.preferences.PersistencePreferencesBean;
@@ -37,7 +37,7 @@ import com.reshiftsecurity.plugins.intellij.preferences.PersistencePreferencesBe
  * The settings are removed when the .iml is stored next time.
  */
 @State(
-		name = FindBugsPluginConstants.PLUGIN_ID,
+		name = PluginConstants.PLUGIN_ID,
 		storages = {@Storage(file = "$MODULE_FILE$", deprecated = true)})
 public final class LegacyModuleSettings implements PersistentStateComponent<PersistencePreferencesBean> {
 

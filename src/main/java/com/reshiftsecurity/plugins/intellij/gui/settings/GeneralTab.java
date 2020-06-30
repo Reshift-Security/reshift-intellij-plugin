@@ -19,11 +19,9 @@
  */
 package com.reshiftsecurity.plugins.intellij.gui.settings;
 
-import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.options.ConfigurationException;
 import com.intellij.ui.components.JBCheckBox;
 import com.intellij.util.ui.UIUtil;
-import com.reshiftsecurity.plugins.intellij.service.AnalyticsService;
 import com.reshiftsecurity.plugins.intellij.service.AnalyticsServiceSettings;
 import org.jetbrains.annotations.NotNull;
 import com.reshiftsecurity.plugins.intellij.core.AbstractSettings;

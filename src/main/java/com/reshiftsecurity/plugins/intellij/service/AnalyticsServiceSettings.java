@@ -33,7 +33,10 @@ import org.jetbrains.annotations.Nullable;
 )
 public final class AnalyticsServiceSettings implements PersistentStateComponent<AnalyticsServiceSettings> {
     @Tag
-    public Boolean sendAnonymousUsage = true;
+    public Boolean sendAnonymousUsage = false;
+
+    @Tag
+    public Boolean analyticsResponseReceived = false;
 
     @Nullable
     @Override

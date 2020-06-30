@@ -60,7 +60,7 @@ import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import com.reshiftsecurity.plugins.intellij.common.ExtendedProblemDescriptor;
-import com.reshiftsecurity.plugins.intellij.common.FindBugsPluginConstants;
+import com.reshiftsecurity.plugins.intellij.common.PluginConstants;
 import com.reshiftsecurity.plugins.intellij.common.util.FileModificationServiceUtil;
 import com.reshiftsecurity.plugins.intellij.common.util.IdeaUtilImpl;
 import com.reshiftsecurity.plugins.intellij.core.ModuleSettings;
@@ -346,7 +346,7 @@ public class SuppressReportBugIntentionAction extends SuppressIntentionAction im
 			ret = ProjectSettings.getInstance(psiElement.getProject()).suppressWarningsClassName;
 		}
 		if (StringUtil.isEmptyOrSpaces(ret)) {
-			ret = FindBugsPluginConstants.DEFAULT_SUPPRESS_WARNINGS_CLASSNAME;
+			ret = PluginConstants.DEFAULT_SUPPRESS_WARNINGS_CLASSNAME;
 		}
 		return ret;
 	}

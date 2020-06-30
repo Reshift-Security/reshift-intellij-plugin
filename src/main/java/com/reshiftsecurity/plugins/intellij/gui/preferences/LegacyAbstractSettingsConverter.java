@@ -25,7 +25,7 @@ import edu.umd.cs.findbugs.DetectorFactoryCollection;
 import edu.umd.cs.findbugs.Plugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import com.reshiftsecurity.plugins.intellij.common.FindBugsPluginConstants;
+import com.reshiftsecurity.plugins.intellij.common.PluginConstants;
 import com.reshiftsecurity.plugins.intellij.common.util.FileUtilFb;
 import com.reshiftsecurity.plugins.intellij.common.util.New;
 import com.reshiftsecurity.plugins.intellij.core.AbstractSettings;
@@ -184,7 +184,7 @@ public final class LegacyAbstractSettingsConverter {
 		}
 
 		// core detectors
-		apply(from.getDetectors(), to.detectors, detectorDefaultEnabled.get(FindBugsPluginConstants.FINDBUGS_CORE_PLUGIN_ID));
+		apply(from.getDetectors(), to.detectors, detectorDefaultEnabled.get(PluginConstants.FINDBUGS_CORE_PLUGIN_ID));
 
 		// bundled plugins and detectors
 		for (final String bundledPluginId : new String[]{
