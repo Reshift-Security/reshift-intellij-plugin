@@ -69,6 +69,7 @@ import com.reshiftsecurity.plugins.intellij.gui.toolwindow.view.ToolWindowPanel;
 import com.reshiftsecurity.plugins.intellij.resources.ResourcesLoader;
 
 import javax.swing.Icon;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -171,7 +172,7 @@ public class SuppressReportBugIntentionAction extends SuppressIntentionAction im
 			return;
 		}
 		@SuppressWarnings({"ConstantConditions"})
-		final ReadonlyStatusHandler.OperationStatus status = ReadonlyStatusHandler.getInstance(project).ensureFilesWritable(container.getContainingFile().getVirtualFile());
+		final ReadonlyStatusHandler.OperationStatus status = ReadonlyStatusHandler.getInstance(project).ensureFilesWritable(Collections.singletonList(container.getContainingFile().getVirtualFile()));
 		if (status.hasReadonlyFiles()) {
 			return;
 		}

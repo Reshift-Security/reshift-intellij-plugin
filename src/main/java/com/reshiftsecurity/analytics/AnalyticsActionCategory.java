@@ -21,6 +21,8 @@
 package com.reshiftsecurity.analytics;
 
 public enum AnalyticsActionCategory {
+    INSTALL,
+    UNINSTALL,
     SCAN_RESULTS_METRIC,
     OPEN_PLUGIN_WINDOW,
     START_SCAN,
