@@ -21,6 +21,8 @@
 package com.reshiftsecurity.education;
 
 import com.google.gson.annotations.SerializedName;
+import com.intellij.openapi.util.text.StringUtil;
+
 import org.apache.commons.text.StringEscapeUtils;
 
 public class DevContent {
@@ -34,7 +36,9 @@ public class DevContent {
         this.content = content;
     }
 
-    public String getContent() { return content; }
+    public String getContent() {
+        return StringUtil.isEmpty(content) ? "" : content.replaceAll("<code>", "<code style=\"color: #000;\">"); 
+    }
 
     public String getTitle() {
         return title;

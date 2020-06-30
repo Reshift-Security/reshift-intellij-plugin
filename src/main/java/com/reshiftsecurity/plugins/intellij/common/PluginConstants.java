@@ -22,4 +22,5 @@ package com.reshiftsecurity.plugins.intellij.common;
 
 public class PluginConstants {
     public static final String RESHIFT_SITE_URL = "https://www.reshiftsecurity.com/?utm_source=plugin&utm_medium=IntelliJ&utm_campaign=intellij_plugin_reshift";
+    public static final String RESHIFT_DEV_EMAIL = "dev@reshiftsecurity.com";
 }

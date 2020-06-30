@@ -19,7 +19,7 @@
   -->
 
 <idea-plugin url="https://reshiftsecurity.com">
-    <name>Reshift Security Intellij</name>
+    <name>Reshift Security</name>
     <description>
         <![CDATA[
 		<p>
@@ -46,10 +46,10 @@
     </description>
     <change-notes>
         <![CDATA[<html>
-        <h3>1.0.0</h3>
+        <h3>1.0.1</h3>
         <ul>
             <li>Initial release; based on https://github.com/softwaresecured/reshift-intellij-plugin</li>
-            <li>Plugin compatibility: IDEA 2019.3</li>
+            <li>Plugin compatibility: IDEA 2019.3 and above</li>
         </ul>
 		<html>]]>
     </change-notes>
@@ -187,7 +187,7 @@
 
             <action id="Reshift.ProjectFilesNotIncludingTestsAction"
                     class="com.reshiftsecurity.plugins.intellij.actions.AnalyzeProjectFilesNotIncludingTests"
-                    text="Scan Project Files Not Including Test Sources."
+                    text="Scan Project"
                     description="Run security analysis on all project files not including test sources."
                     icon="PluginIcons.ANALYZE_PROJECT_FILES_NOT_INCLUDING_TESTS_ICON">
 
@@ -254,8 +254,8 @@
 
             <action id="Reshift.HelpAction"
                     class="com.reshiftsecurity.plugins.intellij.actions.HelpAction"
-                    text="Reshift IntelliJ Plugin Help"
-                    description="Show the IntelliJ Reshift Security plugin help."
+                    text="Reshift Security Help"
+                    description="Show Reshift Security plugin help."
                     icon="AllIcons.Actions.Help"/>
 
             <separator/>

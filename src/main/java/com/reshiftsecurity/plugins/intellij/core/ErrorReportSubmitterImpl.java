@@ -27,6 +27,7 @@ import com.intellij.openapi.ui.Messages;
 import com.intellij.openapi.util.SystemInfo;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.util.Consumer;
+import com.reshiftsecurity.plugins.intellij.common.PluginConstants;
 import com.reshiftsecurity.plugins.intellij.common.util.ErrorUtil;
 import com.reshiftsecurity.plugins.intellij.common.util.FindBugsUtil;
 import com.reshiftsecurity.plugins.intellij.common.util.New;
@@ -37,6 +38,8 @@ import com.reshiftsecurity.plugins.intellij.resources.ResourcesLoader;
 
 import java.awt.*;
 import java.awt.datatransfer.StringSelection;
+import java.io.IOException;
+import java.net.URI;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
@@ -145,22 +148,36 @@ public final class ErrorReportSubmitterImpl extends ErrorReportSubmitter {
 		final String baseUrl;
 		if (isFindBugsError) {
 			baseUrl = "https://github.com/spotbugs/spotbugs/issues/";
+			final String body = "The error was copied to the clipboard. Press " + (SystemInfo.isMac ? "Command+V" : "Ctrl+V");
+			final String newIssueUrl = baseUrl + "/new?title=" + encode(title) + "&body=" + encode(body);
+
+			/*
+			 * Note: set errorText as body does not work:
+			 *   - can cause HTTP 414 Request URI too long
+			 *   - if user is not yet logged in github login page will show an error
+			 *     502 - "This page is taking way too long to load." (this will also occure with HTTP POST).
+			 */
+			CopyPasteManager.getInstance().setContents(new StringSelection(errorText));
+			BrowserUtil.browse(newIssueUrl);
+			return new SubmittedReportInfo(baseUrl, "issue", SubmittedReportInfo.SubmissionStatus.NEW_ISSUE);
 		} else {
-			baseUrl = "https://github.com/softwaresecured/reshift-intellij-plugin/issues";
+			baseUrl = "https://reshiftsecurity.com";
+			CopyPasteManager.getInstance().setContents(new StringSelection(errorText));
+			Desktop desktop = Desktop.getDesktop();
+
+			if (desktop.isSupported(Desktop.Action.MAIL)) {
+				final String emailSubject = "Exception thrown in Reshift Plugin " + VersionManager.getVersion();
+				final String emailBody = "Exception thrown with error: " + title;
+				String message = String.format("mailto:%s?subject=%s&body=%s", PluginConstants.RESHIFT_DEV_EMAIL, encode(emailSubject), encode(emailBody));
+				URI uri = URI.create(message);
+				try {
+					desktop.mail(uri);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+			return new SubmittedReportInfo(baseUrl, "issue", SubmittedReportInfo.SubmissionStatus.NEW_ISSUE);
 		}
-
-		/*
-		 * Note: set errorText as body does not work:
-		 *   - can cause HTTP 414 Request URI too long
-		 *   - if user is not yet logged in github login page will show an error
-		 *     502 - "This page is taking way too long to load." (this will also occure with HTTP POST).
-		 */
-		final String body = "The error was copied to the clipboard. Press " + (SystemInfo.isMac ? "Command+V" : "Ctrl+V");
-		final String newIssueUrl = baseUrl + "/new?title=" + encode(title) + "&body=" + encode(body);
-
-		CopyPasteManager.getInstance().setContents(new StringSelection(errorText));
-		BrowserUtil.browse(newIssueUrl);
-		return new SubmittedReportInfo(baseUrl, "issue", SubmittedReportInfo.SubmissionStatus.NEW_ISSUE);
 	}
 
 	@NotNull

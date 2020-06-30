@@ -3,6 +3,11 @@
 /tmp/
 /out/
 .directory
+bin
+.vscode
+.settings
+.project
+.classpath
 
 /.idea/workspace.xml
 /.idea/misc.xml

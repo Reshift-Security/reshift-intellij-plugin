@@ -65,7 +65,8 @@ public class EducationCachingService {
         Optional<DevContent> devContent = details.getDevContentByTitle(sectionName);
         String contentSection = "";
         if (devContent.isPresent()) {
-            contentSection = String.format("<b>%s</b>: %s", details.getFriendlyTypeName(), devContent.get().getContent());
+            String devContentText = Jsoup.parse(devContent.get().getContent()).text();
+            contentSection = String.format("<b>%s</b>: %s", details.getFriendlyTypeName(), devContentText);
             if (textOnly) {
                 contentSection = Jsoup.parse(contentSection).text();
             } else {
@@ -76,12 +77,14 @@ public class EducationCachingService {
         return contentSection;
     }
 
-    public String getBriefOverview(final List<ExtendedProblemDescriptor> problemDescriptors, boolean textOnly) {
+    public String getBriefOverview(final ExtendedProblemDescriptor problemDescriptor, boolean textOnly) {
         StringBuilder content = new StringBuilder();
-        String lineBreak = textOnly ? "\r\n" : "";
-        for (ExtendedProblemDescriptor problemDescriptor : problemDescriptors) {
-            content.append(getContentSection(problemDescriptor.getBug().getInstance().getType(), SECTION_OVERVIEW, textOnly) + lineBreak);
+        if (problemDescriptor == null) {
+            return content.toString();
         }
+        String bugType = problemDescriptor.getBug().getInstance().getType();
+        content.append(getContentSection(bugType, SECTION_OVERVIEW, textOnly));
+
         return content.toString();
     }
 }

@@ -68,7 +68,7 @@ public class VersionManager {
 
 	private static final String DOWNLOAD_WEBSITE = "https://plugins.jetbrains.com/";
 
-	private static final String ISSUE_TRACKER = "https://github.com/softwaresecured/reshift-intellij-plugin/issues";
+	private static final String ISSUE_TRACKER = "https://reshiftsecurity.com/";
 
 	private static final long REVISION;
 

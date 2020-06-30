@@ -4,4 +4,8 @@ reshift is a lightweight security plugin for IntelliJ that quickly finds vulnera
 
 The plugin is for developers looking to integrate security seamlessly into their software development practices. reshift is wholly focused on security, allowing Java developers to meaningfully shift left - fixing security vulnerabilities early on in their IntelliJ IDE.
 
-*Based on SpotBugs IntelliJ plugin by Jetbrains
+* Based on SpotBugs IntelliJ plugin by Jetbrains
+
+To report any issues, please email dev@reshiftsecurity.com.
+
+License: https://www.gnu.org/licenses/lgpl-2.1.en.html

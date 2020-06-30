@@ -45,9 +45,7 @@ import com.reshiftsecurity.plugins.intellij.core.WorkspaceSettings;
 import com.reshiftsecurity.plugins.intellij.gui.intentions.GroupBugIntentionListPopupStep;
 import com.reshiftsecurity.plugins.intellij.gui.intentions.RootGroupBugIntentionListPopupStep;
 import com.reshiftsecurity.plugins.intellij.gui.toolwindow.view.ToolWindowPanel;
-import com.reshiftsecurity.plugins.intellij.intentions.ClearAndSuppressBugIntentionAction;
 import com.reshiftsecurity.plugins.intellij.intentions.ClearBugIntentionAction;
-import com.reshiftsecurity.plugins.intellij.intentions.SuppressReportBugForClassIntentionAction;
 import com.reshiftsecurity.plugins.intellij.intentions.SuppressReportBugIntentionAction;
 
 import java.awt.event.MouseEvent;
@@ -198,7 +196,11 @@ public final class BugsLineMarkerProvider implements LineMarkerProvider {
 			final StringBuilder buffer = new StringBuilder();
 			EducationCachingService _eduCacheService = ServiceManager.getService(EducationCachingService.class);
 			buffer.append("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\">");
-			buffer.append(_eduCacheService.getBriefOverview(problemDescriptors, false));
+			for (ExtendedProblemDescriptor problemDescriptor : problemDescriptors) {
+				buffer.append(_eduCacheService.getBriefOverview(problemDescriptor, false));
+				buffer.append("<br/>");
+				buffer.append("<br/>");
+			}
 			return buffer.toString();
 		}
 

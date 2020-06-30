@@ -39,7 +39,12 @@ import com.reshiftsecurity.plugins.intellij.gui.common.BalloonTipFactory;
 import com.reshiftsecurity.plugins.intellij.resources.ResourcesLoader;
 
 import javax.swing.event.HyperlinkEvent;
+import java.awt.*;
 import java.awt.datatransfer.StringSelection;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Properties;
@@ -85,7 +90,23 @@ public final class HelpAction extends AbstractAction {
 							CopyPasteManager.getInstance().setContents(new StringSelection(info));
 							AnalyticsService.getInstance().recordAction(AnalyticsActionCategory.COPY_PLUGIN_INFO);
 						} else {
-							BrowserUtil.browse(evt.getURL());
+							try {
+								URI eventURI = evt.getURL().toURI();
+								if (eventURI.getScheme().equalsIgnoreCase("mailto")) {
+									Desktop desktop = Desktop.getDesktop();
+									if (desktop.isSupported(Desktop.Action.MAIL)) {
+										try {
+											desktop.mail(eventURI);
+										} catch (IOException emailEx) {
+											emailEx.printStackTrace();
+										}
+									}
+								} else {
+									BrowserUtil.browse(evt.getURL());
+								}
+							} catch (URISyntaxException uriSyntaxException) {
+								uriSyntaxException.printStackTrace();
+							}
 						}
 					}
 				}
@@ -99,7 +120,7 @@ public final class HelpAction extends AbstractAction {
 		ret.append("<h2>").append(VersionManager.getFullVersion()).append("</h2>");
 		ret.append("Website: <a href='").append(VersionManager.getWebsite()).append("'>").append(VersionManager.getWebsite()).append("</a>");
 		ret.append("<br>");
-		ret.append("Support & Feedback: <a href='mailto:dev@reshiftsecurity.com'>dev@reshiftsecurity.com</a>");
+		ret.append(String.format("Support & Feedback: <a href='mailto:%s'>dev@reshiftsecurity.com</a>", PluginConstants.RESHIFT_DEV_EMAIL));
 		ret.append("<br/>");
 		ret.append("<br/>");
 		ret.append("Would you like to integrate Reshift into your CI pipline? Sign up today for free on <a href='")
