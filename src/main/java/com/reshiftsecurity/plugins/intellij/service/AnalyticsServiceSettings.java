@@ -36,7 +36,7 @@ public final class AnalyticsServiceSettings implements PersistentStateComponent<
     public Boolean sendAnonymousUsage = false;
 
     @Tag
-    public Boolean analyticsResponseReceived = false;
+    public Boolean consentResponseReceived = false;
 
     @Nullable
     @Override

@@ -30,6 +30,7 @@ import com.intellij.openapi.ui.DialogWrapper;
 import com.intellij.ui.components.JBCheckBox;
 import com.reshiftsecurity.analytics.AnalyticsActionCategory;
 import com.reshiftsecurity.plugins.intellij.common.PluginConstants;
+import com.reshiftsecurity.plugins.intellij.gui.toolwindow.view.ToolWindowPanel;
 import com.reshiftsecurity.plugins.intellij.resources.ResourcesLoader;
 import com.reshiftsecurity.plugins.intellij.service.AnalyticsService;
 import com.reshiftsecurity.plugins.intellij.service.AnalyticsServiceSettings;
@@ -39,12 +40,12 @@ public class InstallationListener implements StartupActivity {
 
     @Override
     public void runActivity(@NotNull Project project) {
-        if (!AnalyticsServiceSettings.getInstance().analyticsResponseReceived) {
+        if (!AnalyticsServiceSettings.getInstance().consentResponseReceived) {
             JBCheckBox usageDataConsent = new JBCheckBox();
             usageDataConsent.setSelected(true);
             usageDataConsent.setText(ResourcesLoader.getString("analytics.confirmation.text"));
 
-            DialogBuilder builder = new DialogBuilder(project);
+            DialogBuilder builder = new DialogBuilder(ToolWindowPanel.getInstance(project));
             builder.setCenterPanel(usageDataConsent);
             builder.setDimensionServiceKey("GrepConsoleTailFileDialog");
             builder.setTitle(ResourcesLoader.getString("analytics.confirmation.title"));
@@ -55,7 +56,7 @@ public class InstallationListener implements StartupActivity {
 
             if (isOk) {
                 AnalyticsServiceSettings.getInstance().sendAnonymousUsage = usageDataConsent.isSelected();
-                AnalyticsServiceSettings.getInstance().analyticsResponseReceived = true;
+                AnalyticsServiceSettings.getInstance().consentResponseReceived = true;
             }
         }
 
