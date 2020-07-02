@@ -55,7 +55,6 @@ public class AnalyticsService {
     private final String ACTION_LABEL_KEY = "el";
     private final String DOC_PATH = "%2Fintellij";
     private final String DOC_PATH_KEY = "dp";
-    private final String CAMPAIGN_KEYWORDS_KEY = "ck";
     private final String USER_AGENT = "Reshift Intellij IDE Plugin";
 
     private String userID;
@@ -138,8 +137,7 @@ public class AnalyticsService {
             .append(APP_VERSION_KEY + "=" + this.applicationVersion + "&")
             .append(MEASUREMENT_ID_KEY + "=" + this.measurementID + "&")
             .append(DOC_PATH_KEY + "=" + DOC_PATH + "&")
-            .append(HIT_TYPE_KEY + "=" + HIT_TYPE + "&")
-            .append(CAMPAIGN_KEYWORDS_KEY + "=" + URLEncoder.encode(this.sourceKeywords, StandardCharsets.UTF_8));
+            .append(HIT_TYPE_KEY + "=" + HIT_TYPE + "&");
         if (entry.getMetric() != null) {
             actionBuilder.append(ACTION_VALUE_KEY + "=" + entry.getMetric() + "&");
             actionBuilder.append(EVENT_VALUE_KEY + "=" + entry.getMetric() + "&");
@@ -180,7 +178,7 @@ public class AnalyticsService {
                         .url(ANALYTICS_BASE_URL)
                         .post(body)
                         .addHeader("Content-Type", "application/x-www-form-urlencoded")
-                        .addHeader("User-Agent", System.getProperty("os.name") + " " + USER_AGENT)
+                        .addHeader("User-Agent", this.sourceKeywords)
                         .build();
 
                 Response analyticsReponse = client.newCall(request).execute();
