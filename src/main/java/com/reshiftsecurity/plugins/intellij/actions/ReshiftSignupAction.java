@@ -23,8 +23,7 @@ package com.reshiftsecurity.plugins.intellij.actions;
 import com.intellij.ide.BrowserUtil;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
-import com.intellij.openapi.components.ServiceManager;
-import com.reshiftsecurity.analytics.AnalyticsActionCategory;
+import com.reshiftsecurity.analytics.AnalyticsAction;
 import com.reshiftsecurity.plugins.intellij.common.PluginConstants;
 import com.reshiftsecurity.plugins.intellij.service.AnalyticsService;
 import org.jetbrains.annotations.NotNull;
@@ -33,7 +32,7 @@ public final class ReshiftSignupAction extends AnAction {
     @Override
     public void actionPerformed(@NotNull AnActionEvent e) {
 
-        AnalyticsService.getInstance().recordAction(AnalyticsActionCategory.OPEN_RESHIFT_WEBSITE);
+        AnalyticsService.getInstance().recordAction(AnalyticsAction.OPEN_RESHIFT_WEBSITE);
         BrowserUtil.browse(PluginConstants.RESHIFT_SITE_URL);
 
     }

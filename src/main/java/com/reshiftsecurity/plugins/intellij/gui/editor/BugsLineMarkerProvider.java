@@ -31,7 +31,7 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.intellij.ui.awt.RelativePoint;
 import com.intellij.util.Function;
-import com.reshiftsecurity.analytics.AnalyticsActionCategory;
+import com.reshiftsecurity.analytics.AnalyticsAction;
 import com.reshiftsecurity.plugins.intellij.service.AnalyticsService;
 import com.reshiftsecurity.plugins.intellij.service.EducationCachingService;
 import org.jetbrains.annotations.NotNull;
@@ -170,7 +170,7 @@ public final class BugsLineMarkerProvider implements LineMarkerProvider {
 			}
 			buildPopupMenu().show(new RelativePoint(e));
 
-			AnalyticsService.getInstance().recordAction(AnalyticsActionCategory.CODE_VIEW_BUG_DETAILS);
+			AnalyticsService.getInstance().recordAction(AnalyticsAction.CODE_VIEW_BUG_DETAILS);
 		}
 	}
 

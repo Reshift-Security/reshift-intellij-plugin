@@ -28,7 +28,8 @@ import com.intellij.openapi.startup.StartupActivity;
 import com.intellij.openapi.ui.DialogBuilder;
 import com.intellij.openapi.ui.DialogWrapper;
 import com.intellij.ui.components.JBCheckBox;
-import com.reshiftsecurity.analytics.AnalyticsActionCategory;
+import com.intellij.util.ui.UIUtil;
+import com.reshiftsecurity.analytics.AnalyticsAction;
 import com.reshiftsecurity.plugins.intellij.common.PluginConstants;
 import com.reshiftsecurity.plugins.intellij.gui.toolwindow.view.ToolWindowPanel;
 import com.reshiftsecurity.plugins.intellij.resources.ResourcesLoader;
@@ -36,38 +37,44 @@ import com.reshiftsecurity.plugins.intellij.service.AnalyticsService;
 import com.reshiftsecurity.plugins.intellij.service.AnalyticsServiceSettings;
 import org.jetbrains.annotations.NotNull;
 
+import javax.swing.*;
+
 public class InstallationListener implements StartupActivity {
 
     @Override
     public void runActivity(@NotNull Project project) {
-        if (!AnalyticsServiceSettings.getInstance().consentResponseReceived) {
-            JBCheckBox usageDataConsent = new JBCheckBox();
-            usageDataConsent.setSelected(true);
-            usageDataConsent.setText(ResourcesLoader.getString("analytics.confirmation.text"));
+         if (!AnalyticsServiceSettings.getInstance().hasConsent()) {
+             JEditorPane termsContentPane = new JEditorPane();
+             termsContentPane.setContentType(UIUtil.HTML_MIME);
+             termsContentPane.setText(ResourcesLoader.getString("analytics.confirmation.terms"));
 
-            DialogBuilder builder = new DialogBuilder(ToolWindowPanel.getInstance(project));
-            builder.setCenterPanel(usageDataConsent);
-            builder.setTitle(ResourcesLoader.getString("analytics.confirmation.title"));
-            builder.removeAllActions();
-            builder.addOkAction().setText(ResourcesLoader.getString("analytics.confirmation.save"));
+             JBCheckBox usageDataConsent = new JBCheckBox();
+             usageDataConsent.setSelected(true);
+             usageDataConsent.setText(ResourcesLoader.getString("analytics.confirmation.text"));
 
-            boolean isOk = builder.show() == DialogWrapper.OK_EXIT_CODE;
+             DialogBuilder builder = new DialogBuilder(ToolWindowPanel.getInstance(project));
+             builder.setNorthPanel(termsContentPane);
+             builder.setCenterPanel(usageDataConsent);
+             builder.setTitle(ResourcesLoader.getString("analytics.confirmation.title"));
+             builder.removeAllActions();
+             builder.addOkAction().setText(ResourcesLoader.getString("analytics.confirmation.save"));
 
-            if (isOk) {
-                AnalyticsServiceSettings.getInstance().sendAnonymousUsage = usageDataConsent.isSelected();
-                AnalyticsServiceSettings.getInstance().consentResponseReceived = true;
-            }
+             boolean isOk = builder.show() == DialogWrapper.OK_EXIT_CODE;
+
+             if (isOk) {
+                 AnalyticsServiceSettings.getInstance().recordConsent(usageDataConsent.isSelected());
+             }
         }
 
         com.intellij.ide.plugins.PluginInstaller.addStateListener(new PluginStateListener() {
             @Override
             public void install(@NotNull IdeaPluginDescriptor ideaPluginDescriptor) {
-                AnalyticsService.getInstance().recordAction(AnalyticsActionCategory.INSTALL);
+                AnalyticsService.getInstance().recordAction(AnalyticsAction.INSTALL);
             }
 
             @Override
             public void uninstall(@NotNull IdeaPluginDescriptor ideaPluginDescriptor) {
-                AnalyticsService.getInstance().recordAction(AnalyticsActionCategory.UNINSTALL);
+                AnalyticsService.getInstance().recordAction(AnalyticsAction.UNINSTALL);
                 BrowserUtil.browse(PluginConstants.UNINSTALL_FEEDBACK_URL);
             }
         });

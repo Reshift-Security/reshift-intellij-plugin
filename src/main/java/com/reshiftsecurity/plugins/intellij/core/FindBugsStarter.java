@@ -24,7 +24,6 @@ import com.intellij.execution.configurations.RunConfiguration;
 import com.intellij.facet.FacetManager;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.compiler.*;
-import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.module.*;
@@ -38,7 +37,7 @@ import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.openapi.wm.ToolWindow;
 import com.intellij.openapi.wm.impl.ToolWindowImpl;
 import com.intellij.util.Consumer;
-import com.reshiftsecurity.analytics.AnalyticsActionCategory;
+import com.reshiftsecurity.analytics.AnalyticsAction;
 import com.reshiftsecurity.plugins.intellij.messages.AnalysisAbortingListener;
 import com.reshiftsecurity.plugins.intellij.messages.MessageBusManager;
 import com.reshiftsecurity.plugins.intellij.service.AnalyticsService;
@@ -245,7 +244,7 @@ public abstract class FindBugsStarter implements AnalysisAbortingListener {
 			final int analyzedClassCountOffset
 	) throws IOException, InterruptedException {
 
-		AnalyticsService.getInstance().recordAction(AnalyticsActionCategory.START_SCAN);
+		AnalyticsService.getInstance().recordAction(AnalyticsAction.START_SCAN);
 
 		final ModuleSettings moduleSettings = ModuleSettings.getInstance(module);
 		AbstractSettings settings = new ProjectSettings();
@@ -339,7 +338,7 @@ public abstract class FindBugsStarter implements AnalysisAbortingListener {
 
 		bugCollection.setTimestamp(System.currentTimeMillis());
 
-		AnalyticsService.getInstance().recordMetric(AnalyticsActionCategory.SCAN_RESULTS_METRIC, bugCollection.getCollection().size());
+		AnalyticsService.getInstance().recordMetric(AnalyticsAction.SCAN_RESULTS_METRIC, bugCollection.getCollection().size());
 
 		return Pair.create(bugCollection, reporter);
 	}

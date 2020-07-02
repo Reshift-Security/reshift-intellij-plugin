@@ -25,9 +25,10 @@ import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.util.SystemInfo;
 import com.intellij.ui.components.JBTabbedPane;
 import com.intellij.util.ui.*;
-import com.reshiftsecurity.analytics.AnalyticsActionCategory;
+import com.reshiftsecurity.analytics.AnalyticsAction;
 import com.reshiftsecurity.education.DevContent;
 import com.reshiftsecurity.education.VulnerabilityDetails;
+import com.reshiftsecurity.plugins.intellij.common.PluginConstants;
 import com.reshiftsecurity.plugins.intellij.service.AnalyticsService;
 import com.reshiftsecurity.plugins.intellij.service.EducationCachingService;
 import edu.umd.cs.findbugs.*;
@@ -90,8 +91,10 @@ public final class BugDetailsComponents {
 				JTabbedPane sourceTabbedPane = (JTabbedPane) changeEvent.getSource();
 				int index = sourceTabbedPane.getSelectedIndex();
 				if (index >= 0 && index < sourceTabbedPane.getTabCount()) {
-					_analyticsService.recordAction(
-							AnalyticsActionCategory.ISSUE_REPORT_EDU, sourceTabbedPane.getToolTipTextAt(index));
+					String label = sourceTabbedPane.getToolTipTextAt(index);
+					if (label != PluginConstants.DEFAULT_EDU_TAB_TOOLTIP) {
+						_analyticsService.recordAction(AnalyticsAction.ISSUE_REPORT_EDU, label);
+					}
 				}
 			}
 		};
@@ -112,7 +115,7 @@ public final class BugDetailsComponents {
 			_jTabbedPane.setFocusable(false);
 			_jTabbedPane.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
 			_jTabbedPane.addChangeListener(this._eduChangeListener);
-			_analyticsService.recordAction(AnalyticsActionCategory.OPEN_PLUGIN_WINDOW);
+			_analyticsService.recordAction(AnalyticsAction.OPEN_PLUGIN_WINDOW);
 
 			resetTabPane();
 		}
@@ -179,9 +182,9 @@ public final class BugDetailsComponents {
 		_jTabbedPane.removeAll();
 		if (SystemInfo.isMac) {
 			// Aqua LF will rotate content
-			_jTabbedPane.addTab("", PluginIcons.RESHIFT_ICON, getBugDetailsSplitPane(), "Security Expert Tools/Resources to fix vulnerabilities");
+			_jTabbedPane.addTab("", PluginIcons.RESHIFT_ICON, getBugDetailsSplitPane(), PluginConstants.DEFAULT_EDU_TAB_TOOLTIP);
 		} else {
-			_jTabbedPane.addTab(null, new VerticalTextIcon("", true, PluginIcons.RESHIFT_ICON), getBugDetailsSplitPane(), "Security Expert Tools/Resources to fix vulnerabilities");
+			_jTabbedPane.addTab(null, new VerticalTextIcon("", true, PluginIcons.RESHIFT_ICON), getBugDetailsSplitPane(), PluginConstants.DEFAULT_EDU_TAB_TOOLTIP);
 		}
 
 		_jTabbedPane.setMnemonicAt(0, KeyEvent.VK_1);

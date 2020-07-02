@@ -20,38 +20,30 @@
 
 package com.reshiftsecurity.analytics;
 
-public class AnalyticsAction {
-    private AnalyticsActionCategory category;
-    private Integer metric;
-    private String label;
+public enum AnalyticsAction {
+    INSTALL,
+    UNINSTALL,
+    SCAN_RESULTS_METRIC,
+    OPEN_PLUGIN_WINDOW,
+    START_SCAN,
+    STOP_SCAN,
+    CLEAR_AND_CLOSE_PLUGIN_WINDOW,
+    OPEN_HELP,
+    OPEN_SETTINGS,
+    OPEN_RESHIFT_WEBSITE,
+    ISSUE_REPORT_BROWSE,
+    ISSUE_REPORT_BUG_DETAILS,
+    ISSUE_REPORT_EDU,
+    ISSUE_REPORT_MORE_SCAN_INFO,
+    CODE_VIEW_BUG_DETAILS,
+    COPY_PLUGIN_INFO,
+    OPEN_MORE_SCAN_INFO,
+    SETTINGS_UPDATED,
+    SETTINGS_GATHER_DATA_YES,
+    SETTINGS_GATHER_DATA_NO;
 
-    private void setLabelFromCategory() {
-        this.label = this.category.toString();
+    @Override
+    public String toString() {
+        return name();
     }
-
-    public AnalyticsAction(AnalyticsActionCategory category) {
-        this.category = category;
-        setLabelFromCategory();
-    }
-    public AnalyticsAction(AnalyticsActionCategory category, Integer metric) {
-        this.category = category;
-        setLabelFromCategory();
-        this.metric = metric;
-    }
-    public AnalyticsAction(AnalyticsActionCategory category, String label) {
-        this.category = category;
-        this.label = label;
-    }
-
-    public AnalyticsActionCategory getCategory() {
-        return category;
-    }
-    public void setCategory(AnalyticsActionCategory category) {
-        this.category = category;
-    }
-    
-    public Integer getMetric() {
-        return this.metric;
-    }
-    public String getLabel() { return this.label; }
 }

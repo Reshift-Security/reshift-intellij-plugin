@@ -23,7 +23,7 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.DialogBuilder;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.util.ui.JBUI;
-import com.reshiftsecurity.analytics.AnalyticsActionCategory;
+import com.reshiftsecurity.analytics.AnalyticsAction;
 import com.reshiftsecurity.plugins.intellij.common.VersionManager;
 import com.reshiftsecurity.plugins.intellij.common.util.New;
 import com.reshiftsecurity.plugins.intellij.core.FindBugsProject;
@@ -163,7 +163,7 @@ public class AnalysisRunDetailsDialog {
 			}
 		});
 
-		AnalyticsService.getInstance().recordAction(AnalyticsActionCategory.ISSUE_REPORT_MORE_SCAN_INFO);
+		AnalyticsService.getInstance().recordAction(AnalyticsAction.ISSUE_REPORT_MORE_SCAN_INFO);
 
 		return dialogBuilder;
 	}

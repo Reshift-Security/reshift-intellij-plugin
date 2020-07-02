@@ -22,18 +22,16 @@ package com.reshiftsecurity.plugins.intellij.actions;
 import com.intellij.ide.BrowserUtil;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.application.ex.ApplicationInfoEx;
-import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.ide.CopyPasteManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.wm.ToolWindow;
 import com.intellij.util.text.DateFormatUtil;
-import com.reshiftsecurity.analytics.AnalyticsActionCategory;
+import com.reshiftsecurity.analytics.AnalyticsAction;
 import com.reshiftsecurity.plugins.intellij.common.PluginConstants;
 import com.reshiftsecurity.plugins.intellij.service.AnalyticsService;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import com.reshiftsecurity.plugins.intellij.common.VersionManager;
-import com.reshiftsecurity.plugins.intellij.common.util.FindBugsUtil;
 import com.reshiftsecurity.plugins.intellij.core.FindBugsState;
 import com.reshiftsecurity.plugins.intellij.gui.common.BalloonTipFactory;
 import com.reshiftsecurity.plugins.intellij.resources.ResourcesLoader;
@@ -44,7 +42,6 @@ import java.awt.datatransfer.StringSelection;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Properties;
@@ -76,7 +73,7 @@ public final class HelpAction extends AbstractAction {
 	) {
 
 
-		AnalyticsService.getInstance().recordAction(AnalyticsActionCategory.OPEN_HELP);
+		AnalyticsService.getInstance().recordAction(AnalyticsAction.OPEN_HELP);
 
 		toolWindow.setShowStripeButton(true);
 
@@ -88,7 +85,7 @@ public final class HelpAction extends AbstractAction {
 						if (A_HREF_COPY.equals(evt.getDescription())) {
 							final String info = createProductInfo().toString();
 							CopyPasteManager.getInstance().setContents(new StringSelection(info));
-							AnalyticsService.getInstance().recordAction(AnalyticsActionCategory.COPY_PLUGIN_INFO);
+							AnalyticsService.getInstance().recordAction(AnalyticsAction.COPY_PLUGIN_INFO);
 						} else {
 							try {
 								URI eventURI = evt.getURL().toURI();

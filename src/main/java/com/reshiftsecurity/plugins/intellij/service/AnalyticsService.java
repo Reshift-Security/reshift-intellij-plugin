@@ -21,12 +21,12 @@
 package com.reshiftsecurity.plugins.intellij.service;
 
 import com.intellij.openapi.components.ServiceManager;
+import com.reshiftsecurity.analytics.AnalyticsEntry;
 import com.reshiftsecurity.analytics.AnalyticsAction;
-import com.reshiftsecurity.analytics.AnalyticsActionCategory;
 import com.reshiftsecurity.plugins.intellij.common.VersionManager;
+import okhttp3.*;
 
 import java.io.IOException;
-import java.io.OutputStream;
 import java.net.*;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
@@ -34,7 +34,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AnalyticsService {
-    List<AnalyticsAction> actions;
+    List<AnalyticsEntry> entries;
     // NOTE: use https://www.google-analytics.com/debug/collect for debugging
     private final String ANALYTICS_BASE_URL = "https://www.google-analytics.com/collect";
     private final String APP_ID = "com.reshiftsecurity.plugins.intellij";
@@ -46,7 +46,6 @@ public class AnalyticsService {
     private final String PROTOCOL_VERSION_KEY = "v";
     private final String HIT_TYPE = "event";
     private final String HIT_TYPE_KEY = "t";
-    private final String EVENT_ACTION_DEFAULT = "click";
     private final String EVENT_ACTION_KEY = "ea";
     private final String USER_ID_KEY = "cid";
     private final String MEASUREMENT_ID_KEY = "tid";
@@ -55,13 +54,14 @@ public class AnalyticsService {
     private final String ACTION_LABEL_KEY = "el";
     private final String DOC_PATH = "%2Fintellij";
     private final String DOC_PATH_KEY = "dp";
+    private final String USER_AGENT = "Reshift Intellij IDE Plugin";
 
     private String userID;
     private String applicationVersion;
     private String measurementID;
 
     public AnalyticsService() {
-        this.actions = new ArrayList<>();
+        this.entries = new ArrayList<>();
         this.applicationVersion = VersionManager.getVersion();
         this.userID = getUserIdentifier();
         this.measurementID = "UA-149586212-2";
@@ -71,18 +71,24 @@ public class AnalyticsService {
         return ServiceManager.getService(AnalyticsService.class);
     }
 
-    public void recordAction(AnalyticsActionCategory category, String label) {
-        this.actions.add(new AnalyticsAction(category));
+    public void recordConsentAction(boolean consent) {
+        AnalyticsAction action = consent ? AnalyticsAction.SETTINGS_GATHER_DATA_YES : AnalyticsAction.SETTINGS_GATHER_DATA_NO;
+        this.entries.add(new AnalyticsEntry(action));
+        this.processActions(true);
+    }
+
+    public void recordAction(AnalyticsAction action, String label) {
+        this.entries.add(new AnalyticsEntry(action, null, label));
         this.processActions();
     }
 
-    public void recordAction(AnalyticsActionCategory category) {
-        this.actions.add(new AnalyticsAction(category));
+    public void recordAction(AnalyticsAction action) {
+        this.entries.add(new AnalyticsEntry(action));
         this.processActions();
     }
 
-    public void recordMetric(AnalyticsActionCategory category, Integer value) {
-        this.actions.add(new AnalyticsAction(category, value));
+    public void recordMetric(AnalyticsAction action, Integer value) {
+        this.entries.add(new AnalyticsEntry(action, value));
         this.processActions();
     }
 
@@ -116,8 +122,8 @@ public class AnalyticsService {
         return "";
     }
 
-    private String buildActionParameters(AnalyticsAction action) {
-        if (action == null) {
+    private String buildEntryParameters(AnalyticsEntry entry) {
+        if (entry == null) {
             return "";
         }
         StringBuilder actionBuilder = new StringBuilder()
@@ -127,49 +133,61 @@ public class AnalyticsService {
             .append(USER_ID_KEY + "=" + this.userID + "&")
             .append(APP_VERSION_KEY + "=" + this.applicationVersion + "&")
             .append(MEASUREMENT_ID_KEY + "=" + this.measurementID + "&")
-            .append(ACTION_LABEL_KEY + "=" + action.getLabel() + "&")
-            .append(DOC_PATH_KEY + "=" + DOC_PATH);
-        if (action.getMetric() != null) {
-            actionBuilder.append(ACTION_VALUE_KEY + "=" + action.getMetric() + "&");
-            actionBuilder.append(EVENT_ACTION_KEY + "=report&");
+            .append(DOC_PATH_KEY + "=" + DOC_PATH + "&");
+        if (entry.getMetric() != null) {
+            actionBuilder.append(ACTION_VALUE_KEY + "=" + entry.getMetric() + "&");
             actionBuilder.append(HIT_TYPE_KEY + "=transaction&");
         } else {
             actionBuilder.append(HIT_TYPE_KEY + "=" + HIT_TYPE + "&");
-            actionBuilder.append(EVENT_ACTION_KEY + "=" + EVENT_ACTION_DEFAULT + "&");
         }
-        actionBuilder.append(ACTION_CATEGORY_KEY + "=" + action.getCategory().toString());
+        actionBuilder.append(ACTION_CATEGORY_KEY + "=" + URLEncoder.encode(entry.getCategory(), StandardCharsets.UTF_8) + "&")
+            .append(ACTION_LABEL_KEY + "=" + URLEncoder.encode(entry.getLabel(), StandardCharsets.UTF_8) + "&")
+            .append(EVENT_ACTION_KEY + "=" + URLEncoder.encode(entry.getActionName(), StandardCharsets.UTF_8));
 
         return actionBuilder.toString();
     }
 
     private String buildBatchPayload() {
         StringBuilder payloadBuilder = new StringBuilder();
-        for(AnalyticsAction action : this.actions) {
-            payloadBuilder.append(buildActionParameters(action) + "\n");
+        for(AnalyticsEntry action : this.entries) {
+            payloadBuilder.append(buildEntryParameters(action) + "\n");
         }
         return payloadBuilder.toString();
     }
 
     private void processActions() {
-        if (!AnalyticsServiceSettings.getInstance().sendAnonymousUsage) {
-            return;
+        this.processActions(false);
+    }
+
+    private void processActions(boolean forConsent) {
+        if (!forConsent) {
+            if (!AnalyticsServiceSettings.getInstance().hasConsent()) {
+                return;
+            }
         }
-        try {
-            String requestPayload = buildActionParameters(this.actions.get(0));
-            URL requestURL = new URL(ANALYTICS_BASE_URL);
-            HttpURLConnection httpURLConnection = (HttpURLConnection) requestURL.openConnection();
-            httpURLConnection.setRequestMethod("POST");
-            // set payload - START
-            httpURLConnection.setDoOutput(true);
-            OutputStream os = httpURLConnection.getOutputStream();
-            os.write(requestPayload.getBytes());
-            os.flush();
-            os.close();
-            // set payload - END
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            this.actions = new ArrayList<>();
+        if (this.entries.size() > 0) {
+            try {
+                String requestPayload = buildEntryParameters(this.entries.get(0));
+                OkHttpClient client = new OkHttpClient();
+
+                MediaType mediaType = MediaType.parse("application/x-www-form-urlencoded");
+                RequestBody body = RequestBody.create(mediaType, requestPayload);
+                Request request = new Request.Builder()
+                        .url(ANALYTICS_BASE_URL)
+                        .post(body)
+                        .addHeader("Content-Type", "application/x-www-form-urlencoded")
+                        .addHeader("User-Agent", USER_AGENT)
+                        .build();
+
+                Response analyticsReponse = client.newCall(request).execute();
+                if (!analyticsReponse.isSuccessful()) {
+                    this.entries = new ArrayList<>();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            } finally {
+                this.entries = new ArrayList<>();
+            }
         }
     }
 }
