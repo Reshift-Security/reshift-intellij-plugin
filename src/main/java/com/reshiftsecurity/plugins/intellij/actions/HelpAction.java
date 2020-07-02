@@ -115,7 +115,7 @@ public final class HelpAction extends AbstractAction {
 	private static StringBuilder createHelpInfo() {
 		final StringBuilder ret = new StringBuilder();
 		ret.append("<h2>").append(VersionManager.getFullVersion()).append("</h2>");
-		ret.append("Website: <a href='").append(VersionManager.getWebsite()).append("'>").append(VersionManager.getWebsite()).append("</a>");
+		ret.append("Website: <a href='").append(PluginConstants.RESHIFT_SITE_URL).append("'>").append(VersionManager.getWebsite()).append("</a>");
 		ret.append("<br>");
 		ret.append(String.format("Support & Feedback: <a href='mailto:%s'>dev@reshiftsecurity.com</a>", PluginConstants.RESHIFT_DEV_EMAIL));
 		ret.append("<br/>");

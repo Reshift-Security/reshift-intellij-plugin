@@ -49,22 +49,26 @@ public class AnalyticsService {
     private final String EVENT_ACTION_KEY = "ea";
     private final String USER_ID_KEY = "cid";
     private final String MEASUREMENT_ID_KEY = "tid";
-    private final String ACTION_VALUE_KEY = "ev";
+    private final String ACTION_VALUE_KEY = "cm1";
+    private final String EVENT_VALUE_KEY = "ev";
     private final String ACTION_CATEGORY_KEY = "ec";
     private final String ACTION_LABEL_KEY = "el";
     private final String DOC_PATH = "%2Fintellij";
     private final String DOC_PATH_KEY = "dp";
+    private final String CAMPAIGN_KEYWORDS_KEY = "ck";
     private final String USER_AGENT = "Reshift Intellij IDE Plugin";
 
     private String userID;
     private String applicationVersion;
     private String measurementID;
+    private String sourceKeywords;
 
     public AnalyticsService() {
         this.entries = new ArrayList<>();
         this.applicationVersion = VersionManager.getVersion();
         this.userID = getUserIdentifier();
         this.measurementID = "UA-149586212-2";
+        this.sourceKeywords = System.getProperty("os.name") + " " + USER_AGENT + " " + VersionManager.getVersion();
     }
 
     public static AnalyticsService getInstance() {
@@ -133,12 +137,12 @@ public class AnalyticsService {
             .append(USER_ID_KEY + "=" + this.userID + "&")
             .append(APP_VERSION_KEY + "=" + this.applicationVersion + "&")
             .append(MEASUREMENT_ID_KEY + "=" + this.measurementID + "&")
-            .append(DOC_PATH_KEY + "=" + DOC_PATH + "&");
+            .append(DOC_PATH_KEY + "=" + DOC_PATH + "&")
+            .append(HIT_TYPE_KEY + "=" + HIT_TYPE + "&")
+            .append(CAMPAIGN_KEYWORDS_KEY + "=" + URLEncoder.encode(this.sourceKeywords, StandardCharsets.UTF_8));
         if (entry.getMetric() != null) {
             actionBuilder.append(ACTION_VALUE_KEY + "=" + entry.getMetric() + "&");
-            actionBuilder.append(HIT_TYPE_KEY + "=transaction&");
-        } else {
-            actionBuilder.append(HIT_TYPE_KEY + "=" + HIT_TYPE + "&");
+            actionBuilder.append(EVENT_VALUE_KEY + "=" + entry.getMetric() + "&");
         }
         actionBuilder.append(ACTION_CATEGORY_KEY + "=" + URLEncoder.encode(entry.getCategory(), StandardCharsets.UTF_8) + "&")
             .append(ACTION_LABEL_KEY + "=" + URLEncoder.encode(entry.getLabel(), StandardCharsets.UTF_8) + "&")
@@ -176,7 +180,7 @@ public class AnalyticsService {
                         .url(ANALYTICS_BASE_URL)
                         .post(body)
                         .addHeader("Content-Type", "application/x-www-form-urlencoded")
-                        .addHeader("User-Agent", USER_AGENT)
+                        .addHeader("User-Agent", System.getProperty("os.name") + " " + USER_AGENT)
                         .build();
 
                 Response analyticsReponse = client.newCall(request).execute();

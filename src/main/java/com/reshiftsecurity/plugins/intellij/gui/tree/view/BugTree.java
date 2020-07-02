@@ -321,7 +321,15 @@ public class BugTree extends Tree implements DataProvider, OccurenceNavigator {
 				_bugTreePanel.setPreview(null);
 			}
 
-			AnalyticsService.getInstance().recordAction(AnalyticsAction.ISSUE_REPORT_BROWSE);
+			if (path != null) {
+				if (path.getParentPath() == null) {
+					// root node selected, reset education panel
+					ToolWindowPanel.getInstance(_project).getBugDetailsComponents().clearReshiftTabs();
+				} else {
+					// leaf node selected, track in analytics
+					AnalyticsService.getInstance().recordAction(AnalyticsAction.ISSUE_REPORT_BROWSE);
+				}
+			}
 		}
 	}
 }

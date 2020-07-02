@@ -20,28 +20,19 @@
 
 package com.reshiftsecurity.analytics;
 
-public enum AnalyticsAction {
-    CLEAR_AND_CLOSE_PLUGIN_WINDOW,
-    CODE_VIEW_BUG_DETAILS,
-    COPY_PLUGIN_INFO,
-    INSTALL,
-    ISSUE_REPORT_BROWSE,
-    ISSUE_REPORT_EDU,
-    ISSUE_REPORT_MORE_SCAN_INFO,
-    OPEN_HELP,
-    OPEN_PLUGIN_WINDOW,
-    OPEN_RESHIFT_WEBSITE,
-    OPEN_SETTINGS,
-    SCAN_RESULTS_METRIC,
-    SETTINGS_GATHER_DATA_NO,
-    SETTINGS_GATHER_DATA_YES,
-    SETTINGS_UPDATED,
-    START_SCAN,
-    STOP_SCAN,
-    UNINSTALL;
+public enum AnalyticsActionCategory {
+    Code_view,
+    Education,
+    Info_and_Help,
+    Plugin_Window,
+    Scan,
+    Scan_Report,
+    Scan_Metrics,
+    Settings,
+    User_Consent;
 
     @Override
     public String toString() {
-        return name();
+        return name().replace("_", " ");
     }
 }

@@ -29,77 +29,69 @@ public class AnalyticsEntry {
 
     private void setNameAndCategory() {
         switch (this.action) {
-            case START_SCAN:
-                this.category = "Scan";
-                this.actionName = "Start";
-                break;
-            case STOP_SCAN:
-                this.category = "Scan";
-                this.actionName = "Stop";
-                break;
-            case OPEN_PLUGIN_WINDOW:
-                this.category = "Plugin Window";
-                this.actionName = "open";
-                break;
             case CLEAR_AND_CLOSE_PLUGIN_WINDOW:
-                this.category = "Plugin Window";
+                this.category = AnalyticsActionCategory.Plugin_Window.toString();
                 this.actionName = "close";
                 break;
-            case OPEN_HELP:
-                this.category = "Info and Help";
-                this.actionName = "open help";
-                break;
-            case OPEN_RESHIFT_WEBSITE:
-                this.category = "Info and Help";
-                this.actionName = "open website";
+            case CODE_VIEW_BUG_DETAILS:
+                this.category = AnalyticsActionCategory.Code_view.toString();
+                this.actionName = "click bug icon";
                 break;
             case COPY_PLUGIN_INFO:
-                this.category = "Info and Help";
+                this.category = AnalyticsActionCategory.Info_and_Help.toString();
                 this.actionName = "copy plugin info";
                 break;
             case ISSUE_REPORT_BROWSE:
-                this.category = "Scan Report";
+                this.category = AnalyticsActionCategory.Scan_Report.toString();
                 this.actionName = "browse";
                 break;
-            case ISSUE_REPORT_BUG_DETAILS:
-                this.category = "Scan Report";
-                this.actionName = "browse details";
-                break;
             case ISSUE_REPORT_EDU:
-                this.category = "Education";
+                this.category = AnalyticsActionCategory.Education.toString();
                 this.actionName = "browse education";
                 break;
             case ISSUE_REPORT_MORE_SCAN_INFO:
-                this.category = "Scan Report";
+                this.category = AnalyticsActionCategory.Scan_Report.toString();
                 this.actionName = "open report info";
                 break;
-            case CODE_VIEW_BUG_DETAILS:
-                this.category = "Scan Report";
-                this.actionName = "open issue details";
+            case OPEN_HELP:
+                this.category = AnalyticsActionCategory.Info_and_Help.toString();
+                this.actionName = "open help";
                 break;
-            case OPEN_MORE_SCAN_INFO:
-                this.category = "Scan metrics";
-                this.actionName = "open scan info";
+            case OPEN_PLUGIN_WINDOW:
+                this.category = AnalyticsActionCategory.Plugin_Window.toString();
+                this.actionName = "open";
                 break;
-            case SCAN_RESULTS_METRIC:
-                this.category = "Scan metrics";
-                this.actionName = "scan metrics";
+            case OPEN_RESHIFT_WEBSITE:
+                this.category = AnalyticsActionCategory.Info_and_Help.toString();
+                this.actionName = "open website";
                 break;
             case OPEN_SETTINGS:
-                this.category = "Settings";
+                this.category = AnalyticsActionCategory.Settings.toString();
                 this.actionName = "open settings";
                 break;
-            case SETTINGS_UPDATED:
-                this.category = "Settings";
-                this.actionName = "update settings";
-                break;
-            case SETTINGS_GATHER_DATA_YES:
-                this.category = "User Consent";
-                this.actionName = "consent accepted";
+            case SCAN_RESULTS_METRIC:
+                this.category = AnalyticsActionCategory.Scan_Metrics.toString();
+                this.actionName = "scan metrics";
                 break;
             case SETTINGS_GATHER_DATA_NO:
-                this.category = "User Consent";
+                this.category = AnalyticsActionCategory.User_Consent.toString();
                 this.actionName = "consent declined";
+                break;
+            case SETTINGS_GATHER_DATA_YES:
+                this.category = AnalyticsActionCategory.User_Consent.toString();
+                this.actionName = "consent accepted";
+                break;
+            case SETTINGS_UPDATED:
+                this.category = AnalyticsActionCategory.Settings.toString();
+                this.actionName = "update settings";
+                break;
+            case START_SCAN:
+                this.category = AnalyticsActionCategory.Plugin_Window.toString();
+                this.actionName = "start";
+                break;
+            case STOP_SCAN:
+                this.category = AnalyticsActionCategory.Scan.toString();
+                this.actionName = "stop";
                 break;
             default:
                 this.category = this.action.toString();
