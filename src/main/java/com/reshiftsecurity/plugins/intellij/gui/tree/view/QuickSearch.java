@@ -24,6 +24,8 @@ import com.intellij.openapi.wm.IdeFocusManager;
 import com.intellij.ui.JBColor;
 import com.intellij.ui.components.JBList;
 import com.intellij.ui.scale.JBUIScale;
+import com.reshiftsecurity.analytics.AnalyticsAction;
+import com.reshiftsecurity.plugins.intellij.service.AnalyticsService;
 import icons.PluginIcons;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -244,6 +246,7 @@ abstract class QuickSearch<E> {
 				_popup.processKeyEvent(e);
 				e.consume();
 			}
+			AnalyticsService.getInstance().recordAction(AnalyticsAction.ISSUE_REPORT_SEARCH);
 		} else if (isDeactivationKey(e)) {
 			hidePopup();
 			IdeFocusManager.findInstance().doWhenFocusSettlesDown(new Runnable() {

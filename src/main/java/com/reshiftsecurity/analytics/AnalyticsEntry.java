@@ -47,6 +47,14 @@ public class AnalyticsEntry {
                 this.category = AnalyticsActionCategory.Info_and_Help.toString();
                 this.actionName = "copy plugin info";
                 break;
+            case ISSUE_REPORT_AUTO_PREVIEW_DISABLE:
+                this.category = AnalyticsActionCategory.Scan_Report.toString();
+                this.actionName = "disable auto file preview";
+                break;
+            case ISSUE_REPORT_AUTO_PREVIEW_ENABLE:
+                this.category = AnalyticsActionCategory.Scan_Report.toString();
+                this.actionName = "enable auto file preview";
+                break;
             case ISSUE_REPORT_BROWSE:
                 this.category = AnalyticsActionCategory.Scan_Report.toString();
                 this.actionName = "browse";
@@ -58,6 +66,10 @@ public class AnalyticsEntry {
             case ISSUE_REPORT_MORE_SCAN_INFO:
                 this.category = AnalyticsActionCategory.Scan_Report.toString();
                 this.actionName = "open report info";
+                break;
+            case ISSUE_REPORT_SEARCH:
+                this.category = AnalyticsActionCategory.Scan_Report.toString();
+                this.actionName = "quick search";
                 break;
             case OPEN_HELP:
                 this.category = AnalyticsActionCategory.Info_and_Help.toString();
