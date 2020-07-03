@@ -20,6 +20,8 @@
 
 package com.reshiftsecurity.analytics;
 
+import java.util.Optional;
+
 public class AnalyticsEntry {
     private AnalyticsAction action;
     private Integer metric;
@@ -27,15 +29,19 @@ public class AnalyticsEntry {
     private String category;
     private String label;
 
-    private void setNameAndCategory() {
+    private void setNameAndCategory(Optional<String> actionNameOverride) {
         switch (this.action) {
             case CLEAR_AND_CLOSE_PLUGIN_WINDOW:
                 this.category = AnalyticsActionCategory.Plugin_Window.toString();
                 this.actionName = "close";
                 break;
             case CODE_VIEW_BUG_DETAILS:
-                this.category = AnalyticsActionCategory.Code_view.toString();
+                this.category = AnalyticsActionCategory.Code_View.toString();
                 this.actionName = "click bug icon";
+                break;
+            case CODE_VIEW_OPEN_FILE:
+                this.category = AnalyticsActionCategory.Code_View.toString();
+                this.actionName = "click file name";
                 break;
             case COPY_PLUGIN_INFO:
                 this.category = AnalyticsActionCategory.Info_and_Help.toString();
@@ -86,7 +92,7 @@ public class AnalyticsEntry {
                 this.actionName = "update settings";
                 break;
             case START_SCAN:
-                this.category = AnalyticsActionCategory.Plugin_Window.toString();
+                this.category = AnalyticsActionCategory.Scan.toString();
                 this.actionName = "start";
                 break;
             case STOP_SCAN:
@@ -97,24 +103,23 @@ public class AnalyticsEntry {
                 this.category = this.action.toString();
                 this.actionName = this.action.toString().replace("_"," ");
         }
+
+        if (actionNameOverride.isPresent()) {
+            this.actionName = actionNameOverride.get().toLowerCase();
+        }
     }
 
     public AnalyticsEntry(AnalyticsAction action) {
-        this.action = action;
-        this.setNameAndCategory();
-        this.label = action.toString();
+        this(action, null);
     }
     public AnalyticsEntry(AnalyticsAction action, Integer metric) {
-        this.action = action;
-        this.metric = metric;
-        this.setNameAndCategory();
-        this.label = action.toString();
+        this(action, metric, null);
     }
-    public AnalyticsEntry(AnalyticsAction action, Integer metric, String label) {
+    public AnalyticsEntry(AnalyticsAction action, Integer metric, String actionNameOverride) {
         this.action = action;
         this.metric = metric;
-        this.setNameAndCategory();
-        this.label = label;
+        this.label = action.toString();
+        this.setNameAndCategory(Optional.ofNullable(actionNameOverride));
     }
 
     public AnalyticsAction getAction() {

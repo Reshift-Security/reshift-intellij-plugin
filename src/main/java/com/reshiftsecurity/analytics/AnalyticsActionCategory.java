@@ -21,7 +21,7 @@
 package com.reshiftsecurity.analytics;
 
 public enum AnalyticsActionCategory {
-    Code_view,
+    Code_View,
     Education,
     Info_and_Help,
     Plugin_Window,

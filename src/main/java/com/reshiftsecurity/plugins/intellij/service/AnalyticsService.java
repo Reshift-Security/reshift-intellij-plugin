@@ -20,6 +20,7 @@
 
 package com.reshiftsecurity.plugins.intellij.service;
 
+import com.intellij.openapi.application.ApplicationInfo;
 import com.intellij.openapi.components.ServiceManager;
 import com.reshiftsecurity.analytics.AnalyticsEntry;
 import com.reshiftsecurity.analytics.AnalyticsAction;
@@ -47,7 +48,7 @@ public class AnalyticsService {
     private final String HIT_TYPE = "event";
     private final String HIT_TYPE_KEY = "t";
     private final String EVENT_ACTION_KEY = "ea";
-    private final String USER_ID_KEY = "cid";
+    private final String USER_ID_KEY = "uid";
     private final String MEASUREMENT_ID_KEY = "tid";
     private final String ACTION_VALUE_KEY = "cm1";
     private final String EVENT_VALUE_KEY = "ev";
@@ -55,19 +56,18 @@ public class AnalyticsService {
     private final String ACTION_LABEL_KEY = "el";
     private final String DOC_PATH = "%2Fintellij";
     private final String DOC_PATH_KEY = "dp";
-    private final String USER_AGENT = "Reshift Intellij IDE Plugin";
 
     private String userID;
     private String applicationVersion;
     private String measurementID;
-    private String sourceKeywords;
+    private String userAgent;
 
     public AnalyticsService() {
         this.entries = new ArrayList<>();
         this.applicationVersion = VersionManager.getVersion();
         this.userID = getUserIdentifier();
         this.measurementID = "UA-149586212-2";
-        this.sourceKeywords = System.getProperty("os.name") + " " + USER_AGENT + " " + VersionManager.getVersion();
+        this.userAgent = buildUserAgent();
     }
 
     public static AnalyticsService getInstance() {
@@ -80,8 +80,8 @@ public class AnalyticsService {
         this.processActions(true);
     }
 
-    public void recordAction(AnalyticsAction action, String label) {
-        this.entries.add(new AnalyticsEntry(action, null, label));
+    public void recordAction(AnalyticsAction action, String actionNameOverride) {
+        this.entries.add(new AnalyticsEntry(action, null, actionNameOverride));
         this.processActions();
     }
 
@@ -95,12 +95,18 @@ public class AnalyticsService {
         this.processActions();
     }
 
-    private static String bytesToHex(byte[] hash) {
+    private String buildUserAgent() {
+        StringBuilder agentString = new StringBuilder();
+        agentString.append(String.format("%s, ", System.getProperty("os.name")));
+        agentString.append(String.format("Reshift Plugin %s, ", VersionManager.getVersion()));
+        agentString.append(String.format("%s", ApplicationInfo.getInstance().getFullApplicationName()));
+        return agentString.toString();
+    }
+
+    private String bytesToHex(byte[] hash) {
         StringBuffer hexString = new StringBuffer();
         for (int i = 0; i < hash.length; i++) {
-            String hex = Integer.toHexString(0xff & hash[i]);
-            if(hex.length() == 1) hexString.append('0');
-            hexString.append(hex);
+            hexString.append(String.format("%02X", hash[i]));
         }
         return hexString.toString();
     }
@@ -178,13 +184,10 @@ public class AnalyticsService {
                         .url(ANALYTICS_BASE_URL)
                         .post(body)
                         .addHeader("Content-Type", "application/x-www-form-urlencoded")
-                        .addHeader("User-Agent", this.sourceKeywords)
+                        .addHeader("User-Agent", this.userAgent)
                         .build();
 
-                Response analyticsReponse = client.newCall(request).execute();
-                if (!analyticsReponse.isSuccessful()) {
-                    this.entries = new ArrayList<>();
-                }
+                client.newCall(request).execute();
             } catch (IOException e) {
                 e.printStackTrace();
             } finally {

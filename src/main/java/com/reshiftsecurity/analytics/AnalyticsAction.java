@@ -23,6 +23,7 @@ package com.reshiftsecurity.analytics;
 public enum AnalyticsAction {
     CLEAR_AND_CLOSE_PLUGIN_WINDOW,
     CODE_VIEW_BUG_DETAILS,
+    CODE_VIEW_OPEN_FILE,
     COPY_PLUGIN_INFO,
     INSTALL,
     ISSUE_REPORT_BROWSE,

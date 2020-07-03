@@ -91,9 +91,9 @@ public final class BugDetailsComponents {
 				JTabbedPane sourceTabbedPane = (JTabbedPane) changeEvent.getSource();
 				int index = sourceTabbedPane.getSelectedIndex();
 				if (index >= 0 && index < sourceTabbedPane.getTabCount()) {
-					String label = sourceTabbedPane.getToolTipTextAt(index);
-					if (label != PluginConstants.DEFAULT_EDU_TAB_TOOLTIP) {
-						_analyticsService.recordAction(AnalyticsAction.ISSUE_REPORT_EDU, label);
+					String actionName = sourceTabbedPane.getToolTipTextAt(index);
+					if (actionName != PluginConstants.DEFAULT_EDU_TAB_TOOLTIP) {
+						_analyticsService.recordAction(AnalyticsAction.ISSUE_REPORT_EDU, actionName);
 					}
 				}
 			}
