@@ -29,7 +29,6 @@ public class PluginConstants {
     public static final String DEFAULT_EXPORT_DIR = System.getProperty("user.home") + File.separatorChar + TOOL_WINDOW_ID;
 
     public static final String PLUGIN_ID = "com.reshiftsecurity.plugins.intellij";
-    public static final String MODULE_ID = "org.jetbrains.plugins.spotbugs.module";
 
     // The action group for the plug-in tool window.
     public static final String ACTION_GROUP_LEFT = "Reshift.ToolBarActions.left";
