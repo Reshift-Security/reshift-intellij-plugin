@@ -33,9 +33,9 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiManager;
 import com.intellij.psi.util.PsiTreeUtil;
+import com.reshiftsecurity.plugins.intellij.common.PluginConstants;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import com.reshiftsecurity.plugins.intellij.common.FindBugsPluginConstants;
 import com.reshiftsecurity.plugins.intellij.common.util.IdeaUtilImpl;
 
 public abstract class AbstractClassAdder {
@@ -204,10 +204,10 @@ public abstract class AbstractClassAdder {
 		final StringBuilder fqn = new StringBuilder();
 
 		fqn.append(compileOutputDir);
-		fqn.append(FindBugsPluginConstants.FILE_SEPARATOR);
+		fqn.append(PluginConstants.FILE_SEPARATOR);
 		if (!packageUrl.isEmpty()) {
 			fqn.append(packageUrl);
-			fqn.append(FindBugsPluginConstants.FILE_SEPARATOR);
+			fqn.append(PluginConstants.FILE_SEPARATOR);
 		}
 
 		//fqn.append(getParentClassNotation(psiClass));

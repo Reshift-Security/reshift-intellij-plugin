@@ -62,7 +62,7 @@ public class VersionManager {
 		}
 	}
 
-	private static final String NAME = FindBugsPluginConstants.PLUGIN_NAME;
+	private static final String NAME = PluginConstants.PLUGIN_NAME;
 	
 	private static final String WEBSITE = "https://reshiftsecurity.com/";
 

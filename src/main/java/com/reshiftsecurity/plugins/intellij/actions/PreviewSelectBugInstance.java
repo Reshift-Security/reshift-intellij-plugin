@@ -23,6 +23,8 @@ import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.wm.ToolWindow;
+import com.reshiftsecurity.analytics.AnalyticsAction;
+import com.reshiftsecurity.plugins.intellij.service.AnalyticsService;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import com.reshiftsecurity.plugins.intellij.core.AbstractSettings;
@@ -69,5 +71,9 @@ public final class PreviewSelectBugInstance extends AbstractToggleAction {
 		final WorkspaceSettings workspaceSettings = WorkspaceSettings.getInstance(project);
 		workspaceSettings.toolWindowEditorPreview = select;
 		panel.setPreviewEnabled(select);
+		AnalyticsService.getInstance().recordAction(
+				select ?
+						AnalyticsAction.ISSUE_REPORT_AUTO_PREVIEW_ENABLE :
+						AnalyticsAction.ISSUE_REPORT_AUTO_PREVIEW_DISABLE);
 	}
 }

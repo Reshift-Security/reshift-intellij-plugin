@@ -23,12 +23,13 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.DialogBuilder;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.util.ui.JBUI;
+import com.reshiftsecurity.analytics.AnalyticsAction;
 import com.reshiftsecurity.plugins.intellij.common.VersionManager;
-import com.reshiftsecurity.plugins.intellij.common.util.FindBugsUtil;
 import com.reshiftsecurity.plugins.intellij.common.util.New;
 import com.reshiftsecurity.plugins.intellij.core.FindBugsProject;
 import com.reshiftsecurity.plugins.intellij.core.FindBugsResult;
 import com.reshiftsecurity.plugins.intellij.resources.GuiResources;
+import com.reshiftsecurity.plugins.intellij.service.AnalyticsService;
 
 import javax.swing.JComponent;
 import javax.swing.JEditorPane;
@@ -161,6 +162,8 @@ public class AnalysisRunDetailsDialog {
 				jEditorPane.scrollRectToVisible(new Rectangle(0, 0));
 			}
 		});
+
+		AnalyticsService.getInstance().recordAction(AnalyticsAction.ISSUE_REPORT_MORE_SCAN_INFO);
 
 		return dialogBuilder;
 	}

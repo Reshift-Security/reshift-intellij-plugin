@@ -31,6 +31,8 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.intellij.ui.awt.RelativePoint;
 import com.intellij.util.Function;
+import com.reshiftsecurity.analytics.AnalyticsAction;
+import com.reshiftsecurity.plugins.intellij.service.AnalyticsService;
 import com.reshiftsecurity.plugins.intellij.service.EducationCachingService;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -140,7 +142,7 @@ public final class BugsLineMarkerProvider implements LineMarkerProvider {
 			}
 
 			final JBPopupFactory factory = JBPopupFactory.getInstance();
-			/*return factory.createListPopup(new BaseListPopupStep<SuppressIntentionAction>(FindBugsPluginConstants.PLUGIN_NAME, intentionActions) {
+			/*return factory.createListPopup(new BaseListPopupStep<SuppressIntentionAction>(PluginConstants.PLUGIN_NAME, intentionActions) {
 				@Override
 				public PopupStep<?> onChosen(final SuppressIntentionAction selectedValue, final boolean finalChoice) {
 					final Project project = _psiElement.getProject();
@@ -167,6 +169,8 @@ public final class BugsLineMarkerProvider implements LineMarkerProvider {
 				}
 			}
 			buildPopupMenu().show(new RelativePoint(e));
+
+			AnalyticsService.getInstance().recordAction(AnalyticsAction.CODE_VIEW_BUG_DETAILS);
 		}
 	}
 

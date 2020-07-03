@@ -30,7 +30,7 @@ import edu.umd.cs.findbugs.DetectorFactoryCollection;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.PropertyKey;
 import com.reshiftsecurity.plugins.intellij.common.EventDispatchThreadHelper;
-import com.reshiftsecurity.plugins.intellij.common.FindBugsPluginConstants;
+import com.reshiftsecurity.plugins.intellij.common.PluginConstants;
 import com.reshiftsecurity.plugins.intellij.common.util.New;
 import com.reshiftsecurity.plugins.intellij.core.AbstractSettings;
 import com.reshiftsecurity.plugins.intellij.core.FindBugsState;
@@ -104,7 +104,7 @@ abstract class AbstractAnalyzeAction extends AbstractAction {
 			return false;
 		}
 		final Map<String, Map<String, Boolean>> byPluginId = New.map();
-		byPluginId.put(FindBugsPluginConstants.FINDBUGS_CORE_PLUGIN_ID, projectSettings.detectors);
+		byPluginId.put(PluginConstants.FINDBUGS_CORE_PLUGIN_ID, projectSettings.detectors);
 		for (final PluginSettings pluginSettings : projectSettings.plugins) {
 			byPluginId.put(pluginSettings.id, pluginSettings.detectors);
 		}

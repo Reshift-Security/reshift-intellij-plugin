@@ -20,7 +20,33 @@
 
 package com.reshiftsecurity.plugins.intellij.common;
 
+import java.io.File;
+
 public class PluginConstants {
+
+    public static final String PLUGIN_NAME = "Reshift Security IntelliJ plugin";
+    public static final String TOOL_WINDOW_ID = "reshift"; // see plugin.xml
+    public static final String DEFAULT_EXPORT_DIR = System.getProperty("user.home") + File.separatorChar + TOOL_WINDOW_ID;
+
+    public static final String PLUGIN_ID = "com.reshiftsecurity.plugins.intellij";
+
+    // The action group for the plug-in tool window.
+    public static final String ACTION_GROUP_LEFT = "Reshift.ToolBarActions.left";
+
+    public static final String ACTION_GROUP_RIGHT = "Reshift.ToolBarActions.right";
+
+    public static final String ACTION_GROUP_NAVIGATION = "Reshift.ToolBarActions.navigation";
+
+    public static final String ACTION_GROUP_UTILS = "Reshift.ToolBarActions.utils";
+
+    public static final String FILE_SEPARATOR = File.separator;
+
+    public static final String FINDBUGS_CORE_PLUGIN_ID = "edu.umd.cs.findbugs.plugins.core";
+
+    public static final String DEFAULT_SUPPRESS_WARNINGS_CLASSNAME = "edu.umd.cs.findbugs.annotations.SuppressFBWarnings";
+
     public static final String RESHIFT_SITE_URL = "https://www.reshiftsecurity.com/?utm_source=plugin&utm_medium=IntelliJ&utm_campaign=intellij_plugin_reshift";
     public static final String RESHIFT_DEV_EMAIL = "dev@reshiftsecurity.com";
+    public static final String UNINSTALL_FEEDBACK_URL = "https://www.reshiftsecurity.com/uninstall-intellij/";
+    public static final String DEFAULT_EDU_TAB_TOOLTIP = "Security Expert Tools/Resources to fix vulnerabilities";
 }

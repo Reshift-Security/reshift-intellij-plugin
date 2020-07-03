@@ -26,11 +26,12 @@ import com.intellij.openapi.ide.CopyPasteManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.wm.ToolWindow;
 import com.intellij.util.text.DateFormatUtil;
+import com.reshiftsecurity.analytics.AnalyticsAction;
 import com.reshiftsecurity.plugins.intellij.common.PluginConstants;
+import com.reshiftsecurity.plugins.intellij.service.AnalyticsService;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import com.reshiftsecurity.plugins.intellij.common.VersionManager;
-import com.reshiftsecurity.plugins.intellij.common.util.FindBugsUtil;
 import com.reshiftsecurity.plugins.intellij.core.FindBugsState;
 import com.reshiftsecurity.plugins.intellij.gui.common.BalloonTipFactory;
 import com.reshiftsecurity.plugins.intellij.resources.ResourcesLoader;
@@ -41,7 +42,6 @@ import java.awt.datatransfer.StringSelection;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Properties;
@@ -72,6 +72,9 @@ public final class HelpAction extends AbstractAction {
 			@NotNull final FindBugsState state
 	) {
 
+
+		AnalyticsService.getInstance().recordAction(AnalyticsAction.OPEN_HELP);
+
 		toolWindow.setShowStripeButton(true);
 
 		BalloonTipFactory.showToolWindowInfoNotifier(
@@ -82,6 +85,7 @@ public final class HelpAction extends AbstractAction {
 						if (A_HREF_COPY.equals(evt.getDescription())) {
 							final String info = createProductInfo().toString();
 							CopyPasteManager.getInstance().setContents(new StringSelection(info));
+							AnalyticsService.getInstance().recordAction(AnalyticsAction.COPY_PLUGIN_INFO);
 						} else {
 							try {
 								URI eventURI = evt.getURL().toURI();
@@ -111,7 +115,7 @@ public final class HelpAction extends AbstractAction {
 	private static StringBuilder createHelpInfo() {
 		final StringBuilder ret = new StringBuilder();
 		ret.append("<h2>").append(VersionManager.getFullVersion()).append("</h2>");
-		ret.append("Website: <a href='").append(VersionManager.getWebsite()).append("'>").append(VersionManager.getWebsite()).append("</a>");
+		ret.append("Website: <a href='").append(PluginConstants.RESHIFT_SITE_URL).append("'>").append(VersionManager.getWebsite()).append("</a>");
 		ret.append("<br>");
 		ret.append(String.format("Support & Feedback: <a href='mailto:%s'>dev@reshiftsecurity.com</a>", PluginConstants.RESHIFT_DEV_EMAIL));
 		ret.append("<br/>");
@@ -140,7 +144,7 @@ public final class HelpAction extends AbstractAction {
 
 		final StringBuilder ret = new StringBuilder("\n");
 		ret.append("Product Info");
-		ret.append("\n    Reshift IntelliJ plugin: ").append(VersionManager.getVersion());
+		ret.append("\n    Reshift Security: plugin version ").append(VersionManager.getVersion());
 
 		boolean ideaVersionAvailable = false;
 		try {

@@ -22,6 +22,7 @@ package com.reshiftsecurity.plugins.intellij.gui.tree.model;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiFile;
+import com.reshiftsecurity.plugins.intellij.gui.tree.SeverityGroupComparator;
 import org.jetbrains.annotations.NotNull;
 import com.reshiftsecurity.plugins.intellij.common.EventDispatchThreadHelper;
 import com.reshiftsecurity.plugins.intellij.common.ExtendedProblemDescriptor;
@@ -155,6 +156,8 @@ public class GroupTreeModel extends AbstractTreeModel<VisitableTreeNode, RootNod
 
 		_root.addChild(groupNode);
 		nodeStructureChanged(_root);
+
+		_root.getChildsList().sort(new SeverityGroupComparator());
 
 		startSubGroup(depth + 1, member, member);
 	}

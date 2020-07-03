@@ -20,11 +20,19 @@
 
 package com.reshiftsecurity.analytics;
 
-public enum AnalyticsActionType {
-    SCAN, CLICK;
+public enum AnalyticsActionCategory {
+    Code_View,
+    Education,
+    Info_and_Help,
+    Plugin_Window,
+    Scan,
+    Scan_Report,
+    Scan_Metrics,
+    Settings,
+    User_Consent;
 
     @Override
     public String toString() {
-        return name();
+        return name().replace("_", " ");
     }
 }

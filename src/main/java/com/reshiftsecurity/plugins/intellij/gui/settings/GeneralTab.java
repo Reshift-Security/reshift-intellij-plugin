@@ -22,6 +22,7 @@ package com.reshiftsecurity.plugins.intellij.gui.settings;
 import com.intellij.openapi.options.ConfigurationException;
 import com.intellij.ui.components.JBCheckBox;
 import com.intellij.util.ui.UIUtil;
+import com.reshiftsecurity.plugins.intellij.service.AnalyticsServiceSettings;
 import org.jetbrains.annotations.NotNull;
 import com.reshiftsecurity.plugins.intellij.core.AbstractSettings;
 import com.reshiftsecurity.plugins.intellij.core.WorkspaceSettings;
@@ -40,6 +41,7 @@ final class GeneralTab extends JPanel {
 	private JBCheckBox analyzeAfterAutoMake;
 	private JBCheckBox runInBackground;
 	private JBCheckBox toolWindowToFront;
+	private JBCheckBox analyticsSend;
 	private PluginTablePane plugin;
 
 	GeneralTab() {
@@ -49,6 +51,7 @@ final class GeneralTab extends JPanel {
 		analyzeAfterAutoMake = new JBCheckBox(ResourcesLoader.getString("general.analyzeAfterAutoMake.title"));
 		runInBackground = new JBCheckBox(ResourcesLoader.getString("general.runInBackground.title"));
 		toolWindowToFront = new JBCheckBox(ResourcesLoader.getString("general.toolWindowToFront.title"));
+		analyticsSend = new JBCheckBox(ResourcesLoader.getString("general.analyticsSend.title"));
 		plugin = new PluginTablePane();
 
 		final JPanel topPane = new JPanel(new VerticalFlowLayout(HAlignment.Left, VAlignment.Top, 0, UIUtil.DEFAULT_VGAP, false, false));
@@ -57,6 +60,7 @@ final class GeneralTab extends JPanel {
 		topPane.add(analyzeAfterAutoMake);
 		topPane.add(runInBackground);
 		topPane.add(toolWindowToFront);
+		topPane.add(analyticsSend);
 
 		add(topPane, BorderLayout.NORTH);
 		// Hiding unnecessary plugin tab
@@ -76,7 +80,8 @@ final class GeneralTab extends JPanel {
 				analyzeAfterCompile.isSelected() != settings.analyzeAfterCompile ||
 				analyzeAfterAutoMake.isSelected() != settings.analyzeAfterAutoMake ||
 				runInBackground.isSelected() != settings.runInBackground ||
-				toolWindowToFront.isSelected() != settings.toolWindowToFront;
+				toolWindowToFront.isSelected() != settings.toolWindowToFront ||
+				analyticsSend.isSelected() != AnalyticsServiceSettings.getInstance().hasConsent();
 	}
 
 	void apply(@NotNull final AbstractSettings settings) throws ConfigurationException {
@@ -89,6 +94,7 @@ final class GeneralTab extends JPanel {
 		settings.analyzeAfterAutoMake = analyzeAfterAutoMake.isSelected();
 		settings.runInBackground = runInBackground.isSelected();
 		settings.toolWindowToFront = toolWindowToFront.isSelected();
+		AnalyticsServiceSettings.getInstance().recordConsent(analyticsSend.isSelected());
 	}
 
 	void reset(@NotNull final AbstractSettings settings) {
@@ -101,6 +107,7 @@ final class GeneralTab extends JPanel {
 		analyzeAfterAutoMake.setSelected(settings.analyzeAfterAutoMake);
 		runInBackground.setSelected(settings.runInBackground);
 		toolWindowToFront.setSelected(settings.toolWindowToFront);
+		analyticsSend.setSelected(AnalyticsServiceSettings.getInstance().hasConsent());
 	}
 
 	@NotNull
@@ -121,6 +128,7 @@ final class GeneralTab extends JPanel {
 				"general.analyzeAfterAutoMake.title",
 				"general.runInBackground.title",
 				"general.toolWindowToFront.title",
+				"general.analyticsSend.title",
 				// PluginTablePane
 				"plugins.title",
 				"plugins.addFromDisk"

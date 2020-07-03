@@ -25,8 +25,11 @@ import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.util.SystemInfo;
 import com.intellij.ui.components.JBTabbedPane;
 import com.intellij.util.ui.*;
+import com.reshiftsecurity.analytics.AnalyticsAction;
 import com.reshiftsecurity.education.DevContent;
 import com.reshiftsecurity.education.VulnerabilityDetails;
+import com.reshiftsecurity.plugins.intellij.common.PluginConstants;
+import com.reshiftsecurity.plugins.intellij.service.AnalyticsService;
 import com.reshiftsecurity.plugins.intellij.service.EducationCachingService;
 import edu.umd.cs.findbugs.*;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
@@ -39,6 +42,8 @@ import com.reshiftsecurity.plugins.intellij.gui.tree.view.BugTree;
 import com.reshiftsecurity.plugins.intellij.resources.GuiResources;
 
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import javax.swing.event.HyperlinkEvent;
 import javax.swing.text.html.HTMLEditorKit;
 import java.awt.*;
@@ -72,13 +77,27 @@ public final class BugDetailsComponents {
 	private String _currentReshiftSection;
 	private HashMap<String, Component> _reshiftContentPanes;
 	private EducationCachingService _eduCacheService;
-
+	private ChangeListener _eduChangeListener;
+	AnalyticsService _analyticsService;
 
 	BugDetailsComponents(final ToolWindowPanel toolWindowPanel) {
 		_parent = toolWindowPanel;
 		_htmlEditorKit = GuiResources.createHtmlEditorKit();
 		_reshiftContentPanes = new HashMap<>();
 		_eduCacheService = ServiceManager.getService(EducationCachingService.class);
+		_analyticsService = AnalyticsService.getInstance();
+		_eduChangeListener = new ChangeListener() {
+			public void stateChanged(ChangeEvent changeEvent) {
+				JTabbedPane sourceTabbedPane = (JTabbedPane) changeEvent.getSource();
+				int index = sourceTabbedPane.getSelectedIndex();
+				if (index >= 0 && index < sourceTabbedPane.getTabCount()) {
+					String actionName = sourceTabbedPane.getToolTipTextAt(index);
+					if (actionName != PluginConstants.DEFAULT_EDU_TAB_TOOLTIP) {
+						_analyticsService.recordAction(AnalyticsAction.ISSUE_REPORT_EDU, actionName);
+					}
+				}
+			}
+		};
 	}
 
 	JTabbedPane getTabbedPane() {
@@ -95,6 +114,8 @@ public final class BugDetailsComponents {
 
 			_jTabbedPane.setFocusable(false);
 			_jTabbedPane.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
+			_jTabbedPane.addChangeListener(this._eduChangeListener);
+			_analyticsService.recordAction(AnalyticsAction.OPEN_PLUGIN_WINDOW);
 
 			resetTabPane();
 		}
@@ -161,9 +182,9 @@ public final class BugDetailsComponents {
 		_jTabbedPane.removeAll();
 		if (SystemInfo.isMac) {
 			// Aqua LF will rotate content
-			_jTabbedPane.addTab("", PluginIcons.RESHIFT_ICON, getBugDetailsSplitPane(), "Security Expert Tools/Resources to fix vulnerabilities");
+			_jTabbedPane.addTab("", PluginIcons.RESHIFT_ICON, getBugDetailsSplitPane(), PluginConstants.DEFAULT_EDU_TAB_TOOLTIP);
 		} else {
-			_jTabbedPane.addTab(null, new VerticalTextIcon("", true, PluginIcons.RESHIFT_ICON), getBugDetailsSplitPane(), "Security Expert Tools/Resources to fix vulnerabilities");
+			_jTabbedPane.addTab(null, new VerticalTextIcon("", true, PluginIcons.RESHIFT_ICON), getBugDetailsSplitPane(), PluginConstants.DEFAULT_EDU_TAB_TOOLTIP);
 		}
 
 		_jTabbedPane.setMnemonicAt(0, KeyEvent.VK_1);

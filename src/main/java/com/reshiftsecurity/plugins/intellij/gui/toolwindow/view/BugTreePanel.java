@@ -39,6 +39,8 @@ import com.intellij.psi.PsiDocumentManager;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.intellij.ui.JBColor;
+import com.reshiftsecurity.analytics.AnalyticsAction;
+import com.reshiftsecurity.plugins.intellij.service.AnalyticsService;
 import edu.umd.cs.findbugs.BugInstance;
 import edu.umd.cs.findbugs.MethodAnnotation;
 import edu.umd.cs.findbugs.SortedBugCollection;
@@ -278,6 +280,8 @@ public class BugTreePanel extends JPanel {
 	 */
 	public void collapseTree() {
 		_bugTree.getTreeHelper().collapseTree();
+
+		AnalyticsService.getInstance().recordAction(AnalyticsAction.ISSUE_REPORT_BROWSE);
 	}
 
 	/**
@@ -285,6 +289,8 @@ public class BugTreePanel extends JPanel {
 	 */
 	public void expandTree() {
 		_bugTree.getTreeHelper().expandTree(3);
+
+		AnalyticsService.getInstance().recordAction(AnalyticsAction.ISSUE_REPORT_BROWSE);
 	}
 
 	public void setResult(final FindBugsResult result) {

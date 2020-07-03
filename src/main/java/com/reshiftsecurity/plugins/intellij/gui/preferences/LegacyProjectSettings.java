@@ -27,7 +27,7 @@ import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.Project;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import com.reshiftsecurity.plugins.intellij.common.FindBugsPluginConstants;
+import com.reshiftsecurity.plugins.intellij.common.PluginConstants;
 import com.reshiftsecurity.plugins.intellij.core.ProjectSettings;
 import com.reshiftsecurity.plugins.intellij.core.WorkspaceSettings;
 import com.reshiftsecurity.plugins.intellij.preferences.PersistencePreferencesBean;
@@ -37,7 +37,7 @@ import com.reshiftsecurity.plugins.intellij.preferences.PersistencePreferencesBe
  * The settings are removed when the .ipr or config xml is stored next time.
  */
 @State(
-		name = FindBugsPluginConstants.PLUGIN_ID,
+		name = PluginConstants.PLUGIN_ID,
 		storages = {
 				@Storage(file = "$PROJECT_FILE$", deprecated = true),
 				@Storage(file = "$PROJECT_CONFIG_DIR$/reshiftsecurity-intellij.xml", deprecated = true)})

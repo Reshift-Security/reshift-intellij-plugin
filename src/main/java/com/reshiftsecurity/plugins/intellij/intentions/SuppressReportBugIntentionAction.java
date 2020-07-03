@@ -60,7 +60,7 @@ import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import com.reshiftsecurity.plugins.intellij.common.ExtendedProblemDescriptor;
-import com.reshiftsecurity.plugins.intellij.common.FindBugsPluginConstants;
+import com.reshiftsecurity.plugins.intellij.common.PluginConstants;
 import com.reshiftsecurity.plugins.intellij.common.util.FileModificationServiceUtil;
 import com.reshiftsecurity.plugins.intellij.common.util.IdeaUtilImpl;
 import com.reshiftsecurity.plugins.intellij.core.ModuleSettings;
@@ -69,6 +69,7 @@ import com.reshiftsecurity.plugins.intellij.gui.toolwindow.view.ToolWindowPanel;
 import com.reshiftsecurity.plugins.intellij.resources.ResourcesLoader;
 
 import javax.swing.Icon;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -171,7 +172,7 @@ public class SuppressReportBugIntentionAction extends SuppressIntentionAction im
 			return;
 		}
 		@SuppressWarnings({"ConstantConditions"})
-		final ReadonlyStatusHandler.OperationStatus status = ReadonlyStatusHandler.getInstance(project).ensureFilesWritable(container.getContainingFile().getVirtualFile());
+		final ReadonlyStatusHandler.OperationStatus status = ReadonlyStatusHandler.getInstance(project).ensureFilesWritable(Collections.singletonList(container.getContainingFile().getVirtualFile()));
 		if (status.hasReadonlyFiles()) {
 			return;
 		}
@@ -345,7 +346,7 @@ public class SuppressReportBugIntentionAction extends SuppressIntentionAction im
 			ret = ProjectSettings.getInstance(psiElement.getProject()).suppressWarningsClassName;
 		}
 		if (StringUtil.isEmptyOrSpaces(ret)) {
-			ret = FindBugsPluginConstants.DEFAULT_SUPPRESS_WARNINGS_CLASSNAME;
+			ret = PluginConstants.DEFAULT_SUPPRESS_WARNINGS_CLASSNAME;
 		}
 		return ret;
 	}

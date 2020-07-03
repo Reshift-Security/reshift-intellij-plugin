@@ -18,35 +18,19 @@
  * If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.reshiftsecurity.analytics;
+package com.reshiftsecurity.plugins.intellij.gui.tree;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import com.reshiftsecurity.plugins.intellij.gui.tree.model.BugInstanceGroupNode;
+import com.reshiftsecurity.plugins.intellij.gui.tree.model.VisitableTreeNode;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Comparator;
 
-public class AnalyticsService {
-    List<AnalyticsAction> actions;
-    Gson jsonSerializer;
-
-    public AnalyticsService() {
-        this.actions = new ArrayList<>();
-        this.jsonSerializer = new GsonBuilder().setPrettyPrinting().create();
-    }
-
-    public void recordAction(AnalyticsAction action) {
-        this.actions.add(action);
-        this.processActions();
-    }
-
-    private void processActions() {
-        if (actions.size() >= 100) {
-            new Thread(() -> {
-                // TODO: send actions async and reset
-                String actionsJson = this.jsonSerializer.toJson(this.actions);
-                this.actions = new ArrayList<>();
-            }).start();
+public class SeverityGroupComparator implements Comparator<VisitableTreeNode> {
+    public int compare(VisitableTreeNode c1, VisitableTreeNode c2)
+    {
+        if (c1 instanceof BugInstanceGroupNode && c2 instanceof BugInstanceGroupNode) {
+            return ((BugInstanceGroupNode) c1).getGroupName().compareTo(((BugInstanceGroupNode) c2).getGroupName());
         }
+        return 0;
     }
 }

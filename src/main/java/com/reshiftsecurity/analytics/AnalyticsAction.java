@@ -20,24 +20,32 @@
 
 package com.reshiftsecurity.analytics;
 
-import java.time.ZonedDateTime;
+public enum AnalyticsAction {
+    CLEAR_AND_CLOSE_PLUGIN_WINDOW,
+    CODE_VIEW_BUG_DETAILS,
+    CODE_VIEW_OPEN_FILE,
+    COPY_PLUGIN_INFO,
+    INSTALL,
+    ISSUE_REPORT_AUTO_PREVIEW_DISABLE,
+    ISSUE_REPORT_AUTO_PREVIEW_ENABLE,
+    ISSUE_REPORT_BROWSE,
+    ISSUE_REPORT_EDU,
+    ISSUE_REPORT_MORE_SCAN_INFO,
+    ISSUE_REPORT_SEARCH,
+    OPEN_HELP,
+    OPEN_PLUGIN_WINDOW,
+    OPEN_RESHIFT_WEBSITE,
+    OPEN_SETTINGS,
+    SCAN_RESULTS_METRIC,
+    SETTINGS_GATHER_DATA_NO,
+    SETTINGS_GATHER_DATA_YES,
+    SETTINGS_UPDATED,
+    START_SCAN,
+    STOP_SCAN,
+    UNINSTALL;
 
-public class AnalyticsAction {
-    private AnalyticsActionType actionType;
-    private ZonedDateTime actionDateTime;
-    private String actionResultComments;
-    private int actionResultCount;
-
-    public AnalyticsAction(AnalyticsActionType type) {
-        this.actionType = type;
-        this.actionDateTime = ZonedDateTime.now();
-    }
-
-    public void setActionResultComments(String comments) {
-        this.actionResultComments = comments;
-    }
-
-    public void setActionResultCount(int actionResultCount) {
-        this.actionResultCount = actionResultCount;
+    @Override
+    public String toString() {
+        return name();
     }
 }

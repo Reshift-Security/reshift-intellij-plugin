@@ -28,7 +28,7 @@ import edu.umd.cs.findbugs.DetectorFactoryCollection;
 import edu.umd.cs.findbugs.I18N;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import com.reshiftsecurity.plugins.intellij.common.FindBugsPluginConstants;
+import com.reshiftsecurity.plugins.intellij.common.PluginConstants;
 import com.reshiftsecurity.plugins.intellij.common.util.New;
 import com.reshiftsecurity.plugins.intellij.common.util.WithPluginClassloader;
 import com.reshiftsecurity.plugins.intellij.core.AbstractSettings;
@@ -198,7 +198,7 @@ abstract class AbstractDetectorNode extends DefaultMutableTreeNode {
 	) {
 		final Map<String, Map<String, Boolean>> ret = New.map();
 		if (!settings.detectors.isEmpty()) {
-			ret.put(FindBugsPluginConstants.FINDBUGS_CORE_PLUGIN_ID, new HashMap<String, Boolean>(settings.detectors));
+			ret.put(PluginConstants.FINDBUGS_CORE_PLUGIN_ID, new HashMap<String, Boolean>(settings.detectors));
 		}
 		for (final PluginSettings pluginSettings : settings.plugins) {
 			if (!pluginSettings.detectors.isEmpty()) {
@@ -212,7 +212,7 @@ abstract class AbstractDetectorNode extends DefaultMutableTreeNode {
 			@NotNull final AbstractSettings settings,
 			@NotNull final Map<String, Map<String, Boolean>> detectors
 	) {
-		apply(detectors.get(FindBugsPluginConstants.FINDBUGS_CORE_PLUGIN_ID), settings.detectors);
+		apply(detectors.get(PluginConstants.FINDBUGS_CORE_PLUGIN_ID), settings.detectors);
 		for (final PluginSettings pluginSettings : settings.plugins) {
 			apply(detectors.get(pluginSettings.id), pluginSettings.detectors);
 		}

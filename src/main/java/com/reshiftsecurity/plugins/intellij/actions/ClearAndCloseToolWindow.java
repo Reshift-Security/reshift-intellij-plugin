@@ -22,6 +22,9 @@ package com.reshiftsecurity.plugins.intellij.actions;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.wm.ToolWindow;
+import com.reshiftsecurity.analytics.AnalyticsAction;
+import com.reshiftsecurity.plugins.intellij.gui.toolwindow.view.ToolWindowPanel;
+import com.reshiftsecurity.plugins.intellij.service.AnalyticsService;
 import org.jetbrains.annotations.NotNull;
 import com.reshiftsecurity.plugins.intellij.core.FindBugsState;
 import com.reshiftsecurity.plugins.intellij.messages.MessageBusManager;
@@ -48,6 +51,8 @@ public final class ClearAndCloseToolWindow extends AbstractAction {
 			@NotNull final FindBugsState state
 	) {
 
+		AnalyticsService.getInstance().recordAction(AnalyticsAction.CLEAR_AND_CLOSE_PLUGIN_WINDOW);
+		ToolWindowPanel.getInstance(project).getBugDetailsComponents().clearReshiftTabs();
 		toolWindow.hide(null);
 		MessageBusManager.publishClear(project);
 	}

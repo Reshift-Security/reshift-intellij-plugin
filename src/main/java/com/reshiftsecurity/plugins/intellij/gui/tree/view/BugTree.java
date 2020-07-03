@@ -34,6 +34,8 @@ import com.intellij.ui.PopupHandler;
 import com.intellij.util.EditSourceOnDoubleClickHandler;
 import com.intellij.util.OpenSourceUtil;
 import com.intellij.util.ui.UIUtil;
+import com.reshiftsecurity.analytics.AnalyticsAction;
+import com.reshiftsecurity.plugins.intellij.service.AnalyticsService;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.Nullable;
@@ -317,6 +319,16 @@ public class BugTree extends Tree implements DataProvider, OccurenceNavigator {
 				_bugTreePanel.setPreview(path);
 			} else {
 				_bugTreePanel.setPreview(null);
+			}
+
+			if (path != null) {
+				if (path.getParentPath() == null) {
+					// root node selected, reset education panel
+					ToolWindowPanel.getInstance(_project).getBugDetailsComponents().clearReshiftTabs();
+				} else {
+					// leaf node selected, track in analytics
+					AnalyticsService.getInstance().recordAction(AnalyticsAction.CODE_VIEW_OPEN_FILE);
+				}
 			}
 		}
 	}

@@ -23,9 +23,9 @@ import com.intellij.util.xmlb.Constants;
 import com.intellij.util.xmlb.annotations.AbstractCollection;
 import com.intellij.util.xmlb.annotations.MapAnnotation;
 import com.intellij.util.xmlb.annotations.Tag;
+import com.reshiftsecurity.plugins.intellij.common.PluginConstants;
 import edu.umd.cs.findbugs.BugRanker;
 import edu.umd.cs.findbugs.config.ProjectFilterSettings;
-import com.reshiftsecurity.plugins.intellij.common.FindBugsPluginConstants;
 import com.reshiftsecurity.plugins.intellij.common.util.FindBugsCustomPluginUtil;
 import com.reshiftsecurity.plugins.intellij.common.util.New;
 import com.reshiftsecurity.plugins.intellij.preferences.AnalysisEffort;
@@ -64,7 +64,7 @@ public abstract class AbstractSettings {
 	public Set<String> hiddenBugCategory = New.asSet("NOISE");
 
 	@Tag
-	public String suppressWarningsClassName = FindBugsPluginConstants.DEFAULT_SUPPRESS_WARNINGS_CLASSNAME;
+	public String suppressWarningsClassName = PluginConstants.DEFAULT_SUPPRESS_WARNINGS_CLASSNAME;
 
 	/**
 	 * Additional findbugs plugins.

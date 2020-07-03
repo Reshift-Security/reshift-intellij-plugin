@@ -28,6 +28,8 @@ import com.intellij.openapi.options.ConfigurationException;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.Disposer;
 import com.intellij.ui.components.JBTabbedPane;
+import com.reshiftsecurity.analytics.AnalyticsAction;
+import com.reshiftsecurity.plugins.intellij.service.AnalyticsService;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import com.reshiftsecurity.plugins.intellij.core.AbstractSettings;
@@ -152,6 +154,7 @@ abstract class SettingsPane extends JPanel implements Disposable {
 		filterTab.apply(settings);
 		detectorTab.apply(settings);
 		annotateTab.apply(settings);
+		AnalyticsService.getInstance().recordAction(AnalyticsAction.SETTINGS_UPDATED);
 	}
 
 	final void applyProject(@NotNull final ProjectSettings settings) throws ConfigurationException {

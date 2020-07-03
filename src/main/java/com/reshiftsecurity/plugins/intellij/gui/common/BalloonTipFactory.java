@@ -25,7 +25,7 @@ import com.intellij.openapi.ui.popup.Balloon;
 import com.intellij.openapi.ui.popup.Balloon.Position;
 import com.intellij.openapi.wm.ToolWindowManager;
 import org.jetbrains.annotations.NotNull;
-import com.reshiftsecurity.plugins.intellij.common.FindBugsPluginConstants;
+import com.reshiftsecurity.plugins.intellij.common.PluginConstants;
 
 import javax.annotation.Nullable;
 import javax.swing.event.HyperlinkListener;
@@ -61,7 +61,7 @@ public final class BalloonTipFactory {
 		if (manager == null) { // this should never happen.
 			return;
 		}
-		manager.notifyByBalloon(FindBugsPluginConstants.TOOL_WINDOW_ID, MessageType.INFO, html, null, hyperlinkListener);
+		manager.notifyByBalloon(PluginConstants.TOOL_WINDOW_ID, MessageType.INFO, html, null, hyperlinkListener);
 	}
 
 	public static void showToolWindowWarnNotifier(@NotNull final Project project, final String html) {
@@ -73,7 +73,7 @@ public final class BalloonTipFactory {
 		if (manager == null) { // this should never happen.
 			return;
 		}
-		manager.notifyByBalloon(FindBugsPluginConstants.TOOL_WINDOW_ID, MessageType.WARNING, html, null, hyperlinkListener);
+		manager.notifyByBalloon(PluginConstants.TOOL_WINDOW_ID, MessageType.WARNING, html, null, hyperlinkListener);
 	}
 
 	public static void showToolWindowErrorNotifier(@NotNull final Project project, final String html) {
@@ -85,7 +85,7 @@ public final class BalloonTipFactory {
 		if (manager == null) { // this should never happen.
 			return;
 		}
-		manager.notifyByBalloon(FindBugsPluginConstants.TOOL_WINDOW_ID, MessageType.ERROR, html, null, hyperlinkListener);
+		manager.notifyByBalloon(PluginConstants.TOOL_WINDOW_ID, MessageType.ERROR, html, null, hyperlinkListener);
 	}
 
 	private BalloonTipFactory() {

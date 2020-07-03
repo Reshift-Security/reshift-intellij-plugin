@@ -46,6 +46,11 @@
     </description>
     <change-notes>
         <![CDATA[<html>
+        <h3>1.2.0</h3>
+        <ul>
+            <li>Added anonymous analytics with consent to make Reshift better</li>
+            <li>Minor bug fixes</li>
+        </ul>
         <h3>1.0.1</h3>
         <ul>
             <li>Initial release; based on https://github.com/softwaresecured/reshift-intellij-plugin</li>
@@ -86,6 +91,9 @@
         <checkinHandlerFactory implementation="com.reshiftsecurity.plugins.intellij.core.CheckinHandlerFactoryImpl"/>
         <projectService serviceImplementation="com.reshiftsecurity.plugins.intellij.core.ProblemCacheService"/>
         <applicationService serviceImplementation="com.reshiftsecurity.plugins.intellij.service.EducationCachingService" />
+        <applicationService serviceImplementation="com.reshiftsecurity.plugins.intellij.service.AnalyticsService" />
+        <applicationService serviceImplementation="com.reshiftsecurity.plugins.intellij.service.AnalyticsServiceSettings" />
+        <postStartupActivity implementation="com.reshiftsecurity.plugins.intellij.core.InstallationListener" />
     </extensions>
     <extensions defaultExtensionNs="com.intellij">
         <errorHandler implementation="com.reshiftsecurity.plugins.intellij.core.ErrorReportSubmitterImpl"/>
