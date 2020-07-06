@@ -105,6 +105,10 @@ task copyThirdPartyPlugins(type: Copy) {
 tasks.compileJava.dependsOn(downloadThirdPartyPlugins, copyGradleProperties)
 tasks.buildPlugin.dependsOn(copyThirdPartyPlugins)
 
+publishPlugin {
+    token = System.getenv("JB_PUBLISH_SECRET")
+}
+
 wrapper {
     gradleVersion = '6.3'
 }
