@@ -101,7 +101,7 @@ abstract class AbstractDetectorNode extends DefaultMutableTreeNode {
 			}
 		};
 
-		final AbstractDetectorNode root = createRoot(groupBy.displayName, detectors);
+		final AbstractDetectorNode root = createRoot(groupBy.getDisplayName(), detectors);
 		final ArrayList<String> groupSorted = new ArrayList<String>(byGroup.keySet());
 		Collections.sort(groupSorted);
 		for (final String group : groupSorted) {
@@ -141,7 +141,7 @@ abstract class AbstractDetectorNode extends DefaultMutableTreeNode {
 						addNode(factory, group, byGroup, enabledMap);
 						break;
 					case Speed:
-						group = factory.getSpeed();
+						group = factory.getShortName();
 						if (group == null) {
 							group = "Unknown";
 						}

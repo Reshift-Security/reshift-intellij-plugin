@@ -172,7 +172,7 @@ final class DetectorTableHeaderPane extends JPanel implements Disposable {
 		protected DefaultActionGroup createPopupActionGroup(final JComponent button) {
 			final DefaultActionGroup group = new DefaultActionGroup();
 			for (final DetectorGroupBy groupBy : DetectorGroupBy.values()) {
-				group.add(new AnAction(groupBy.displayName) {
+				group.add(new AnAction(groupBy.getDisplayName()) {
 					@Override
 					public void actionPerformed(final AnActionEvent e) {
 						DetectorTableHeaderPane.this.groupBy = groupBy;
@@ -186,7 +186,7 @@ final class DetectorTableHeaderPane extends JPanel implements Disposable {
 		@Override
 		public void update(final AnActionEvent e) {
 			super.update(e);
-			e.getPresentation().setText(groupBy.displayName);
+			e.getPresentation().setText(groupBy.getDisplayName());
 		}
 	}
 

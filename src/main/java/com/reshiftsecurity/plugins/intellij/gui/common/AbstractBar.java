@@ -204,7 +204,7 @@ public abstract class AbstractBar extends JToolBar {
 			//putValue(Action.MNEMONIC_KEY, KeyStroke.getKeyStroke(mnemonicKey));
 			putValue(Action.MNEMONIC_KEY, KeyStroke.getKeyStroke(mnemonicKey, modifier).getKeyCode());
 			//putValue(Action.MNEMONIC_KEY, mnemonicKey);
-			putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(menuBarAccelerator, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
+			putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(menuBarAccelerator, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()));
 
 			addActionComponent(this);
 		}
@@ -234,7 +234,7 @@ public abstract class AbstractBar extends JToolBar {
 			//putValue(Action.LARGE_ICON_KEY, largeIcon);
 			putValue(Action.MNEMONIC_KEY, KeyStroke.getKeyStroke(mnemonicKey, modifier).getKeyCode());
 			//putValue(Action.MNEMONIC_KEY, mnemonicKey);
-			putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(menuBarAccelerator, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
+			putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(menuBarAccelerator, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()));
 
 			setFocusable(false);
 			addActionComponent(name, this);
@@ -248,7 +248,7 @@ public abstract class AbstractBar extends JToolBar {
 			}
 			final KeyStroke[] keys = comp.getRegisteredKeyStrokes();
 			String controlKeyStr = "";
-			final KeyStroke postTip = KeyStroke.getKeyStroke(KeyEvent.VK_F1, Event.CTRL_MASK);
+			final KeyStroke postTip = KeyStroke.getKeyStroke(KeyEvent.VK_F1, InputEvent.CTRL_DOWN_MASK);
 			for (final KeyStroke key : keys) {
 				// Ignore ToolTipManager postTip action,
 				// in swing1.1beta3 and onward
@@ -257,10 +257,10 @@ public abstract class AbstractBar extends JToolBar {
 				}
 				final char c = (char) key.getKeyCode();
 				final int mod = key.getModifiers();
-				if (mod == InputEvent.CTRL_MASK) {
+				if (mod == InputEvent.CTRL_DOWN_MASK) {
 					controlKeyStr = "Ctrl+" + c;
 					break;
-				} else if (mod == InputEvent.ALT_MASK) {
+				} else if (mod == InputEvent.ALT_DOWN_MASK) {
 					controlKeyStr = "Alt+" + c;
 					break;
 				}

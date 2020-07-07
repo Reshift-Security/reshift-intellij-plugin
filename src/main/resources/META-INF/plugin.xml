@@ -46,7 +46,7 @@
     </description>
     <change-notes>
         <![CDATA[<html>
-        <h3>1.2.0</h3>
+        <h3>1.2.1</h3>
         <ul>
             <li>Added anonymous analytics with consent to make Reshift better</li>
             <li>Minor bug fixes</li>

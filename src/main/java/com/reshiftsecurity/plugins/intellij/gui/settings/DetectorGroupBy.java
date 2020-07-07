@@ -19,19 +19,23 @@
  */
 package com.reshiftsecurity.plugins.intellij.gui.settings;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.PropertyKey;
 import com.reshiftsecurity.plugins.intellij.resources.ResourcesLoader;
 
 enum DetectorGroupBy {
-	Provider("detector.groupBy.provider"),
-	Speed("detector.groupBy.speed"),
-	BugCategory("detector.groupBy.bugCategory");
+	Provider,
+	Speed,
+	BugCategory;
 
-	@NotNull
-	final String displayName;
-
-	DetectorGroupBy(@NotNull @PropertyKey(resourceBundle = ResourcesLoader.BUNDLE) final String propertyKey) {
-		displayName = ResourcesLoader.getString(propertyKey);
+	public String getDisplayName() {
+		switch (this) {
+			case Provider:
+				return ResourcesLoader.getString("detector.groupBy.provider");
+			case Speed:
+				return ResourcesLoader.getString("detector.groupBy.speed");
+			case BugCategory:
+				return ResourcesLoader.getString("detector.groupBy.bugCategory");
+			default:
+				return this.toString();
+		}
 	}
 }

@@ -101,7 +101,7 @@ final class FilterPane extends JPanel {
 						doRemove();
 					}
 				})
-				.setAsUsualTopToolbar().createPanel();
+				.createPanel();
 
 		add(tablePane);
 	}

@@ -123,7 +123,7 @@ final class PluginTablePane extends JPanel {
 						doRemove();
 					}
 				})
-				.setAsUsualTopToolbar().createPanel();
+				.createPanel();
 
 		add(tablePane);
 	}

@@ -286,7 +286,7 @@ public class FindBugsCompileAfterHook implements CompilationStatusListener, Proj
 
 		DelayedExecutor(@NotNull final Project project) {
 			_project = project;
-			_alarm = new Alarm(Alarm.ThreadToUse.SHARED_THREAD);
+			_alarm = new Alarm(Alarm.ThreadToUse.POOLED_THREAD);
 		}
 
 		void schedule(@NotNull final Set<VirtualFile> changed) {
