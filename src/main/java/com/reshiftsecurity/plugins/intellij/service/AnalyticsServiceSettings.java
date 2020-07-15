@@ -70,6 +70,10 @@ public final class AnalyticsServiceSettings implements PersistentStateComponent<
         AnalyticsService.getInstance().recordConsentAction(consent);
     }
 
+    public void recordConsentDismiss() {
+        AnalyticsService.getInstance().recordDismissConsentAction();
+    }
+
     public boolean hasConsent() {
         return this.consentResponseReceived && this.sendAnonymousUsage;
     }

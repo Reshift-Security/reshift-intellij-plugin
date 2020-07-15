@@ -46,7 +46,8 @@ public class InstallationListener implements StartupActivity {
          if (!AnalyticsServiceSettings.getInstance().hasConsent()) {
              JEditorPane termsContentPane = new JEditorPane();
              termsContentPane.setContentType(UIUtil.HTML_MIME);
-             termsContentPane.setText(ResourcesLoader.getString("analytics.confirmation.terms"));
+             termsContentPane.setText(String.format(ResourcesLoader.getString("analytics.confirmation.terms"),
+                     UIUtil.isUnderDarcula() ? "white" : "black"));
 
              JBCheckBox usageDataConsent = new JBCheckBox();
              usageDataConsent.setSelected(true);
@@ -63,6 +64,9 @@ public class InstallationListener implements StartupActivity {
 
              if (isOk) {
                  AnalyticsServiceSettings.getInstance().recordConsent(usageDataConsent.isSelected());
+             } else {
+                 // pop-up has been dismissed
+                 AnalyticsServiceSettings.getInstance().recordConsentDismiss();
              }
         }
 

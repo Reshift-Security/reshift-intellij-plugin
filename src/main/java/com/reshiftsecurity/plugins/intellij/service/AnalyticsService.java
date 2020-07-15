@@ -74,6 +74,12 @@ public class AnalyticsService {
         return ServiceManager.getService(AnalyticsService.class);
     }
 
+    public void recordDismissConsentAction() {
+        AnalyticsAction action = AnalyticsAction.SETTINGS_GATHER_DATA_DISMISS;
+        this.entries.add(new AnalyticsEntry(action));
+        this.processActions(true);
+    }
+
     public void recordConsentAction(boolean consent) {
         AnalyticsAction action = consent ? AnalyticsAction.SETTINGS_GATHER_DATA_YES : AnalyticsAction.SETTINGS_GATHER_DATA_NO;
         this.entries.add(new AnalyticsEntry(action));

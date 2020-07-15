@@ -91,6 +91,10 @@ public class AnalyticsEntry {
                 this.category = AnalyticsActionCategory.Scan_Metrics.toString();
                 this.actionName = "scan metrics";
                 break;
+            case SETTINGS_GATHER_DATA_DISMISS:
+                this.category = AnalyticsActionCategory.User_Consent.toString();
+                this.actionName = "consent popup dismissed";
+                break;
             case SETTINGS_GATHER_DATA_NO:
                 this.category = AnalyticsActionCategory.User_Consent.toString();
                 this.actionName = "consent declined";
