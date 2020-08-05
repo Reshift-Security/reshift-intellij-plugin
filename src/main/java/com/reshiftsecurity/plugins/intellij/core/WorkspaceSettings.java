@@ -45,13 +45,13 @@ public final class WorkspaceSettings implements PersistentStateComponent<Workspa
 	public boolean compileBeforeAnalyze = true;
 
 	@Tag
-	public boolean analyzeAfterCompile = false;
+	public boolean analyzeAfterCompile = true;
 
 	@Tag
 	public boolean analyzeAfterAutoMake = false;
 
 	@Tag
-	public boolean runInBackground = false;
+	public boolean runInBackground = true;
 
 	/**
 	 * Last used export directory for "Export Bug Collection".

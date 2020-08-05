@@ -48,7 +48,7 @@ public class AnalyticsService {
     private final String HIT_TYPE = "event";
     private final String HIT_TYPE_KEY = "t";
     private final String EVENT_ACTION_KEY = "ea";
-    private final String USER_ID_KEY = "uid";
+    private final String USER_ID_KEY = "cid";
     private final String MEASUREMENT_ID_KEY = "tid";
     private final String ACTION_VALUE_KEY = "cm1";
     private final String EVENT_VALUE_KEY = "ev";
