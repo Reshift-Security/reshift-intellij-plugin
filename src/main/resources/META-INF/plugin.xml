@@ -46,6 +46,10 @@
     </description>
     <change-notes>
         <![CDATA[<html>
+        <h3>1.2.4</h3>
+        <ul>
+            <li>Uninstall feedback page bug fix</li>
+        </ul>
         <h3>1.2.3</h3>
         <ul>
             <li>Enhanced default settings</li>

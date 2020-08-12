@@ -78,8 +78,10 @@ public class InstallationListener implements StartupActivity {
 
             @Override
             public void uninstall(@NotNull IdeaPluginDescriptor ideaPluginDescriptor) {
-                AnalyticsService.getInstance().recordAction(AnalyticsAction.UNINSTALL);
-                BrowserUtil.browse(PluginConstants.UNINSTALL_FEEDBACK_URL);
+                if (PluginConstants.PLUGIN_ID.equalsIgnoreCase(ideaPluginDescriptor.getPluginId().getIdString())) {
+                    AnalyticsService.getInstance().recordAction(AnalyticsAction.UNINSTALL);
+                    BrowserUtil.browse(PluginConstants.UNINSTALL_FEEDBACK_URL);
+                }
             }
         });
     }
