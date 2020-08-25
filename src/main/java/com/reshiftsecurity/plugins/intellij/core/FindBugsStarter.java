@@ -340,6 +340,8 @@ public abstract class FindBugsStarter implements AnalysisAbortingListener {
 
 		AnalyticsService.getInstance().recordMetric(AnalyticsAction.SCAN_RESULTS_METRIC, bugCollection.getCollection().size());
 
+		SecurityReportService.getInstance(project).addBugCollection(bugCollection);
+
 		return Pair.create(bugCollection, reporter);
 	}
 

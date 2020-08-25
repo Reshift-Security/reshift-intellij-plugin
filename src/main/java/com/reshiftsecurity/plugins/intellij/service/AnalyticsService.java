@@ -22,6 +22,7 @@ package com.reshiftsecurity.plugins.intellij.service;
 
 import com.intellij.openapi.application.ApplicationInfo;
 import com.intellij.openapi.components.ServiceManager;
+import com.reshiftsecurity.analytics.AnalyticsActionCategory;
 import com.reshiftsecurity.analytics.AnalyticsEntry;
 import com.reshiftsecurity.analytics.AnalyticsAction;
 import com.reshiftsecurity.plugins.intellij.common.VersionManager;
@@ -32,6 +33,7 @@ import java.net.*;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class AnalyticsService {
@@ -50,7 +52,8 @@ public class AnalyticsService {
     private final String EVENT_ACTION_KEY = "ea";
     private final String USER_ID_KEY = "cid";
     private final String MEASUREMENT_ID_KEY = "tid";
-    private final String ACTION_VALUE_KEY = "cm1";
+    private final String NUM_ISSUES_METRIC_KEY = "cm1";
+    private final String NUM_FIXES_METRIC_KEY = "cm2";
     private final String EVENT_VALUE_KEY = "ev";
     private final String ACTION_CATEGORY_KEY = "ec";
     private final String ACTION_LABEL_KEY = "el";
@@ -121,7 +124,18 @@ public class AnalyticsService {
         try {
             InetAddress ip = InetAddress.getLocalHost();
             NetworkInterface network = NetworkInterface.getByInetAddress(ip);
+            if (network == null) {
+                Iterator<NetworkInterface> ni = NetworkInterface.getNetworkInterfaces().asIterator();
+                while (ni.hasNext()) {
+                    // read the last interface in the list (usually it's the default one
+                    network = ni.next();
+                }
+            }
             byte[] mac = network.getHardwareAddress();
+
+            if (mac == null) {
+                mac = ip.getHostName().toUpperCase().getBytes();
+            }
 
             StringBuilder sb = new StringBuilder();
             for (int i = 0; i < mac.length; i++) {
@@ -135,6 +149,10 @@ public class AnalyticsService {
             e.printStackTrace();
         }
         return "";
+    }
+
+    private String getMetricKeyByAction(AnalyticsAction action) {
+        return (action == AnalyticsAction.FIXES_METRIC ? NUM_FIXES_METRIC_KEY : NUM_ISSUES_METRIC_KEY);
     }
 
     private String buildEntryParameters(AnalyticsEntry entry) {
@@ -151,7 +169,7 @@ public class AnalyticsService {
             .append(DOC_PATH_KEY + "=" + DOC_PATH + "&")
             .append(HIT_TYPE_KEY + "=" + HIT_TYPE + "&");
         if (entry.getMetric() != null) {
-            actionBuilder.append(ACTION_VALUE_KEY + "=" + entry.getMetric() + "&");
+            actionBuilder.append(getMetricKeyByAction(entry.getAction()) + "=" + entry.getMetric() + "&");
             actionBuilder.append(EVENT_VALUE_KEY + "=" + entry.getMetric() + "&");
         }
         actionBuilder.append(ACTION_CATEGORY_KEY + "=" + URLEncoder.encode(entry.getCategory(), StandardCharsets.UTF_8) + "&")

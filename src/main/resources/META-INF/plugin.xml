@@ -46,6 +46,11 @@
     </description>
     <change-notes>
         <![CDATA[<html>
+        <h3>1.5.0</h3>
+        <ul>
+            <li>Added fix tracking for analytics</li>
+            <li>Minor bug fixes and enhancements</li>
+        </ul>
         <h3>1.2.4</h3>
         <ul>
             <li>Uninstall feedback page bug fix</li>
@@ -92,6 +97,7 @@
 
         <projectService serviceImplementation="com.reshiftsecurity.plugins.intellij.core.WorkspaceSettings"/>
         <projectService serviceImplementation="com.reshiftsecurity.plugins.intellij.core.ProjectSettings"/>
+        <projectService serviceImplementation="com.reshiftsecurity.plugins.intellij.core.SecurityReportService"/>
         <projectService serviceImplementation="com.reshiftsecurity.plugins.intellij.gui.preferences.LegacyProjectSettings"/>
         <projectConfigurable groupId="tools" provider="com.reshiftsecurity.plugins.intellij.core.ProjectConfigurableProvider"
                              displayName="Reshift Security"/>

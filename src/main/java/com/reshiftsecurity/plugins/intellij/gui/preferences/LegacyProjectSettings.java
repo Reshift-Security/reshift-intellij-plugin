@@ -39,8 +39,7 @@ import com.reshiftsecurity.plugins.intellij.preferences.PersistencePreferencesBe
 @State(
 		name = PluginConstants.PLUGIN_ID,
 		storages = {
-				@Storage(file = "$PROJECT_FILE$", deprecated = true),
-				@Storage(file = "$PROJECT_CONFIG_DIR$/reshiftsecurity-intellij.xml", deprecated = true)})
+				@Storage(value = "$PROJECT_CONFIG_DIR$/reshiftsecurity-intellij-legacy.xml", deprecated = true)})
 public final class LegacyProjectSettings implements PersistentStateComponent<PersistencePreferencesBean> {
 
 	private static final Logger LOGGER = Logger.getInstance(LegacyProjectSettings.class);

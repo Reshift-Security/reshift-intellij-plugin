@@ -31,9 +31,7 @@ import org.jetbrains.annotations.Nullable;
 @State(
 		name = "ReshiftSecurity-Intellij",
 		storages = {
-				// Remove both @Storage entry below and use only this if IDEA 15 support is gone: @Storage("findbugs-idea.xml")
-				@Storage(file = "$PROJECT_FILE$"),
-				@Storage(file = "$PROJECT_CONFIG_DIR$/reshiftsecurity-intellij.xml")
+				@Storage("$PROJECT_CONFIG_DIR$/reshiftsecurity-intellij.xml")
 		}
 )
 public final class ProjectSettings extends AbstractSettings implements PersistentStateComponent<ProjectSettings> {

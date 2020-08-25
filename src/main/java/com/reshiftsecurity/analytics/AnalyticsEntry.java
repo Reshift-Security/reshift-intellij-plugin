@@ -47,6 +47,10 @@ public class AnalyticsEntry {
                 this.category = AnalyticsActionCategory.Info_and_Help.toString();
                 this.actionName = "copy plugin info";
                 break;
+            case FIXES_METRIC:
+                this.category = AnalyticsActionCategory.Scan_Metrics.toString();
+                this.actionName = "fix count";
+                break;
             case ISSUE_REPORT_AUTO_PREVIEW_DISABLE:
                 this.category = AnalyticsActionCategory.Scan_Report.toString();
                 this.actionName = "disable auto file preview";
@@ -89,7 +93,7 @@ public class AnalyticsEntry {
                 break;
             case SCAN_RESULTS_METRIC:
                 this.category = AnalyticsActionCategory.Scan_Metrics.toString();
-                this.actionName = "scan metrics";
+                this.actionName = "issues found count";
                 break;
             case SETTINGS_GATHER_DATA_DISMISS:
                 this.category = AnalyticsActionCategory.User_Consent.toString();

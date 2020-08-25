@@ -18,36 +18,45 @@
  * If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.reshiftsecurity.analytics;
+package com.reshiftsecurity.results;
 
-public enum AnalyticsAction {
-    CLEAR_AND_CLOSE_PLUGIN_WINDOW,
-    CODE_VIEW_BUG_DETAILS,
-    CODE_VIEW_OPEN_FILE,
-    COPY_PLUGIN_INFO,
-    FIXES_METRIC,
-    INSTALL,
-    ISSUE_REPORT_AUTO_PREVIEW_DISABLE,
-    ISSUE_REPORT_AUTO_PREVIEW_ENABLE,
-    ISSUE_REPORT_BROWSE,
-    ISSUE_REPORT_EDU,
-    ISSUE_REPORT_MORE_SCAN_INFO,
-    ISSUE_REPORT_SEARCH,
-    OPEN_HELP,
-    OPEN_PLUGIN_WINDOW,
-    OPEN_RESHIFT_WEBSITE,
-    OPEN_SETTINGS,
-    SCAN_RESULTS_METRIC,
-    SETTINGS_GATHER_DATA_DISMISS,
-    SETTINGS_GATHER_DATA_NO,
-    SETTINGS_GATHER_DATA_YES,
-    SETTINGS_UPDATED,
-    START_SCAN,
-    STOP_SCAN,
-    UNINSTALL;
+import com.intellij.util.xmlb.annotations.Attribute;
+import com.intellij.util.xmlb.annotations.Tag;
 
-    @Override
-    public String toString() {
-        return name();
-    }
+import java.time.LocalDateTime;
+
+@Tag(value = "securityIssue")
+public class SecurityIssue {
+    @Attribute
+    public String issueIdentifier;
+
+    @Attribute
+    public String instanceHash;
+
+    @Attribute
+    public int cweId;
+
+    @Attribute
+    public String categoryName = "Unknown";
+
+    @Attribute
+    public String trimmedCode;
+
+    @Attribute
+    public int lineNumber;
+
+    @Attribute
+    public String methodFQN;
+
+    @Attribute
+    public Boolean isFixed = false;
+
+    @Attribute
+    public Boolean isNew = true;
+
+    @Attribute
+    public LocalDateTime detectionDatetime;
+
+    @Attribute
+    public LocalDateTime fixDatetime;
 }
