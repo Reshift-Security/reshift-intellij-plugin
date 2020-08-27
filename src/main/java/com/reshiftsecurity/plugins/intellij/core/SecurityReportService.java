@@ -25,14 +25,20 @@ import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.components.State;
 import com.intellij.openapi.components.Storage;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.roots.ProjectRootManager;
+import com.intellij.openapi.vfs.VirtualFile;
+import com.intellij.util.xmlb.Constants;
 import com.intellij.util.xmlb.XmlSerializerUtil;
 import com.intellij.util.xmlb.annotations.Tag;
 import com.intellij.util.xmlb.annotations.XCollection;
 import com.reshiftsecurity.analytics.AnalyticsAction;
+import com.reshiftsecurity.plugins.intellij.common.util.HashUtil;
+import com.reshiftsecurity.plugins.intellij.common.util.SourceCodeUtil;
 import com.reshiftsecurity.plugins.intellij.service.AnalyticsService;
 import com.reshiftsecurity.results.SecurityIssue;
 import edu.umd.cs.findbugs.BugCollection;
 import edu.umd.cs.findbugs.BugInstance;
+import edu.umd.cs.findbugs.SourceLineAnnotation;
 import org.apache.commons.collections.CollectionUtils;
 import org.eclipse.jgit.lib.ConfigConstants;
 import org.eclipse.jgit.lib.Repository;
@@ -54,36 +60,9 @@ import java.util.Set;
 )
 public class SecurityReportService implements PersistentStateComponent<SecurityReportService> {
 
-    @Nullable
-    @Override
-    public SecurityReportService getState() {
-        return this;
-    }
+    private VirtualFile[] projectSourceFiles;
 
-    @Override
-    public void loadState(final SecurityReportService state) { XmlSerializerUtil.copyBean(state, this); }
-
-    @NotNull
-    public static SecurityReportService getInstance(@NotNull final Project project) {
-        SecurityReportService service = ServiceManager.getService(project, SecurityReportService.class);
-        service.projectName = project.getName();
-        try {
-            Repository existingRepo = new FileRepositoryBuilder()
-                    .setGitDir(new File(String.format("%s/.git", project.getBasePath())))
-                    .build();
-            service.isGitProject = true;
-            Set<String> remoteNames = existingRepo.getRemoteNames();
-            service.gitRepo = existingRepo.getConfig().getString(
-                    ConfigConstants.CONFIG_KEY_REMOTE,
-                    CollectionUtils.isEmpty(remoteNames) ? "origin" : remoteNames.stream().findFirst().get(),
-                    ConfigConstants.CONFIG_KEY_URL);
-            service.gitBranch = existingRepo.getBranch();
-        } catch (IOException e) {
-            // might not be a git repo, fail silently as this is not a core function of the plugin
-            e.printStackTrace();
-        }
-        return service;
-    }
+    private Project currentProject;
 
     @Tag
     private Boolean isGitProject = false;
@@ -110,15 +89,48 @@ public class SecurityReportService implements PersistentStateComponent<SecurityR
     public int newFixCount = 0;
 
     @Tag(value = "securityIssues")
-    @XCollection(elementName = "securityIssue")
+    @XCollection(elementName = Constants.SET)
     public Set<SecurityIssue> securityIssues;
 
+    @Nullable
+    @Override
+    public SecurityReportService getState() {
+        return this;
+    }
+
+    @Override
+    public void loadState(final SecurityReportService state) { XmlSerializerUtil.copyBean(state, this); }
+
+    @NotNull
+    public static SecurityReportService getInstance(@NotNull final Project project) {
+        SecurityReportService service = ServiceManager.getService(project, SecurityReportService.class);
+        service.projectName = project.getName();
+        service.currentProject = project;
+        service.projectSourceFiles = ProjectRootManager.getInstance(project).getContentSourceRoots();
+        try {
+            Repository existingRepo = new FileRepositoryBuilder()
+                    .setGitDir(new File(String.format("%s/.git", project.getBasePath())))
+                    .build();
+            service.isGitProject = true;
+            Set<String> remoteNames = existingRepo.getRemoteNames();
+            service.gitRepo = existingRepo.getConfig().getString(
+                    ConfigConstants.CONFIG_KEY_REMOTE,
+                    CollectionUtils.isEmpty(remoteNames) ? "origin" : remoteNames.stream().findFirst().get(),
+                    ConfigConstants.CONFIG_KEY_URL);
+            service.gitBranch = existingRepo.getBranch();
+        } catch (IOException e) {
+            // might not be a git repo, fail silently as this is not a core function of the plugin
+            e.printStackTrace();
+        }
+        return service;
+    }
+
     private boolean issueExistsInSet(SecurityIssue issue, Set<SecurityIssue> issueSet) {
-        if (CollectionUtils.isEmpty(issueSet))
+        if (issueSet == null)
             return false;
 
-        for (SecurityIssue i: issueSet) {
-            if (i.instanceHash.equalsIgnoreCase(issue.instanceHash)) {
+        for (SecurityIssue i : issueSet) {
+            if (i.isSameAs(issue)) {
                 return true;
             }
         }
@@ -131,34 +143,35 @@ public class SecurityReportService implements PersistentStateComponent<SecurityR
 
     public void addBugCollection(BugCollection bugCollection) {
         Set<SecurityIssue> latestIssues = new HashSet<>();
-        int newFixes = 0;
-        int newVulnCount = 0;
+        Set<SecurityIssue> fixedIems = new HashSet<>();
+        Set<SecurityIssue> newItems = new HashSet<>();
 
-        for (BugInstance bug: bugCollection) {
+        for (BugInstance bug: bugCollection.getCollection()) {
+            SourceLineAnnotation mainSourceLineAnnotation = bug.getPrimarySourceLineAnnotation();
             SecurityIssue issue = new SecurityIssue();
-            String methodAnnotation = bug.getPrimaryMethod().getFullMethod(null);
             issue.categoryName = bug.getType();
-            issue.lineNumber = bug.getPrimarySourceLineAnnotation().getStartLine();
-            issue.methodFQN = methodAnnotation.split("[(]")[0];
+            issue.classFQN = mainSourceLineAnnotation.getClassName();
+            issue.lineNumber = mainSourceLineAnnotation.getStartLine();
+            issue.methodFullSignature = bug.getPrimaryMethod().getFullMethod(null);
+            issue.code = SourceCodeUtil.getTrimmedSourceLine(projectSourceFiles, mainSourceLineAnnotation);
             issue.cweId = bug.getCWEid();
-            issue.instanceHash = bug.getInstanceHash();
-            issue.issueIdentifier = String.format("%s|%s", issue.cweId, bug.getInstanceKey());
+            issue.issueHash = HashUtil.hashThis(String.format("%s|%s", issue.cweId, bug.getInstanceKey()));
             issue.isNew = !issueExists(issue);
             if (issue.isNew) {
-                newVulnCount++;
+                newItems.add(issue);
                 issue.detectionDatetime = LocalDateTime.now();
             }
             latestIssues.add(issue);
         }
 
-        if (!CollectionUtils.isEmpty(securityIssues)) {
+        if (securityIssues != null) {
             // in this case there might be existing issues in the last report (securityIssues)
             // that has been fixed. loop through and mark those as fixed in the new report
             for (SecurityIssue existingIssue: securityIssues) {
                 if (!existingIssue.isFixed) { // only process issues that have not been fixed before
                     existingIssue.isFixed = !issueExistsInSet(existingIssue, latestIssues);
                     if (existingIssue.isFixed) {
-                        newFixes++;
+                        fixedIems.add(existingIssue);
                         existingIssue.fixDatetime = LocalDateTime.now();
                         latestIssues.add(existingIssue);
                     }
@@ -166,8 +179,8 @@ public class SecurityReportService implements PersistentStateComponent<SecurityR
             }
         }
         securityIssues = latestIssues;
-        newFixCount = newFixes;
-        newVulnerabilityCount = newVulnCount;
+        newFixCount = fixedIems.size();
+        newVulnerabilityCount = newItems.size();
         totalFixCount += newFixCount;
         totalVulnerabilityCount = securityIssues.size();
 

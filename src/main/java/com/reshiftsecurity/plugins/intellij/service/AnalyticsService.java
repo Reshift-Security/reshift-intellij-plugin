@@ -26,6 +26,7 @@ import com.reshiftsecurity.analytics.AnalyticsActionCategory;
 import com.reshiftsecurity.analytics.AnalyticsEntry;
 import com.reshiftsecurity.analytics.AnalyticsAction;
 import com.reshiftsecurity.plugins.intellij.common.VersionManager;
+import com.reshiftsecurity.plugins.intellij.common.util.HashUtil;
 import okhttp3.*;
 
 import java.io.IOException;
@@ -112,14 +113,6 @@ public class AnalyticsService {
         return agentString.toString();
     }
 
-    private String bytesToHex(byte[] hash) {
-        StringBuffer hexString = new StringBuffer();
-        for (int i = 0; i < hash.length; i++) {
-            hexString.append(String.format("%02X", hash[i]));
-        }
-        return hexString.toString();
-    }
-
     private String getUserIdentifier() {
         try {
             InetAddress ip = InetAddress.getLocalHost();
@@ -141,10 +134,7 @@ public class AnalyticsService {
             for (int i = 0; i < mac.length; i++) {
                 sb.append(String.format("%02X%s", mac[i], (i < mac.length - 1) ? "-" : ""));
             }
-            String mAddress = sb.toString();
-            MessageDigest digest = MessageDigest.getInstance("SHA-256");
-            byte[] encodedHash = digest.digest(mAddress.getBytes(StandardCharsets.UTF_8));
-            return bytesToHex(encodedHash);
+            return HashUtil.hashThis(sb.toString());
         } catch (Exception e) {
             e.printStackTrace();
         }

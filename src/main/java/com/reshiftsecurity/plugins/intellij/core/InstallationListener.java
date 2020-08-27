@@ -73,7 +73,9 @@ public class InstallationListener implements StartupActivity {
         com.intellij.ide.plugins.PluginInstaller.addStateListener(new PluginStateListener() {
             @Override
             public void install(@NotNull IdeaPluginDescriptor ideaPluginDescriptor) {
-                AnalyticsService.getInstance().recordAction(AnalyticsAction.INSTALL);
+                if (PluginConstants.PLUGIN_ID.equalsIgnoreCase(ideaPluginDescriptor.getPluginId().getIdString())) {
+                    AnalyticsService.getInstance().recordAction(AnalyticsAction.INSTALL);
+                }
             }
 
             @Override

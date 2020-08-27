@@ -22,22 +22,23 @@ package com.reshiftsecurity.results;
 
 import com.intellij.util.xmlb.annotations.Attribute;
 import com.intellij.util.xmlb.annotations.Tag;
+import org.apache.commons.lang3.StringUtils;
 
 import java.time.LocalDateTime;
 
 @Tag(value = "securityIssue")
 public class SecurityIssue {
     @Attribute
-    public String issueIdentifier;
-
-    @Attribute
-    public String instanceHash;
+    public String issueHash;
 
     @Attribute
     public int cweId;
 
     @Attribute
-    public String categoryName = "Unknown";
+    public String categoryName;
+
+    @Attribute
+    public String classFQN;
 
     @Attribute
     public String trimmedCode;
@@ -46,7 +47,10 @@ public class SecurityIssue {
     public int lineNumber;
 
     @Attribute
-    public String methodFQN;
+    public String code;
+
+    @Attribute
+    public String methodFullSignature;
 
     @Attribute
     public Boolean isFixed = false;
@@ -59,4 +63,54 @@ public class SecurityIssue {
 
     @Attribute
     public LocalDateTime fixDatetime;
+
+    private boolean hasSameMethodAs(SecurityIssue securityIssue) {
+        return methodFullSignature.equalsIgnoreCase(securityIssue.methodFullSignature);
+    }
+    
+    private boolean hasSameCodeAs(SecurityIssue securityIssue) {
+        return StringUtils.deleteWhitespace(code)
+                .equalsIgnoreCase(StringUtils.deleteWhitespace(securityIssue.code));
+    }
+
+    private boolean hasSameLineNumberAs(SecurityIssue securityIssue) {
+        return lineNumber == securityIssue.lineNumber;
+    }
+
+    private boolean hasSameCWEAs(SecurityIssue securityIssue) {
+        return cweId == securityIssue.cweId;
+    }
+
+    private boolean hasSameHashAs(SecurityIssue securityIssue) {
+        return issueHash.equalsIgnoreCase(securityIssue.issueHash);
+    }
+
+    private boolean hasSameClassAs(SecurityIssue securityIssue) {
+        return classFQN.equalsIgnoreCase(securityIssue.classFQN);
+    }
+
+    public boolean isSameAs(SecurityIssue securityIssue) {
+        Boolean hasSameCWE = hasSameCWEAs(securityIssue);
+        Boolean hasSameClass = hasSameClassAs(securityIssue);
+        Boolean hasSameCode = hasSameCodeAs(securityIssue);
+        Boolean hasSameLineNumber = hasSameLineNumberAs(securityIssue);
+        Boolean hasSameMethod = hasSameMethodAs(securityIssue);
+        Boolean hasSameHash = hasSameHashAs(securityIssue);
+
+        if (hasSameCWE) {
+            if (hasSameClass && hasSameCode && hasSameLineNumber) {
+                return true;
+            }
+
+            if (hasSameMethod && hasSameCode) {
+                return true;
+            }
+
+            if (hasSameHash && hasSameLineNumber) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 }
