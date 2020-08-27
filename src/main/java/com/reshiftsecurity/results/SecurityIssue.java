@@ -22,12 +22,14 @@ package com.reshiftsecurity.results;
 
 import com.intellij.util.xmlb.annotations.Attribute;
 import com.intellij.util.xmlb.annotations.Tag;
+import net.sf.cglib.core.Local;
 import org.apache.commons.lang3.StringUtils;
+import org.jetbrains.annotations.NotNull;
 
 import java.time.LocalDateTime;
 
 @Tag(value = "securityIssue")
-public class SecurityIssue {
+public class SecurityIssue implements Comparable<SecurityIssue> {
     @Attribute
     public String issueHash;
 
@@ -59,10 +61,10 @@ public class SecurityIssue {
     public Boolean isNew = true;
 
     @Attribute
-    public LocalDateTime detectionDatetime;
+    public String detectionDatetime;
 
     @Attribute
-    public LocalDateTime fixDatetime;
+    public String fixDatetime;
 
     private boolean hasSameMethodAs(SecurityIssue securityIssue) {
         return methodFullSignature.equalsIgnoreCase(securityIssue.methodFullSignature);
@@ -112,5 +114,10 @@ public class SecurityIssue {
         }
 
         return false;
+    }
+
+    @Override
+    public int compareTo(@NotNull SecurityIssue issue) {
+        return isSameAs(issue) ? 0 : -1;
     }
 }

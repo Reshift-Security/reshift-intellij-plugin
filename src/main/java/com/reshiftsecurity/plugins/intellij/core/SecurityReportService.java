@@ -27,6 +27,7 @@ import com.intellij.openapi.components.Storage;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.roots.ProjectRootManager;
 import com.intellij.openapi.vfs.VirtualFile;
+import com.intellij.util.SmartList;
 import com.intellij.util.xmlb.Constants;
 import com.intellij.util.xmlb.XmlSerializerUtil;
 import com.intellij.util.xmlb.annotations.Tag;
@@ -49,7 +50,6 @@ import org.jetbrains.annotations.Nullable;
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.util.HashSet;
 import java.util.Set;
 
 @State(
@@ -89,8 +89,8 @@ public class SecurityReportService implements PersistentStateComponent<SecurityR
     public int newFixCount = 0;
 
     @Tag(value = "securityIssues")
-    @XCollection(elementName = Constants.SET)
-    public Set<SecurityIssue> securityIssues;
+    @XCollection(elementName = Constants.LIST)
+    public SmartList<SecurityIssue> securityIssues;
 
     @Nullable
     @Override
@@ -125,7 +125,7 @@ public class SecurityReportService implements PersistentStateComponent<SecurityR
         return service;
     }
 
-    private boolean issueExistsInSet(SecurityIssue issue, Set<SecurityIssue> issueSet) {
+    private boolean issueExistsInSet(SecurityIssue issue, SmartList<SecurityIssue> issueSet) {
         if (issueSet == null)
             return false;
 
@@ -142,9 +142,9 @@ public class SecurityReportService implements PersistentStateComponent<SecurityR
     }
 
     public void addBugCollection(BugCollection bugCollection) {
-        Set<SecurityIssue> latestIssues = new HashSet<>();
-        Set<SecurityIssue> fixedIems = new HashSet<>();
-        Set<SecurityIssue> newItems = new HashSet<>();
+        SmartList<SecurityIssue> latestIssues = new SmartList<>();
+        SmartList<SecurityIssue> fixedIems = new SmartList<>();
+        SmartList<SecurityIssue> newItems = new SmartList<>();
 
         for (BugInstance bug: bugCollection.getCollection()) {
             SourceLineAnnotation mainSourceLineAnnotation = bug.getPrimarySourceLineAnnotation();
@@ -159,7 +159,7 @@ public class SecurityReportService implements PersistentStateComponent<SecurityR
             issue.isNew = !issueExists(issue);
             if (issue.isNew) {
                 newItems.add(issue);
-                issue.detectionDatetime = LocalDateTime.now();
+                issue.detectionDatetime = LocalDateTime.now().toString();
             }
             latestIssues.add(issue);
         }
@@ -172,7 +172,7 @@ public class SecurityReportService implements PersistentStateComponent<SecurityR
                     existingIssue.isFixed = !issueExistsInSet(existingIssue, latestIssues);
                     if (existingIssue.isFixed) {
                         fixedIems.add(existingIssue);
-                        existingIssue.fixDatetime = LocalDateTime.now();
+                        existingIssue.fixDatetime = LocalDateTime.now().toString();
                         latestIssues.add(existingIssue);
                     }
                 }

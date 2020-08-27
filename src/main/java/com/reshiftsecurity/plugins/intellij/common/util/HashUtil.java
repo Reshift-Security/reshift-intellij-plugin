@@ -21,7 +21,6 @@
 package com.reshiftsecurity.plugins.intellij.common.util;
 
 import java.nio.charset.StandardCharsets;
-import java.security.AlgorithmConstraints;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
