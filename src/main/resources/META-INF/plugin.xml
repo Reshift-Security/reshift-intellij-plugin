@@ -49,7 +49,7 @@
         <h3>1.5.0</h3>
         <ul>
             <li>Added fix tracking for analytics</li>
-            <li>Minor bug fixes and enhancements</li>
+            <li>Minor bug fixes and analytics enhancements</li>
         </ul>
         <h3>1.2.4</h3>
         <ul>
@@ -78,8 +78,7 @@
     </change-notes>
     <id>com.reshiftsecurity.plugins.intellij</id>
     <version>@VERSION@</version>
-    <vendor email="dev@reshiftsecurity.com" url="https://reshiftsecurity.com">Reshift Security
-    </vendor>
+    <vendor email="dev@reshiftsecurity.com" url="https://reshiftsecurity.com">Reshift Security</vendor>
 
     <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/build_number_ranges.html
          -->

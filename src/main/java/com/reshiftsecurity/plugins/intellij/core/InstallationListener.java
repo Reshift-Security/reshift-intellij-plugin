@@ -43,6 +43,7 @@ public class InstallationListener implements StartupActivity {
 
     @Override
     public void runActivity(@NotNull Project project) {
+        AnalyticsService.getInstance().recordInstall();
          if (!AnalyticsServiceSettings.getInstance().hasConsent()) {
              JEditorPane termsContentPane = new JEditorPane();
              termsContentPane.setContentType(UIUtil.HTML_MIME);
@@ -74,14 +75,14 @@ public class InstallationListener implements StartupActivity {
             @Override
             public void install(@NotNull IdeaPluginDescriptor ideaPluginDescriptor) {
                 if (PluginConstants.PLUGIN_ID.equalsIgnoreCase(ideaPluginDescriptor.getPluginId().getIdString())) {
-                    AnalyticsService.getInstance().recordAction(AnalyticsAction.INSTALL);
+                    AnalyticsService.getInstance().recordInstall();
                 }
             }
 
             @Override
             public void uninstall(@NotNull IdeaPluginDescriptor ideaPluginDescriptor) {
                 if (PluginConstants.PLUGIN_ID.equalsIgnoreCase(ideaPluginDescriptor.getPluginId().getIdString())) {
-                    AnalyticsService.getInstance().recordAction(AnalyticsAction.UNINSTALL);
+                    AnalyticsService.getInstance().recordConsentExemptAction(AnalyticsAction.UNINSTALL);
                     BrowserUtil.browse(PluginConstants.UNINSTALL_FEEDBACK_URL);
                 }
             }

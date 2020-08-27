@@ -23,7 +23,6 @@ package com.reshiftsecurity.plugins.intellij.service;
 import com.intellij.openapi.components.*;
 import com.intellij.util.xmlb.XmlSerializerUtil;
 import com.intellij.util.xmlb.annotations.Tag;
-import com.reshiftsecurity.analytics.AnalyticsAction;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -67,7 +66,7 @@ public final class AnalyticsServiceSettings implements PersistentStateComponent<
     public void recordConsent(boolean consent) {
         this.consentResponseReceived = true;
         this.sendAnonymousUsage = consent;
-        AnalyticsService.getInstance().recordConsentAction(consent);
+        AnalyticsService.getInstance().recordConsent(consent);
     }
 
     public void recordConsentDismiss() {
@@ -75,6 +74,6 @@ public final class AnalyticsServiceSettings implements PersistentStateComponent<
     }
 
     public boolean hasConsent() {
-        return this.consentResponseReceived && this.sendAnonymousUsage;
+        return this.consentResponseReceived;
     }
 }
