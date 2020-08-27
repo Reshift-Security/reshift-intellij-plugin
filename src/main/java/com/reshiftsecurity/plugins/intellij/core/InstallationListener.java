@@ -43,7 +43,6 @@ public class InstallationListener implements StartupActivity {
 
     @Override
     public void runActivity(@NotNull Project project) {
-        AnalyticsService.getInstance().recordInstall();
          if (!AnalyticsServiceSettings.getInstance().hasConsent()) {
              JEditorPane termsContentPane = new JEditorPane();
              termsContentPane.setContentType(UIUtil.HTML_MIME);
