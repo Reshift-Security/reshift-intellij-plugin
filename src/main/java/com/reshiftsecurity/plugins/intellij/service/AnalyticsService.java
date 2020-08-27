@@ -20,19 +20,27 @@
 
 package com.reshiftsecurity.plugins.intellij.service;
 
+import com.intellij.ide.plugins.IdeaPluginDescriptor;
+import com.intellij.ide.plugins.PluginManagerCore;
 import com.intellij.openapi.application.ApplicationInfo;
 import com.intellij.openapi.components.ServiceManager;
+import com.reshiftsecurity.analytics.AnalyticsActionCategory;
 import com.reshiftsecurity.analytics.AnalyticsEntry;
 import com.reshiftsecurity.analytics.AnalyticsAction;
+import com.reshiftsecurity.plugins.intellij.common.PluginConstants;
 import com.reshiftsecurity.plugins.intellij.common.VersionManager;
+import com.reshiftsecurity.plugins.intellij.common.util.HashUtil;
 import okhttp3.*;
+import org.apache.commons.lang.StringUtils;
 
 import java.io.IOException;
 import java.net.*;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class AnalyticsService {
     List<AnalyticsEntry> entries;
@@ -50,23 +58,35 @@ public class AnalyticsService {
     private final String EVENT_ACTION_KEY = "ea";
     private final String USER_ID_KEY = "cid";
     private final String MEASUREMENT_ID_KEY = "tid";
-    private final String ACTION_VALUE_KEY = "cm1";
+    private final String NUM_ISSUES_METRIC_KEY = "cm1";
+    private final String NUM_FIXES_METRIC_KEY = "cm2";
     private final String EVENT_VALUE_KEY = "ev";
     private final String ACTION_CATEGORY_KEY = "ec";
     private final String ACTION_LABEL_KEY = "el";
     private final String DOC_PATH = "%2Fintellij";
     private final String DOC_PATH_KEY = "dp";
+    private final String IDEA_PLATFORM_KEY = "cd1";
+    private final String IDEA_VERSION_KEY = "cd2";
+    private final String DEV_OS_KEY = "cd3";
+    private final String OTHER_PLUGINS_KEY = "cd4";
 
     private String userID;
     private String applicationVersion;
     private String measurementID;
     private String userAgent;
+    private String intellijPlatform;
+    private String intellijVersion;
+    private String operatingSystem;
 
     public AnalyticsService() {
+        ApplicationInfo appInfo = ApplicationInfo.getInstance();
         this.entries = new ArrayList<>();
         this.applicationVersion = VersionManager.getVersion();
         this.userID = getUserIdentifier();
         this.measurementID = "UA-149586212-2";
+        this.operatingSystem = System.getProperty("os.name");
+        this.intellijPlatform = String.format("%s %s", appInfo.getVersionName(), appInfo.getBuild().getProductCode());
+        this.intellijVersion = appInfo.getFullVersion();
         this.userAgent = buildUserAgent();
     }
 
@@ -80,8 +100,28 @@ public class AnalyticsService {
         this.processActions(true);
     }
 
-    public void recordConsentAction(boolean consent) {
+    public void recordInstall() {
+        this.entries.add(new AnalyticsEntry(AnalyticsAction.INSTALL));
+        List<IdeaPluginDescriptor> plugins = PluginManagerCore.getLoadedPlugins().stream()
+                .filter(p -> p.getVendor() == null ? true :
+                        !p.getVendor().startsWith("JetBrains")
+                         && !PluginConstants.PLUGIN_ID.equalsIgnoreCase(p.getPluginId().getIdString()))
+                .collect(Collectors.toList());
+        for (IdeaPluginDescriptor plugin : plugins) {
+            String pluginDimensionValue = String.format("%s %s", plugin.getName(), plugin.getVendor());
+            AnalyticsEntry pluginEntry = new AnalyticsEntry(AnalyticsAction.OTHER_PLUGINS);
+            pluginEntry.setDimensionValue(pluginDimensionValue);
+            this.entries.add(pluginEntry);
+        }
+        processActions(true);
+    }
+
+    public void recordConsent(boolean consent) {
         AnalyticsAction action = consent ? AnalyticsAction.SETTINGS_GATHER_DATA_YES : AnalyticsAction.SETTINGS_GATHER_DATA_NO;
+        recordConsentExemptAction(action);
+    }
+
+    public void recordConsentExemptAction(AnalyticsAction action) {
         this.entries.add(new AnalyticsEntry(action));
         this.processActions(true);
     }
@@ -103,38 +143,46 @@ public class AnalyticsService {
 
     private String buildUserAgent() {
         StringBuilder agentString = new StringBuilder();
-        agentString.append(String.format("%s, ", System.getProperty("os.name")));
-        agentString.append(String.format("Reshift Plugin %s, ", VersionManager.getVersion()));
+        agentString.append(String.format("%s, ", this.operatingSystem));
+        agentString.append(String.format("Reshift Plugin %s, ", this.applicationVersion));
         agentString.append(String.format("%s", ApplicationInfo.getInstance().getFullApplicationName()));
         return agentString.toString();
-    }
-
-    private String bytesToHex(byte[] hash) {
-        StringBuffer hexString = new StringBuffer();
-        for (int i = 0; i < hash.length; i++) {
-            hexString.append(String.format("%02X", hash[i]));
-        }
-        return hexString.toString();
     }
 
     private String getUserIdentifier() {
         try {
             InetAddress ip = InetAddress.getLocalHost();
             NetworkInterface network = NetworkInterface.getByInetAddress(ip);
+            if (network == null) {
+                Iterator<NetworkInterface> ni = NetworkInterface.getNetworkInterfaces().asIterator();
+                while (ni.hasNext()) {
+                    // read the last interface in the list (usually it's the default one
+                    network = ni.next();
+                }
+            }
             byte[] mac = network.getHardwareAddress();
+
+            if (mac == null) {
+                mac = ip.getHostName().toUpperCase().getBytes();
+            }
 
             StringBuilder sb = new StringBuilder();
             for (int i = 0; i < mac.length; i++) {
                 sb.append(String.format("%02X%s", mac[i], (i < mac.length - 1) ? "-" : ""));
             }
-            String mAddress = sb.toString();
-            MessageDigest digest = MessageDigest.getInstance("SHA-256");
-            byte[] encodedHash = digest.digest(mAddress.getBytes(StandardCharsets.UTF_8));
-            return bytesToHex(encodedHash);
+            return HashUtil.hashThis(sb.toString());
         } catch (Exception e) {
             e.printStackTrace();
         }
         return "";
+    }
+
+    private String getMetricKeyByAction(AnalyticsAction action) {
+        return (action == AnalyticsAction.FIXES_METRIC ? NUM_FIXES_METRIC_KEY : NUM_ISSUES_METRIC_KEY);
+    }
+
+    private String getDimensionKeyByAction(AnalyticsAction action) {
+        return (action == AnalyticsAction.OTHER_PLUGINS ? OTHER_PLUGINS_KEY : null);
     }
 
     private String buildEntryParameters(AnalyticsEntry entry) {
@@ -149,10 +197,18 @@ public class AnalyticsService {
             .append(APP_VERSION_KEY + "=" + this.applicationVersion + "&")
             .append(MEASUREMENT_ID_KEY + "=" + this.measurementID + "&")
             .append(DOC_PATH_KEY + "=" + DOC_PATH + "&")
-            .append(HIT_TYPE_KEY + "=" + HIT_TYPE + "&");
+            .append(HIT_TYPE_KEY + "=" + HIT_TYPE + "&")
+            .append(IDEA_PLATFORM_KEY + "=" + URLEncoder.encode(intellijPlatform, StandardCharsets.UTF_8) + "&")
+            .append(IDEA_VERSION_KEY + "=" + intellijVersion + "&")
+            .append(DEV_OS_KEY + "=" + URLEncoder.encode(operatingSystem, StandardCharsets.UTF_8) + "&");
         if (entry.getMetric() != null) {
-            actionBuilder.append(ACTION_VALUE_KEY + "=" + entry.getMetric() + "&");
+            actionBuilder.append(getMetricKeyByAction(entry.getAction()) + "=" + entry.getMetric() + "&");
             actionBuilder.append(EVENT_VALUE_KEY + "=" + entry.getMetric() + "&");
+        }
+        if (entry.isDimensionValueSet()) {
+            String dimKey = getDimensionKeyByAction(entry.getAction());
+            if (!StringUtils.isEmpty(dimKey))
+                actionBuilder.append(dimKey + "=" + URLEncoder.encode(entry.getDimensionValue(), StandardCharsets.UTF_8) + "&");
         }
         actionBuilder.append(ACTION_CATEGORY_KEY + "=" + URLEncoder.encode(entry.getCategory(), StandardCharsets.UTF_8) + "&")
             .append(ACTION_LABEL_KEY + "=" + URLEncoder.encode(entry.getLabel(), StandardCharsets.UTF_8) + "&")
@@ -164,7 +220,8 @@ public class AnalyticsService {
     private String buildBatchPayload() {
         StringBuilder payloadBuilder = new StringBuilder();
         for(AnalyticsEntry action : this.entries) {
-            payloadBuilder.append(buildEntryParameters(action) + "\n");
+            payloadBuilder.append(buildEntryParameters(action))
+                    .append(this.entries.size() > 1 ? "\n" : "");
         }
         return payloadBuilder.toString();
     }
@@ -173,15 +230,15 @@ public class AnalyticsService {
         this.processActions(false);
     }
 
-    private void processActions(boolean forConsent) {
-        if (!forConsent) {
+    private void processActions(boolean consentExempt) {
+        if (!consentExempt) {
             if (!AnalyticsServiceSettings.getInstance().hasConsent()) {
                 return;
             }
         }
         if (this.entries.size() > 0) {
             try {
-                String requestPayload = buildEntryParameters(this.entries.get(0));
+                String requestPayload = buildBatchPayload();
                 OkHttpClient client = new OkHttpClient();
 
                 MediaType mediaType = MediaType.parse("application/x-www-form-urlencoded");

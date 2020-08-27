@@ -20,9 +20,9 @@
 package com.reshiftsecurity.plugins.intellij.core;
 
 import com.intellij.util.xmlb.Constants;
-import com.intellij.util.xmlb.annotations.AbstractCollection;
 import com.intellij.util.xmlb.annotations.MapAnnotation;
 import com.intellij.util.xmlb.annotations.Tag;
+import com.intellij.util.xmlb.annotations.XCollection;
 import com.reshiftsecurity.plugins.intellij.common.PluginConstants;
 import edu.umd.cs.findbugs.BugRanker;
 import edu.umd.cs.findbugs.config.ProjectFilterSettings;
@@ -60,7 +60,7 @@ public abstract class AbstractSettings {
 	 * @see ProjectFilterSettings#containsCategory(String)
 	 */
 	@Tag(value = "hiddenBugCategory")
-	@AbstractCollection(surroundWithTag = false, elementTag = "category", elementValueAttribute = "name")
+	@XCollection(elementName = "category", valueAttributeName = "name")
 	public Set<String> hiddenBugCategory = New.asSet("NOISE");
 
 	@Tag
@@ -72,7 +72,7 @@ public abstract class AbstractSettings {
 	 * @see FindBugsCustomPluginUtil
 	 */
 	@Tag(value = "plugins")
-	@AbstractCollection(surroundWithTag = false, elementTag = Constants.SET)
+	@XCollection(elementName = Constants.SET)
 	public Set<PluginSettings> plugins = New.set();
 
 	/**

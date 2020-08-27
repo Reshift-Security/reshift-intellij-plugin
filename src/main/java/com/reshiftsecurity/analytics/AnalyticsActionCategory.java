@@ -24,6 +24,7 @@ public enum AnalyticsActionCategory {
     Code_View,
     Education,
     Info_and_Help,
+    Other,
     Plugin_Window,
     Scan,
     Scan_Report,

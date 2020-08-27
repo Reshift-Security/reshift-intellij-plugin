@@ -20,6 +20,8 @@
 
 package com.reshiftsecurity.analytics;
 
+import org.apache.commons.lang.StringUtils;
+
 import java.util.Optional;
 
 public class AnalyticsEntry {
@@ -28,6 +30,7 @@ public class AnalyticsEntry {
     private String actionName;
     private String category;
     private String label;
+    private String dimensionValue;
 
     private void setNameAndCategory(Optional<String> actionNameOverride) {
         switch (this.action) {
@@ -46,6 +49,10 @@ public class AnalyticsEntry {
             case COPY_PLUGIN_INFO:
                 this.category = AnalyticsActionCategory.Info_and_Help.toString();
                 this.actionName = "copy plugin info";
+                break;
+            case FIXES_METRIC:
+                this.category = AnalyticsActionCategory.Scan_Metrics.toString();
+                this.actionName = "fix count";
                 break;
             case ISSUE_REPORT_AUTO_PREVIEW_DISABLE:
                 this.category = AnalyticsActionCategory.Scan_Report.toString();
@@ -87,9 +94,13 @@ public class AnalyticsEntry {
                 this.category = AnalyticsActionCategory.Settings.toString();
                 this.actionName = "open settings";
                 break;
+            case OTHER_PLUGINS:
+                this.category = AnalyticsActionCategory.Other.toString();
+                this.actionName = "other plugins";
+                break;
             case SCAN_RESULTS_METRIC:
                 this.category = AnalyticsActionCategory.Scan_Metrics.toString();
-                this.actionName = "scan metrics";
+                this.actionName = "issues found count";
                 break;
             case SETTINGS_GATHER_DATA_DISMISS:
                 this.category = AnalyticsActionCategory.User_Consent.toString();
@@ -135,8 +146,11 @@ public class AnalyticsEntry {
         this.action = action;
         this.metric = metric;
         this.label = action.toString();
+        this.dimensionValue = null;
         this.setNameAndCategory(Optional.ofNullable(actionNameOverride));
     }
+
+    public void setDimensionValue(String dimensionValue) { this.dimensionValue = dimensionValue; }
 
     public AnalyticsAction getAction() {
         return action;
@@ -147,4 +161,6 @@ public class AnalyticsEntry {
     public String getActionName() { return this.actionName; }
     public String getCategory() { return this.category; }
     public String getLabel() { return this.label; }
+    public String getDimensionValue() { return this.dimensionValue; }
+    public boolean isDimensionValueSet() { return !StringUtils.isEmpty(this.dimensionValue); }
 }
