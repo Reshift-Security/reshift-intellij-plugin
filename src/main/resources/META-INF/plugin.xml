@@ -46,6 +46,10 @@
     </description>
     <change-notes>
         <![CDATA[<html>
+        <h3>1.6.0</h3>
+        <ul>
+            <li>JDK 8 fix for Android Studio</li>
+        </ul>
         <h3>1.5.0</h3>
         <ul>
             <li>Added fix tracking for analytics</li>

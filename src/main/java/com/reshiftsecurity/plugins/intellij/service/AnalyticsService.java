@@ -38,6 +38,7 @@ import java.net.*;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -154,10 +155,10 @@ public class AnalyticsService {
             InetAddress ip = InetAddress.getLocalHost();
             NetworkInterface network = NetworkInterface.getByInetAddress(ip);
             if (network == null) {
-                Iterator<NetworkInterface> ni = NetworkInterface.getNetworkInterfaces().asIterator();
-                while (ni.hasNext()) {
+                Enumeration ni = NetworkInterface.getNetworkInterfaces();
+                while (ni.hasMoreElements()) {
                     // read the last interface in the list (usually it's the default one
-                    network = ni.next();
+                    network = (NetworkInterface) ni.nextElement();
                 }
             }
             byte[] mac = network.getHardwareAddress();
@@ -192,15 +193,15 @@ public class AnalyticsService {
         StringBuilder actionBuilder = new StringBuilder()
             .append(PROTOCOL_VERSION_KEY + "=" + PROTOCOL_VERSION + "&")
             .append(APP_ID_KEY + "=" + APP_ID + "&")
-            .append(APP_NAME_KEY + "=" + URLEncoder.encode(APP_NAME, StandardCharsets.UTF_8) + "&")
+            .append(APP_NAME_KEY + "=" + HashUtil.urlEncode(APP_NAME) + "&")
             .append(USER_ID_KEY + "=" + this.userID + "&")
             .append(APP_VERSION_KEY + "=" + this.applicationVersion + "&")
             .append(MEASUREMENT_ID_KEY + "=" + this.measurementID + "&")
             .append(DOC_PATH_KEY + "=" + DOC_PATH + "&")
             .append(HIT_TYPE_KEY + "=" + HIT_TYPE + "&")
-            .append(IDEA_PLATFORM_KEY + "=" + URLEncoder.encode(intellijPlatform, StandardCharsets.UTF_8) + "&")
+            .append(IDEA_PLATFORM_KEY + "=" + HashUtil.urlEncode(intellijPlatform) + "&")
             .append(IDEA_VERSION_KEY + "=" + intellijVersion + "&")
-            .append(DEV_OS_KEY + "=" + URLEncoder.encode(operatingSystem, StandardCharsets.UTF_8) + "&");
+            .append(DEV_OS_KEY + "=" + HashUtil.urlEncode(operatingSystem) + "&");
         if (entry.getMetric() != null) {
             actionBuilder.append(getMetricKeyByAction(entry.getAction()) + "=" + entry.getMetric() + "&");
             actionBuilder.append(EVENT_VALUE_KEY + "=" + entry.getMetric() + "&");
@@ -208,11 +209,11 @@ public class AnalyticsService {
         if (entry.isDimensionValueSet()) {
             String dimKey = getDimensionKeyByAction(entry.getAction());
             if (!StringUtils.isEmpty(dimKey))
-                actionBuilder.append(dimKey + "=" + URLEncoder.encode(entry.getDimensionValue(), StandardCharsets.UTF_8) + "&");
+                actionBuilder.append(dimKey + "=" + HashUtil.urlEncode(entry.getDimensionValue()) + "&");
         }
-        actionBuilder.append(ACTION_CATEGORY_KEY + "=" + URLEncoder.encode(entry.getCategory(), StandardCharsets.UTF_8) + "&")
-            .append(ACTION_LABEL_KEY + "=" + URLEncoder.encode(entry.getLabel(), StandardCharsets.UTF_8) + "&")
-            .append(EVENT_ACTION_KEY + "=" + URLEncoder.encode(entry.getActionName(), StandardCharsets.UTF_8));
+        actionBuilder.append(ACTION_CATEGORY_KEY + "=" + HashUtil.urlEncode(entry.getCategory()) + "&")
+            .append(ACTION_LABEL_KEY + "=" + HashUtil.urlEncode(entry.getLabel()) + "&")
+            .append(EVENT_ACTION_KEY + "=" + HashUtil.urlEncode(entry.getActionName()));
 
         return actionBuilder.toString();
     }

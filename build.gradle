@@ -26,8 +26,8 @@ apply plugin: 'org.jetbrains.intellij'
 apply plugin: 'maven-publish'
 apply plugin: 'java'
 
-sourceCompatibility = 1.11
-targetCompatibility = 1.11
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
 
 repositories {
     mavenLocal()
@@ -47,6 +47,9 @@ intellij {
 
 runIde {
     systemProperties(["jdk.util.zip.ensureTrailingSlash":false])
+    if (System.getenv("ANDROID_STUDIO_PATH")) {
+        ideDirectory System.getenv("ANDROID_STUDIO_PATH")
+    }
 }
 
 /*

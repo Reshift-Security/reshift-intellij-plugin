@@ -20,6 +20,8 @@
 
 package com.reshiftsecurity.plugins.intellij.common.util;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -43,5 +45,14 @@ public class HashUtil {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public static String urlEncode(String data) {
+        try {
+            return URLEncoder.encode(data, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        return data;
     }
 }

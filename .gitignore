@@ -19,3 +19,4 @@ bin
 .idea/libraries/
 .idea/modules.xml
 .idea/modules/
+.idea/reshiftsecurity*.xml

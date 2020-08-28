@@ -20,6 +20,7 @@
 
 package icons;
 
+import com.google.common.collect.ImmutableMap;
 import com.intellij.icons.AllIcons;
 import com.intellij.ui.LayeredIcon;
 import com.intellij.util.IconUtil;
@@ -105,7 +106,7 @@ public interface PluginIcons {
             ResourcesLoader.loadIcon("actions/groupByTemplate.svg")
     );
 
-    Map<String, Icon> GROUP_BY_RANK_ICONS = Map.of(
+    Map<String, Icon> GROUP_BY_RANK_ICONS = ImmutableMap.of(
             "SCARIEST", GROUP_BY_RANK_SCARIEST_ICON,
             "SCARY", GROUP_BY_RANK_SCARY_ICON,
             "TROUBLING", GROUP_BY_RANK_TROUBLING_ICON,
@@ -119,7 +120,7 @@ public interface PluginIcons {
     Icon GROUP_BY_PRIORITY_EXP_ICON = ResourcesLoader.loadIcon("priority/rankOfConcern.svg");
     Icon GROUP_BY_PRIORITY_IGNORE_ICON = ResourcesLoader.loadIcon("priority/priorityExp.png");
 
-    Map<String, Icon> GROUP_BY_PRIORITY_ICONS = Map.of(
+    Map<String, Icon> GROUP_BY_PRIORITY_ICONS = ImmutableMap.of(
             "Low", GROUP_BY_PRIORITY_LOW_ICON,
             "Medium", GROUP_BY_PRIORITY_MEDIUM_ICON,
             "High", GROUP_BY_PRIORITY_HIGH_ICON,
