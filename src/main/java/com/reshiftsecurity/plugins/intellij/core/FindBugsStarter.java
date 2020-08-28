@@ -38,6 +38,7 @@ import com.intellij.openapi.wm.ToolWindow;
 import com.intellij.openapi.wm.impl.ToolWindowImpl;
 import com.intellij.util.Consumer;
 import com.reshiftsecurity.analytics.AnalyticsAction;
+import com.reshiftsecurity.plugins.intellij.common.util.IntellijPlatformUtil;
 import com.reshiftsecurity.plugins.intellij.messages.AnalysisAbortingListener;
 import com.reshiftsecurity.plugins.intellij.messages.MessageBusManager;
 import com.reshiftsecurity.plugins.intellij.service.AnalyticsService;
@@ -117,7 +118,8 @@ public abstract class FindBugsStarter implements AnalysisAbortingListener {
 	}
 
 	protected boolean isCompileBeforeAnalyze() {
-		return workspaceSettings.compileBeforeAnalyze;
+		// HACK: Android Studio compile fails. Ignore compile before analyze setting for now.
+		return IntellijPlatformUtil.isAndroidStudio() ? false : workspaceSettings.compileBeforeAnalyze;
 	}
 
 	public final void start() {
