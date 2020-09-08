@@ -254,7 +254,7 @@ public final class ToolWindowPanel extends JPanel implements AnalysisStateListen
 		final StringBuilder message = new StringBuilder()
 				.append("Found ")
 				.append(_bugTreePanel.getGroupModel().getBugCount())
-				.append(" vulnerabilities in ")
+				.append(" Security Bugs in ")
 				.append(numAnalysedClasses)
 				.append(numAnalysedClasses > 1 ? " classes" : " class");
 
