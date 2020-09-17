@@ -132,7 +132,7 @@ public final class BugDetailsComponents {
 		reshiftContentPane.addHyperlinkListener(this::editorPaneHyperlinkUpdate);
 		try (StringReader reader = new StringReader(reshiftContent.getContentWithTitle())) {
 			reshiftContentPane.setToolTipText(edu.umd.cs.findbugs.L10N
-					.getLocalString("tooltip.longer_description", "This gives more details on the detected vulnerability"));
+					.getLocalString("tooltip.longer_description", "This gives more details on the detected Security Bug"));
 			reshiftContentPane.read(reader, "html bug description");
 		} catch (final IOException e) {
 			reshiftContentPane.setText("Could not find bug description: " + e.getMessage());
@@ -511,7 +511,7 @@ public final class BugDetailsComponents {
 			// no need for BufferedReader
 			try (StringReader reader = new StringReader(html)) {
 				_explanationPane.setToolTipText(edu.umd.cs.findbugs.L10N
-						.getLocalString("tooltip.longer_description", "This gives more details on the detected vulnerability"));
+						.getLocalString("tooltip.longer_description", "This gives more details on the detected Security Bug"));
 				_explanationPane.read(reader, "html bug description");
 			} catch (final IOException e) {
 				_explanationPane.setText("Could not find bug description: " + e.getMessage());

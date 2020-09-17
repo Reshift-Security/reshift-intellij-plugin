@@ -48,7 +48,7 @@ public class PluginConstants {
     public static final String RESHIFT_SITE_URL = "https://www.reshiftsecurity.com/?utm_source=plugin&utm_medium=IntelliJ&utm_campaign=intellij_plugin_reshift";
     public static final String RESHIFT_DEV_EMAIL = "dev@reshiftsecurity.com";
     public static final String UNINSTALL_FEEDBACK_URL = "https://www.reshiftsecurity.com/uninstall-intellij/";
-    public static final String DEFAULT_EDU_TAB_TOOLTIP = "Security Expert Tools/Resources to fix vulnerabilities";
+    public static final String DEFAULT_EDU_TAB_TOOLTIP = "DevSec Coaching Tools/Resources to fix Security Bugs";
 
     public static final String ANDROID_STUDIO = "Android Studio";
 }

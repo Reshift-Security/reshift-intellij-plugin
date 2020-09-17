@@ -259,7 +259,7 @@ public class TreeNodeCellRenderer extends JPanel implements TreeCellRenderer/*, 
 				setTitle(rootNode.getSimpleName());
 				final int bugCount = rootNode.getBugCount();
 				final int classesCount = rootNode.getClassesCount();
-				setHits(bugCount == -1 ? "" : "(found " + bugCount + " bug items in " + classesCount + (classesCount == 1 ? " class)" : " classes)"));
+				setHits(bugCount == -1 ? "" : "(found " + bugCount + " Security Bugs in " + classesCount + (classesCount == 1 ? " class)" : " classes)"));
 				setLinkHtml(rootNode.getLinkHtml());
 
 			} else if (value instanceof BugInstanceGroupNode) {
