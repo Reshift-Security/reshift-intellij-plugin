@@ -120,7 +120,7 @@ public final class HelpAction extends AbstractAction {
 		ret.append(String.format("Support & Feedback: <a href='mailto:%s'>dev@reshiftsecurity.com</a>", PluginConstants.RESHIFT_DEV_EMAIL));
 		ret.append("<br/>");
 		ret.append("<br/>");
-		ret.append("Would you like to integrate Reshift into your CI pipline? Sign up today for free on <a href='")
+		ret.append("Would you like to integrate Reshift into your CI pipeline? Sign up today for free on <a href='")
 				.append(PluginConstants.RESHIFT_SITE_URL)
 				.append("'>reshiftsecurity.com</a>");
 //		ret.append("Issue tracker: <a href='").append(VersionManager.getIssueTracker()).append("'>").append(VersionManager.getIssueTracker()).append("</a>");

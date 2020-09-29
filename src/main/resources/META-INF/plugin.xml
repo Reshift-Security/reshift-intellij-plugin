@@ -46,6 +46,11 @@
     </description>
     <change-notes>
         <![CDATA[<html>
+        <h3>1.6.2</h3>
+        <ul>
+            <li>Fixing reshift links</li>
+            <li>Typo fixes in messages</li>
+        </ul>
         <h3>1.6.1</h3>
         <ul>
             <li>Minor text updates</li>

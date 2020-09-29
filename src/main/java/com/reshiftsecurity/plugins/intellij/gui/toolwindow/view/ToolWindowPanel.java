@@ -22,6 +22,7 @@ package com.reshiftsecurity.plugins.intellij.gui.toolwindow.view;
 import com.intellij.CommonBundle;
 import com.intellij.codeInsight.daemon.DaemonCodeAnalyzer;
 import com.intellij.diagnostic.IdeMessagePanel;
+import com.intellij.ide.BrowserUtil;
 import com.intellij.notification.*;
 import com.intellij.openapi.Disposable;
 import com.intellij.openapi.actionSystem.*;
@@ -48,6 +49,9 @@ import javax.swing.*;
 import javax.swing.event.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.List;
 import java.util.*;
 
@@ -270,7 +274,7 @@ public final class ToolWindowPanel extends JPanel implements AnalysisStateListen
 		}
 		// message.append("<font size='10px'>using ").append(VersionManager.getFullVersion()).append("<br/>");
 		message.append("<br/>");
-		message.append("Would you like to integrate Reshift into your CI pipline? Sign up today for free on <a href='")
+		message.append("Would you like to integrate Reshift into your CI pipeline? Sign up today for free on <a href='")
 				.append(PluginConstants.RESHIFT_SITE_URL)
 				.append("'>reshiftsecurity.com</a>");
 		message.append("<br/>");
@@ -477,6 +481,24 @@ public final class ToolWindowPanel extends JPanel implements AnalysisStateListen
 						notification.expire();
 					} else {
 						notification.hideBalloon();
+					}
+				} else {
+					try {
+						URI eventURI = e.getURL().toURI();
+						if (eventURI.getScheme().equalsIgnoreCase("mailto")) {
+							Desktop desktop = Desktop.getDesktop();
+							if (desktop.isSupported(Desktop.Action.MAIL)) {
+								try {
+									desktop.mail(eventURI);
+								} catch (IOException emailEx) {
+									emailEx.printStackTrace();
+								}
+							}
+						} else {
+							BrowserUtil.browse(e.getURL());
+						}
+					} catch (URISyntaxException uriSyntaxException) {
+						uriSyntaxException.printStackTrace();
 					}
 				}
 			}
