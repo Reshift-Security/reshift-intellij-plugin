@@ -40,6 +40,7 @@ import com.reshiftsecurity.plugins.intellij.messages.AnalysisStateListener;
 import com.reshiftsecurity.plugins.intellij.messages.ClearListener;
 import com.reshiftsecurity.plugins.intellij.messages.MessageBusManager;
 import com.reshiftsecurity.plugins.intellij.messages.NewBugListener;
+import com.reshiftsecurity.plugins.intellij.service.ReshiftUserService;
 import org.jetbrains.annotations.*;
 import com.reshiftsecurity.plugins.intellij.common.util.FindBugsUtil;
 import com.reshiftsecurity.plugins.intellij.core.FindBugsResult;
@@ -313,6 +314,7 @@ public final class ToolWindowPanel extends JPanel implements AnalysisStateListen
 
 		EditorFactory.getInstance().refreshAllEditors();
 		DaemonCodeAnalyzer.getInstance(_project).restart();
+		ReshiftUserService.getInstance().postScanProcess(_project);
 	}
 
 	private ComponentListener createComponentListener() {

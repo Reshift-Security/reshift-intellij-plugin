@@ -45,6 +45,8 @@ public class PluginConstants {
 
     public static final String DEFAULT_SUPPRESS_WARNINGS_CLASSNAME = "edu.umd.cs.findbugs.annotations.SuppressFBWarnings";
 
+    public static final String RESHIFT_APP_URL = "https://reshift.reshiftsecurity.com";
+    public static final String RESHIFT_ONBOARDING_URL = String.format("%s/onboarding", RESHIFT_APP_URL);
     public static final String RESHIFT_SITE_URL = "https://www.reshiftsecurity.com/?utm_source=plugin&utm_medium=IntelliJ&utm_campaign=intellij_plugin_reshift";
     public static final String RESHIFT_DEV_EMAIL = "dev@reshiftsecurity.com";
     public static final String UNINSTALL_FEEDBACK_URL = "https://www.reshiftsecurity.com/uninstall-intellij/";

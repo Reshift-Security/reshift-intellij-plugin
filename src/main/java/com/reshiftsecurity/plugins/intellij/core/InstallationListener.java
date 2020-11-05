@@ -31,6 +31,7 @@ import com.intellij.ui.components.JBCheckBox;
 import com.intellij.util.ui.UIUtil;
 import com.reshiftsecurity.analytics.AnalyticsAction;
 import com.reshiftsecurity.plugins.intellij.common.PluginConstants;
+import com.reshiftsecurity.plugins.intellij.common.util.GuiUtil;
 import com.reshiftsecurity.plugins.intellij.gui.toolwindow.view.ToolWindowPanel;
 import com.reshiftsecurity.plugins.intellij.resources.ResourcesLoader;
 import com.reshiftsecurity.plugins.intellij.service.AnalyticsService;
@@ -46,8 +47,8 @@ public class InstallationListener implements StartupActivity {
          if (!AnalyticsServiceSettings.getInstance().hasConsent()) {
              JEditorPane termsContentPane = new JEditorPane();
              termsContentPane.setContentType(UIUtil.HTML_MIME);
-             termsContentPane.setText(String.format(ResourcesLoader.getString("analytics.confirmation.terms"),
-                     UIUtil.isUnderDarcula() ? "white" : "black"));
+             termsContentPane.setText(
+                     GuiUtil.getThemeAwareHtml(ResourcesLoader.getString("analytics.confirmation.terms")));
 
              JBCheckBox usageDataConsent = new JBCheckBox();
              usageDataConsent.setSelected(true);

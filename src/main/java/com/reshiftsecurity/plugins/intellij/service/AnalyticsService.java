@@ -24,7 +24,6 @@ import com.intellij.ide.plugins.IdeaPluginDescriptor;
 import com.intellij.ide.plugins.PluginManagerCore;
 import com.intellij.openapi.application.ApplicationInfo;
 import com.intellij.openapi.components.ServiceManager;
-import com.reshiftsecurity.analytics.AnalyticsActionCategory;
 import com.reshiftsecurity.analytics.AnalyticsEntry;
 import com.reshiftsecurity.analytics.AnalyticsAction;
 import com.reshiftsecurity.plugins.intellij.common.PluginConstants;
@@ -35,11 +34,8 @@ import org.apache.commons.lang.StringUtils;
 
 import java.io.IOException;
 import java.net.*;
-import java.nio.charset.StandardCharsets;
-import java.security.MessageDigest;
 import java.util.ArrayList;
 import java.util.Enumeration;
-import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -48,24 +44,13 @@ public class AnalyticsService {
     // NOTE: use https://www.google-analytics.com/debug/collect for debugging
     private final String ANALYTICS_BASE_URL = "https://www.google-analytics.com/collect";
     private final String APP_ID = "com.reshiftsecurity.plugins.intellij";
-    private final String APP_ID_KEY = "aid";
     private final String APP_NAME = "Reshift Intellij Plugin";
-    private final String APP_NAME_KEY = "an";
-    private final String APP_VERSION_KEY = "av";
     private final String PROTOCOL_VERSION = "1";
-    private final String PROTOCOL_VERSION_KEY = "v";
     private final String HIT_TYPE = "event";
-    private final String HIT_TYPE_KEY = "t";
-    private final String EVENT_ACTION_KEY = "ea";
-    private final String USER_ID_KEY = "cid";
-    private final String MEASUREMENT_ID_KEY = "tid";
     private final String NUM_ISSUES_METRIC_KEY = "cm1";
     private final String NUM_FIXES_METRIC_KEY = "cm2";
-    private final String EVENT_VALUE_KEY = "ev";
-    private final String ACTION_CATEGORY_KEY = "ec";
-    private final String ACTION_LABEL_KEY = "el";
     private final String DOC_PATH = "%2Fintellij";
-    private final String DOC_PATH_KEY = "dp";
+    private final String DOC_LOCATION_VALUE = "https%3A%2F%2www.reshiftsecurity.com%2Fintellij";
     private final String IDEA_PLATFORM_KEY = "cd1";
     private final String IDEA_VERSION_KEY = "cd2";
     private final String DEV_OS_KEY = "cd3";
@@ -83,16 +68,22 @@ public class AnalyticsService {
         ApplicationInfo appInfo = ApplicationInfo.getInstance();
         this.entries = new ArrayList<>();
         this.applicationVersion = VersionManager.getVersion();
-        this.userID = getUserIdentifier();
+        this.userID = generateUserIdentifier();
         this.measurementID = "UA-149586212-2";
         this.operatingSystem = System.getProperty("os.name");
         this.intellijPlatform = String.format("%s %s", appInfo.getVersionName(), appInfo.getBuild().getProductCode());
         this.intellijVersion = appInfo.getFullVersion();
         this.userAgent = buildUserAgent();
+        // Record initial "pageview" hit
+        this.recordInitialIntellijOpen();
     }
 
     public static AnalyticsService getInstance() {
         return ServiceManager.getService(AnalyticsService.class);
+    }
+
+    public void recordInitialIntellijOpen() {
+        this.recordConsentExemptAction(AnalyticsAction.OPEN_INTELLIJ);
     }
 
     public void recordDismissConsentAction() {
@@ -142,6 +133,10 @@ public class AnalyticsService {
         this.processActions();
     }
 
+    public String getUserIdentifier() {
+        return this.userID;
+    }
+
     private String buildUserAgent() {
         StringBuilder agentString = new StringBuilder();
         agentString.append(String.format("%s, ", this.operatingSystem));
@@ -150,7 +145,7 @@ public class AnalyticsService {
         return agentString.toString();
     }
 
-    private String getUserIdentifier() {
+    private String generateUserIdentifier() {
         try {
             InetAddress ip = InetAddress.getLocalHost();
             NetworkInterface network = NetworkInterface.getByInetAddress(ip);
@@ -186,34 +181,42 @@ public class AnalyticsService {
         return (action == AnalyticsAction.OTHER_PLUGINS ? OTHER_PLUGINS_KEY : null);
     }
 
+    private String getHitTypeByAction(AnalyticsAction action) {
+        if (AnalyticsAction.OPEN_INTELLIJ.equals(action)) {
+            return "pageview";
+        }
+        return HIT_TYPE;
+    }
+
     private String buildEntryParameters(AnalyticsEntry entry) {
         if (entry == null) {
             return "";
         }
         StringBuilder actionBuilder = new StringBuilder()
-            .append(PROTOCOL_VERSION_KEY + "=" + PROTOCOL_VERSION + "&")
-            .append(APP_ID_KEY + "=" + APP_ID + "&")
-            .append(APP_NAME_KEY + "=" + HashUtil.urlEncode(APP_NAME) + "&")
-            .append(USER_ID_KEY + "=" + this.userID + "&")
-            .append(APP_VERSION_KEY + "=" + this.applicationVersion + "&")
-            .append(MEASUREMENT_ID_KEY + "=" + this.measurementID + "&")
-            .append(DOC_PATH_KEY + "=" + DOC_PATH + "&")
-            .append(HIT_TYPE_KEY + "=" + HIT_TYPE + "&")
+            .append("v=" + PROTOCOL_VERSION + "&")
+            .append("aid=" + APP_ID + "&")
+            .append("an=" + HashUtil.urlEncode(APP_NAME) + "&")
+            .append("cid=" + this.userID + "&")
+            .append("av=" + this.applicationVersion + "&")
+            .append("tid=" + this.measurementID + "&")
+            .append("dp=" + DOC_PATH + "&")
+            .append("t=" + getHitTypeByAction(entry.getAction()) + "&")
             .append(IDEA_PLATFORM_KEY + "=" + HashUtil.urlEncode(intellijPlatform) + "&")
             .append(IDEA_VERSION_KEY + "=" + intellijVersion + "&")
-            .append(DEV_OS_KEY + "=" + HashUtil.urlEncode(operatingSystem) + "&");
+            .append(DEV_OS_KEY + "=" + HashUtil.urlEncode(operatingSystem) + "&")
+            .append("dl=" + DOC_LOCATION_VALUE + "&");
         if (entry.getMetric() != null) {
             actionBuilder.append(getMetricKeyByAction(entry.getAction()) + "=" + entry.getMetric() + "&");
-            actionBuilder.append(EVENT_VALUE_KEY + "=" + entry.getMetric() + "&");
+            actionBuilder.append("ev=" + entry.getMetric() + "&");
         }
         if (entry.isDimensionValueSet()) {
             String dimKey = getDimensionKeyByAction(entry.getAction());
             if (!StringUtils.isEmpty(dimKey))
                 actionBuilder.append(dimKey + "=" + HashUtil.urlEncode(entry.getDimensionValue()) + "&");
         }
-        actionBuilder.append(ACTION_CATEGORY_KEY + "=" + HashUtil.urlEncode(entry.getCategory()) + "&")
-            .append(ACTION_LABEL_KEY + "=" + HashUtil.urlEncode(entry.getLabel()) + "&")
-            .append(EVENT_ACTION_KEY + "=" + HashUtil.urlEncode(entry.getActionName()));
+        actionBuilder.append("ec=" + HashUtil.urlEncode(entry.getCategory()) + "&")
+            .append("el=" + HashUtil.urlEncode(entry.getLabel()) + "&")
+            .append("ea=" + HashUtil.urlEncode(entry.getActionName()));
 
         return actionBuilder.toString();
     }

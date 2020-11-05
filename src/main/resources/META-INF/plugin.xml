@@ -46,6 +46,11 @@
     </description>
     <change-notes>
         <![CDATA[<html>
+        <h3>2.0.0</h3>
+        <ul>
+            <li>Reshift Online integration and signup</li>
+            <li>Enhanced UX for Reshift users</li>
+        </ul>
         <h3>1.6.2</h3>
         <ul>
             <li>Fixing reshift links</li>
@@ -124,6 +129,7 @@
         <applicationService serviceImplementation="com.reshiftsecurity.plugins.intellij.service.EducationCachingService" />
         <applicationService serviceImplementation="com.reshiftsecurity.plugins.intellij.service.AnalyticsService" />
         <applicationService serviceImplementation="com.reshiftsecurity.plugins.intellij.service.AnalyticsServiceSettings" />
+        <applicationService serviceImplementation="com.reshiftsecurity.plugins.intellij.service.ReshiftUserService" />
         <postStartupActivity implementation="com.reshiftsecurity.plugins.intellij.core.InstallationListener" />
     </extensions>
     <extensions defaultExtensionNs="com.intellij">
