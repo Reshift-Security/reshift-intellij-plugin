@@ -479,6 +479,7 @@ public final class ToolWindowPanel extends JPanel implements AnalysisStateListen
 									"\ncan be used to configure the notification.",
 							"Reshift Security Analysis Finished Notification",
 							"Disable Notification", CommonBundle.getCancelButtonText(), Messages.getWarningIcon());
+					AnalyticsService.getInstance().recordAction(AnalyticsAction.DISABLE_NOTIFICATION);
 					if (result == Messages.YES) {
 						NotificationUtil.getNotificationsConfigurationImpl().changeSettings(
 								NOTIFICATION_GROUP_ID_ANALYSIS_FINISHED,

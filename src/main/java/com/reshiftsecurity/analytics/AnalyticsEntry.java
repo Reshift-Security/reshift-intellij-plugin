@@ -58,6 +58,10 @@ public class AnalyticsEntry {
                 this.category = AnalyticsActionCategory.Code_View.toString();
                 this.actionName = "click file name";
                 break;
+            case DISABLE_NOTIFICATION:
+                this.category = AnalyticsActionCategory.Plugin_Window.toString();
+                this.actionName = "disable scan completed notification";
+                break;
             case DISMISS_SIGNUP_DIALOG:
                 this.category = AnalyticsActionCategory.Reshift_Signup.toString();
                 this.actionName = "dismiss signup dialogue";
