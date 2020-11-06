@@ -66,6 +66,8 @@ public class ReshiftUserService implements PersistentStateComponent<ReshiftUserS
     @Tag
     private int dayLastShown = -1;
 
+    private int today;
+
     private String getReferenceId() {
         return AnalyticsService.getInstance().getUserIdentifier();
     }
@@ -74,10 +76,27 @@ public class ReshiftUserService implements PersistentStateComponent<ReshiftUserS
         return ServiceManager.getService(ReshiftUserService.class);
     }
 
+    public Boolean isReshiftUser() {
+        return this.isReshiftUser;
+    }
+
+    public String getMiniSignupPopup() {
+        return getMiniSignupPopup(true);
+    }
+
+    public String getMiniSignupPopup(boolean onboard) {
+        return String.format(ResourcesLoader.getString("reshift.user.signup.minipopup"), getSignupURL(onboard));
+    }
+
     public String getSignupURL() {
+        return getSignupURL(true);
+    }
+
+    public String getSignupURL(boolean onboard) {
         String refIdValue = getReferenceId();
-        String rawUrl = String.format("%s/reference?ref_type=ide&ref_info=intellij&ref_id=%s&next=onboard",
-                PluginConstants.RESHIFT_APP_URL, refIdValue);
+        String onboardParam = onboard ? "onboard" : "home_intellij";
+        String rawUrl = String.format("%s/reference?ref_type=ide&ref_info=intellij&ref_id=%s&next=%s",
+                PluginConstants.RESHIFT_APP_URL, refIdValue, onboardParam);
         try {
             return new URI(rawUrl).toURL().toString();
         } catch (URISyntaxException | MalformedURLException e) {
@@ -87,8 +106,8 @@ public class ReshiftUserService implements PersistentStateComponent<ReshiftUserS
         return PluginConstants.RESHIFT_ONBOARDING_URL;
     }
 
-    public void showSignupWindow(JPanel parentPanel, int dayNumber) {
-        this.dayLastShown = dayNumber;
+    public void showSignupWindow(JPanel parentPanel) {
+        this.dayLastShown = this.today;
         AnalyticsService.getInstance().recordAction(AnalyticsAction.SHOW_SIGNUP_DIALOGUE);
 
         JEditorPane signupContentPane = new JEditorPane();
@@ -127,7 +146,7 @@ public class ReshiftUserService implements PersistentStateComponent<ReshiftUserS
 
     public void postScanProcess(Project project) {
         Calendar todayDate = Calendar.getInstance();
-        int today = todayDate.get(Calendar.DAY_OF_WEEK);
+        this.today = todayDate.get(Calendar.DAY_OF_WEEK);
         boolean isTimeToShowPopup = Calendar.TUESDAY == today && today != this.dayLastShown;
         if (isTimeToShowPopup && !this.isReshiftUser && !this.dismissSignupDialogueForever) {
             OkHttpClient client = new OkHttpClient();
@@ -140,7 +159,7 @@ public class ReshiftUserService implements PersistentStateComponent<ReshiftUserS
             try {
                 Response referenceCheckResponse = client.newCall(request).execute();
                 if (referenceCheckResponse.code() != 200) {
-                    showSignupWindow(ToolWindowPanel.getInstance(project), today);
+                    showSignupWindow(ToolWindowPanel.getInstance(project));
                 } else {
                     isReshiftUser = true;
                 }

@@ -311,7 +311,7 @@
 
             <action id="Reshift.ReshiftSignup"
                     class="com.reshiftsecurity.plugins.intellij.actions.ReshiftSignupAction"
-                    text="Reshift Security + CI/CD"
+                    text="Reshift Security"
                     description="Integrate Security into your CI/CD practice! Checkout Reshift Security online!"
                     icon="PluginIcons.RESHIFT_LOGO_13X13"/>
 

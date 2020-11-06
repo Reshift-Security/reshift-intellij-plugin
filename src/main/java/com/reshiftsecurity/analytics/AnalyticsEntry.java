@@ -42,6 +42,14 @@ public class AnalyticsEntry {
                 this.category = AnalyticsActionCategory.Reshift_Signup.toString();
                 this.actionName = "click signup from dialogue";
                 break;
+            case CLICK_ON_SIGNUP_IN_INFO:
+                this.category = AnalyticsActionCategory.Reshift_Signup.toString();
+                this.actionName = "click signup from help and info notification";
+                break;
+            case CLICK_ON_SIGNUP_IN_NOTIFICATION:
+                this.category = AnalyticsActionCategory.Reshift_Signup.toString();
+                this.actionName = "click signup from post-scan notification";
+                break;
             case CODE_VIEW_BUG_DETAILS:
                 this.category = AnalyticsActionCategory.Code_View.toString();
                 this.actionName = "click bug icon";
