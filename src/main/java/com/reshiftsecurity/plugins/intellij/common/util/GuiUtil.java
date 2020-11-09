@@ -274,4 +274,9 @@ public final class GuiUtil {
 		);
 		return ret;
 	}
+
+	public static String getThemeAwareHtml(String content) {
+		return String.format("<html><div style=\"font-family: 'Fira Sans';color: %s;\">%s</div></html>",
+				UIUtil.isUnderDarcula() ? "white" : "black", content);
+	}
 }

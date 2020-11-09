@@ -38,6 +38,18 @@ public class AnalyticsEntry {
                 this.category = AnalyticsActionCategory.Plugin_Window.toString();
                 this.actionName = "close";
                 break;
+            case CLICK_ON_SIGNUP_DIALOGUE:
+                this.category = AnalyticsActionCategory.Reshift_Signup.toString();
+                this.actionName = "click signup from dialogue";
+                break;
+            case CLICK_ON_SIGNUP_IN_INFO:
+                this.category = AnalyticsActionCategory.Reshift_Signup.toString();
+                this.actionName = "click signup from help and info notification";
+                break;
+            case CLICK_ON_SIGNUP_IN_NOTIFICATION:
+                this.category = AnalyticsActionCategory.Reshift_Signup.toString();
+                this.actionName = "click signup from post-scan notification";
+                break;
             case CODE_VIEW_BUG_DETAILS:
                 this.category = AnalyticsActionCategory.Code_View.toString();
                 this.actionName = "click bug icon";
@@ -45,6 +57,18 @@ public class AnalyticsEntry {
             case CODE_VIEW_OPEN_FILE:
                 this.category = AnalyticsActionCategory.Code_View.toString();
                 this.actionName = "click file name";
+                break;
+            case DISABLE_NOTIFICATION:
+                this.category = AnalyticsActionCategory.Plugin_Window.toString();
+                this.actionName = "disable scan completed notification";
+                break;
+            case DISMISS_SIGNUP_DIALOG:
+                this.category = AnalyticsActionCategory.Reshift_Signup.toString();
+                this.actionName = "dismiss signup dialogue";
+                break;
+            case DISMISS_SIGNUP_DIALOG_FOREVER:
+                this.category = AnalyticsActionCategory.Reshift_Signup.toString();
+                this.actionName = "do not show signup dialogue again";
                 break;
             case COPY_PLUGIN_INFO:
                 this.category = AnalyticsActionCategory.Info_and_Help.toString();
@@ -78,9 +102,17 @@ public class AnalyticsEntry {
                 this.category = AnalyticsActionCategory.Scan_Report.toString();
                 this.actionName = "quick search";
                 break;
+            case NAVIGATE_TO_SIGNUP:
+                this.category = AnalyticsActionCategory.Reshift_Signup.toString();
+                this.actionName = "click on signup link";
+                break;
             case OPEN_HELP:
                 this.category = AnalyticsActionCategory.Info_and_Help.toString();
                 this.actionName = "open help";
+                break;
+            case OPEN_INTELLIJ:
+                this.category = AnalyticsActionCategory.Intellij.toString();
+                this.actionName = "open intellij";
                 break;
             case OPEN_PLUGIN_WINDOW:
                 this.category = AnalyticsActionCategory.Plugin_Window.toString();
@@ -117,6 +149,10 @@ public class AnalyticsEntry {
             case SETTINGS_UPDATED:
                 this.category = AnalyticsActionCategory.Settings.toString();
                 this.actionName = "update settings";
+                break;
+            case SHOW_SIGNUP_DIALOGUE:
+                this.category = AnalyticsActionCategory.Reshift_Signup.toString();
+                this.actionName = "signup dialogue shown";
                 break;
             case START_SCAN:
                 this.category = AnalyticsActionCategory.Scan.toString();

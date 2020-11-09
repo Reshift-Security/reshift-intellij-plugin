@@ -29,6 +29,7 @@ import com.intellij.util.text.DateFormatUtil;
 import com.reshiftsecurity.analytics.AnalyticsAction;
 import com.reshiftsecurity.plugins.intellij.common.PluginConstants;
 import com.reshiftsecurity.plugins.intellij.service.AnalyticsService;
+import com.reshiftsecurity.plugins.intellij.service.ReshiftUserService;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import com.reshiftsecurity.plugins.intellij.common.VersionManager;
@@ -99,6 +100,7 @@ public final class HelpAction extends AbstractAction {
 										}
 									}
 								} else {
+									AnalyticsService.getInstance().recordAction(AnalyticsAction.CLICK_ON_SIGNUP_IN_INFO);
 									BrowserUtil.browse(evt.getURL());
 								}
 							} catch (URISyntaxException uriSyntaxException) {
@@ -119,19 +121,13 @@ public final class HelpAction extends AbstractAction {
 		ret.append("<br>");
 		ret.append(String.format("Support & Feedback: <a href='mailto:%s'>dev@reshiftsecurity.com</a>", PluginConstants.RESHIFT_DEV_EMAIL));
 		ret.append("<br/>");
-		ret.append("<br/>");
-		ret.append("Would you like to integrate Reshift into your CI pipeline? Sign up today for free on <a href='")
-				.append(PluginConstants.RESHIFT_SITE_URL)
-				.append("'>reshiftsecurity.com</a>");
-//		ret.append("Issue tracker: <a href='").append(VersionManager.getIssueTracker()).append("'>").append(VersionManager.getIssueTracker()).append("</a>");
-//		ret.append("<h3>SpotBugs ").append(FindBugsUtil.getFindBugsFullVersion()).append("</h3>");
-//		ret.append("Website: <a href='").append(Version.WEBSITE).append("'>").append(Version.WEBSITE).append("</a>");
-//		ret.append("<br>");
-//		ret.append("Download: <a href='").append(DOWNLOADS_WEBSITE).append("'>").append(DOWNLOADS_WEBSITE).append("</a>");
-		ret.append("<br><br>");
-		ret.append("<p>");
+		if (!ReshiftUserService.getInstance().isReshiftUser()) {
+			ret.append("<br/>");
+			ret.append(ReshiftUserService.getInstance().getMiniSignupPopup());
+		}
+		ret.append("<br/><p>");
 		ret.append("<a href='").append(A_HREF_COPY).append("'>").append(ResourcesLoader.getString("help.copyInfos")).append("</a>");
-		ret.append("</p>");
+		ret.append("</p><br/><br/>");
 		return ret;
 	}
 

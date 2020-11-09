@@ -35,11 +35,14 @@ import com.intellij.openapi.wm.*;
 import com.intellij.psi.PsiFile;
 import com.intellij.ui.content.*;
 import com.intellij.util.ui.JBUI;
+import com.reshiftsecurity.analytics.AnalyticsAction;
 import com.reshiftsecurity.plugins.intellij.common.*;
 import com.reshiftsecurity.plugins.intellij.messages.AnalysisStateListener;
 import com.reshiftsecurity.plugins.intellij.messages.ClearListener;
 import com.reshiftsecurity.plugins.intellij.messages.MessageBusManager;
 import com.reshiftsecurity.plugins.intellij.messages.NewBugListener;
+import com.reshiftsecurity.plugins.intellij.service.AnalyticsService;
+import com.reshiftsecurity.plugins.intellij.service.ReshiftUserService;
 import org.jetbrains.annotations.*;
 import com.reshiftsecurity.plugins.intellij.common.util.FindBugsUtil;
 import com.reshiftsecurity.plugins.intellij.core.FindBugsResult;
@@ -272,12 +275,6 @@ public final class ToolWindowPanel extends JPanel implements AnalysisStateListen
 			notificationType = NotificationType.INFORMATION;
 			message.append("&nbsp;<a href='").append(A_HREF_MORE_ANCHOR).append("'>more...</a><br/>");
 		}
-		// message.append("<font size='10px'>using ").append(VersionManager.getFullVersion()).append("<br/>");
-		message.append("<br/>");
-		message.append("Would you like to integrate Reshift into your CI pipeline? Sign up today for free on <a href='")
-				.append(PluginConstants.RESHIFT_SITE_URL)
-				.append("'>reshiftsecurity.com</a>");
-		message.append("<br/>");
 
 		if (error != null) {
 			final boolean findBugsError = FindBugsUtil.isFindBugsError(error);
@@ -302,7 +299,14 @@ public final class ToolWindowPanel extends JPanel implements AnalysisStateListen
 			// use balloon because error should never disabled
 			BalloonTipFactory.showToolWindowErrorNotifier(_project, message.toString(), new BalloonErrorListenerImpl(ToolWindowPanel.this, result, ideMessagePanel));
 		} else {
-			message.append("<a href='").append(A_HREF_DISABLE_ANCHOR).append("'>Disable notification").append("</a>");
+			if (!ReshiftUserService.getInstance().isReshiftUser()) {
+				message.append("<br/>").append(ReshiftUserService.getInstance().getMiniSignupPopup());
+			}
+			message.append("<br/><p><a href='").append(A_HREF_DISABLE_ANCHOR).append("'>Disable notification").append("</a></p>");
+			if (!ReshiftUserService.getInstance().isReshiftUser()) {
+				// styling hack to make sure the notification is fully displayed in case signup window is opened.
+				message.append("<br/><br/>");
+			}
 			NOTIFICATION_GROUP_ANALYSIS_FINISHED.createNotification(
 					VersionManager.getName() + ": Analysis Finished",
 					message.toString(),
@@ -313,6 +317,7 @@ public final class ToolWindowPanel extends JPanel implements AnalysisStateListen
 
 		EditorFactory.getInstance().refreshAllEditors();
 		DaemonCodeAnalyzer.getInstance(_project).restart();
+		ReshiftUserService.getInstance().postScanProcess(_project);
 	}
 
 	private ComponentListener createComponentListener() {
@@ -474,6 +479,7 @@ public final class ToolWindowPanel extends JPanel implements AnalysisStateListen
 									"\ncan be used to configure the notification.",
 							"Reshift Security Analysis Finished Notification",
 							"Disable Notification", CommonBundle.getCancelButtonText(), Messages.getWarningIcon());
+					AnalyticsService.getInstance().recordAction(AnalyticsAction.DISABLE_NOTIFICATION);
 					if (result == Messages.YES) {
 						NotificationUtil.getNotificationsConfigurationImpl().changeSettings(
 								NOTIFICATION_GROUP_ID_ANALYSIS_FINISHED,
@@ -495,6 +501,7 @@ public final class ToolWindowPanel extends JPanel implements AnalysisStateListen
 								}
 							}
 						} else {
+							AnalyticsService.getInstance().recordAction(AnalyticsAction.CLICK_ON_SIGNUP_IN_NOTIFICATION);
 							BrowserUtil.browse(e.getURL());
 						}
 					} catch (URISyntaxException uriSyntaxException) {
