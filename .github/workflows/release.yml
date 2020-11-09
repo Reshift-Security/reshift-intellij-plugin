@@ -26,7 +26,7 @@ jobs:
       run: |
         RAW_VERSION=`./gradlew properties | grep version`
         VERSION=`echo "${RAW_VERSION/'version: '/''}"`
-        echo ::set-env name=TAG_NAME::$VERSION
+        echo "TAG_NAME=$VERSION" >> $GITHUB_ENV
     - name: Create Release
       id: create_release
       uses: actions/create-release@v1
