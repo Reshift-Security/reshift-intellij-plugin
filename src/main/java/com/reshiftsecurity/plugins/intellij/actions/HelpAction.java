@@ -127,7 +127,7 @@ public final class HelpAction extends AbstractAction {
 		}
 		ret.append("<br/><p>");
 		ret.append("<a href='").append(A_HREF_COPY).append("'>").append(ResourcesLoader.getString("help.copyInfos")).append("</a>");
-		ret.append("</p><br/><br/>");
+		ret.append("</p>");
 		return ret;
 	}
 
