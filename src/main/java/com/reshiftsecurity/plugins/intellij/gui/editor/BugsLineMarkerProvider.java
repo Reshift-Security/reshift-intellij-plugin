@@ -109,8 +109,8 @@ public final class BugsLineMarkerProvider implements LineMarkerProvider {
 		return null;
 	}
 
-	public void collectSlowLineMarkers(@NotNull final List<PsiElement> elements, @NotNull final Collection<LineMarkerInfo> result) {
-	}
+//	public void collectSlowLineMarkers(@NotNull final List<PsiElement> elements, @NotNull final Collection<LineMarkerInfo> result) {
+//	}
 
 	private static class BugGutterIconNavigationHandler implements GutterIconNavigationHandler<PsiElement> {
 

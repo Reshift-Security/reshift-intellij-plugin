@@ -164,7 +164,7 @@ final class AdvancedSettingsAction extends DefaultActionGroup {
 							ResourcesLoader.getString("settings.export.title"),
 							ResourcesLoader.getString("settings.export.description"),
 							XmlFileType.DEFAULT_EXTENSION
-					), settingsPane).save(null, "Reshift");
+					), settingsPane).save("Reshift");
 			if (wrapper == null) {
 				return;
 			}
