@@ -163,7 +163,7 @@ public final class ToolWindowPanel extends JPanel implements AnalysisStateListen
 		if (!_isPreviewLayoutEnabled && enablePreviewLayout) {
 			_updateMultiSplitLayout(PREVIEW_LAYOUT_DEF);
 			getMultiSplitPane().add(getBugTreePanel(), "left");
-			_multiSplitPane.add(getPreviewPanel().getComponent(), "middle");
+			getMultiSplitPane().add(getPreviewPanel().getComponent(), "middle");
 			getMultiSplitPane().add(getBugDetailsComponents().getTabbedPane(), "right");
 			//getMultiSplitPane().add(getBugDetailsComponents().getBugExplanationPanel(), "right.bottom");
 			_isPreviewLayoutEnabled = true;
@@ -303,10 +303,7 @@ public final class ToolWindowPanel extends JPanel implements AnalysisStateListen
 				message.append("<br/>").append(ReshiftUserService.getInstance().getMiniSignupPopup());
 			}
 			message.append("<br/><p><a href='").append(A_HREF_DISABLE_ANCHOR).append("'>Disable notification").append("</a></p>");
-			if (!ReshiftUserService.getInstance().isReshiftUser()) {
-				// styling hack to make sure the notification is fully displayed in case signup window is opened.
-				message.append("<br/><br/>");
-			}
+
 			NOTIFICATION_GROUP_ANALYSIS_FINISHED.createNotification(
 					VersionManager.getName() + ": Analysis Finished",
 					message.toString(),

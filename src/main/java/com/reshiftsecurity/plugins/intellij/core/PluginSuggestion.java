@@ -44,7 +44,7 @@ import java.util.Set;
 
 public final class PluginSuggestion extends AbstractProjectComponent {
 
-	private static final String NOTIFICATION_GROUP_ID_PLUGIN_SUGGESTION = "FindBugs: Plugin Suggestion";
+	private static final String NOTIFICATION_GROUP_ID_PLUGIN_SUGGESTION = "Reshift: Plugin Suggestion";
 	private static final NotificationGroup NOTIFICATION_GROUP_PLUGIN_SUGGESTION = new NotificationGroup(NOTIFICATION_GROUP_ID_PLUGIN_SUGGESTION, NotificationDisplayType.STICKY_BALLOON, false);
 
 	public PluginSuggestion(@NotNull final Project project) {
