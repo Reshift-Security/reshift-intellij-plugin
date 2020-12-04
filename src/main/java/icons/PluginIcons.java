@@ -33,7 +33,7 @@ public interface PluginIcons {
 
     Icon RESHIFT_ICON = ResourcesLoader.loadIcon("reshift.png");
     Icon RESHIFT_LOGO_13X13 = ResourcesLoader.loadIcon("reshift-logo.png");
-    Icon FINDBUGS_CLOUD_ICON = ResourcesLoader.loadIcon("reshift-logo.png");
+    Icon RESHIFT_CLOUD_ICON = ResourcesLoader.loadIcon("reshift-logo.png");
 
     Icon PLUGIN_SETTINGS_ICON = ResourcesLoader.loadIcon("actions/reshift-settings.png");
 

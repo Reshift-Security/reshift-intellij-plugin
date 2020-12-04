@@ -113,7 +113,6 @@ public final class BugDetailsComponents {
 			}
 
 			_jTabbedPane.setFocusable(false);
-			_jTabbedPane.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
 			_jTabbedPane.addChangeListener(this._eduChangeListener);
 			_analyticsService.recordAction(AnalyticsAction.OPEN_PLUGIN_WINDOW);
 
@@ -188,17 +187,6 @@ public final class BugDetailsComponents {
 		}
 
 		_jTabbedPane.setMnemonicAt(0, KeyEvent.VK_1);
-
-
-		if (Plugin.getByPluginId(EDU_UMD_CS_FINDBUGS_PLUGINS_WEB_CLOUD) != null) {
-			if (SystemInfo.isMac) {
-				// Aqua LF will rotate content
-				_jTabbedPane.addTab("Comments", PluginIcons.FINDBUGS_CLOUD_ICON, getCloudCommentsPanel(), "Comments from the FindBugs Cloud");
-			} else {
-				_jTabbedPane.addTab(null, new VerticalTextIcon("Comments", true, PluginIcons.FINDBUGS_CLOUD_ICON), getCloudCommentsPanel(), "Comments from the FindBugs Cloud");
-			}
-			_jTabbedPane.setMnemonicAt(1, KeyEvent.VK_2);
-		}
 
 	}
 

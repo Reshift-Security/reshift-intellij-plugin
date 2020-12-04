@@ -26,6 +26,7 @@ import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.project.ProjectManager;
 import com.intellij.util.ui.UIUtil;
+import com.reshiftsecurity.plugins.intellij.common.PluginConstants;
 import edu.umd.cs.findbugs.Plugin;
 import edu.umd.cs.findbugs.PluginException;
 import org.jetbrains.annotations.NotNull;
@@ -237,7 +238,7 @@ public abstract class AbstractPluginLoaderLegacy {
 			if (_project == null) {
 				currentProject = ProjectManager.getInstance().getDefaultProject();
 			}
-			new Notification("Reshift Custom Plugin Load Error", "Error while loading custom FindBugs plugins", _message, NotificationType.ERROR).notify(currentProject);
+			new Notification(PluginConstants.DEFAULT_NOTIFICATION_GROUP_ID, "Error while loading custom FindBugs plugins", _message, NotificationType.ERROR).notify(currentProject);
 		}
 	}
 }

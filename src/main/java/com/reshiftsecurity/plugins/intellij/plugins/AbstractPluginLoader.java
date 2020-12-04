@@ -27,6 +27,7 @@ import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.project.ProjectManager;
 import com.intellij.util.ui.UIUtil;
+import com.reshiftsecurity.plugins.intellij.common.PluginConstants;
 import edu.umd.cs.findbugs.Plugin;
 import edu.umd.cs.findbugs.PluginException;
 import org.jetbrains.annotations.NotNull;
@@ -246,7 +247,7 @@ public abstract class AbstractPluginLoader {
 				currentProject = ProjectManager.getInstance().getDefaultProject();
 			}
 			new Notification(
-					"SpotBugs Custom Plugin Load Error",
+					PluginConstants.DEFAULT_NOTIFICATION_GROUP_ID,
 					ResourcesLoader.getString("error.customPlugins.title"),
 					message,
 					NotificationType.ERROR,

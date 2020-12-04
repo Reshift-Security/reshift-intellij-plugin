@@ -163,7 +163,7 @@ public final class ToolWindowPanel extends JPanel implements AnalysisStateListen
 		if (!_isPreviewLayoutEnabled && enablePreviewLayout) {
 			_updateMultiSplitLayout(PREVIEW_LAYOUT_DEF);
 			getMultiSplitPane().add(getBugTreePanel(), "left");
-			_multiSplitPane.add(getPreviewPanel().getComponent(), "middle");
+			getMultiSplitPane().add(getPreviewPanel().getComponent(), "middle");
 			getMultiSplitPane().add(getBugDetailsComponents().getTabbedPane(), "right");
 			//getMultiSplitPane().add(getBugDetailsComponents().getBugExplanationPanel(), "right.bottom");
 			_isPreviewLayoutEnabled = true;

@@ -27,6 +27,7 @@ public class PluginConstants {
     public static final String PLUGIN_NAME = "Reshift Security IntelliJ plugin";
     public static final String TOOL_WINDOW_ID = "reshift"; // see plugin.xml
     public static final String DEFAULT_EXPORT_DIR = System.getProperty("user.home") + File.separatorChar + TOOL_WINDOW_ID;
+    public static final String DEFAULT_NOTIFICATION_GROUP_ID = "Reshift.AnalyzeMenu";
 
     public static final String PLUGIN_ID = "com.reshiftsecurity.plugins.intellij";
 

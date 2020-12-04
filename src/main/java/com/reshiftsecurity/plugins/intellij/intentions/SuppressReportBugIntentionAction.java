@@ -154,7 +154,7 @@ public class SuppressReportBugIntentionAction extends SuppressIntentionAction im
 	public void invoke(@NotNull final Project project, final Editor editor, @NotNull final PsiElement element) throws IncorrectOperationException {
 
 		if (!element.getLanguage().isKindOf(JavaLanguage.INSTANCE)) {
-			new Notification("SpotBugs Missing Feature", "Not Supported", "Sorry, insert annotation not supported for this language.", NotificationType.INFORMATION).notify(project);
+			new Notification(PluginConstants.DEFAULT_NOTIFICATION_GROUP_ID, "Not Supported", "Sorry, insert annotation not supported for this language.", NotificationType.INFORMATION).notify(project);
 			/**
 			 * FIXME Scala Plugin:
 			 * org.jetbrains.plugins.scala.lang.psi.impl.ScalaPsiElementFactory

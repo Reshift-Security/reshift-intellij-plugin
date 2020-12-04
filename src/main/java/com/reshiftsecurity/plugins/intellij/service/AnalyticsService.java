@@ -254,7 +254,8 @@ public class AnalyticsService {
                         .addHeader("User-Agent", this.userAgent)
                         .build();
 
-                client.newCall(request).execute();
+                Response response = client.newCall(request).execute();
+                response.body().close();
             } catch (IOException e) {
                 e.printStackTrace();
             } finally {
