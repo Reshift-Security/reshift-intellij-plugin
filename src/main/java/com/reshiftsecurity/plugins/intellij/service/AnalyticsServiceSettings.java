@@ -29,7 +29,7 @@ import org.jetbrains.annotations.Nullable;
 
 @State(
         name = "ReshiftSecurity-IDEA-Analytics",
-        storages = {@Storage(file = "reshift-analytics-settings.xml")}
+        storages = {@Storage(value = "reshift-analytics-settings.xml")}
 )
 public final class AnalyticsServiceSettings implements PersistentStateComponent<AnalyticsServiceSettings> {
     @Tag
@@ -73,7 +73,11 @@ public final class AnalyticsServiceSettings implements PersistentStateComponent<
         AnalyticsService.getInstance().recordDismissConsentAction();
     }
 
-    public boolean hasConsent() {
+    public boolean consentResponseReceived() {
         return this.consentResponseReceived;
+    }
+
+    public boolean sendAnonymousUsage() {
+        return this.sendAnonymousUsage;
     }
 }

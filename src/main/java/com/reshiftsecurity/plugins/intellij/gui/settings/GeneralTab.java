@@ -81,7 +81,7 @@ final class GeneralTab extends JPanel {
 				analyzeAfterAutoMake.isSelected() != settings.analyzeAfterAutoMake ||
 				runInBackground.isSelected() != settings.runInBackground ||
 				toolWindowToFront.isSelected() != settings.toolWindowToFront ||
-				analyticsSend.isSelected() != AnalyticsServiceSettings.getInstance().hasConsent();
+				analyticsSend.isSelected() != AnalyticsServiceSettings.getInstance().sendAnonymousUsage();
 	}
 
 	void apply(@NotNull final AbstractSettings settings) throws ConfigurationException {
@@ -107,7 +107,7 @@ final class GeneralTab extends JPanel {
 		analyzeAfterAutoMake.setSelected(settings.analyzeAfterAutoMake);
 		runInBackground.setSelected(settings.runInBackground);
 		toolWindowToFront.setSelected(settings.toolWindowToFront);
-		analyticsSend.setSelected(AnalyticsServiceSettings.getInstance().hasConsent());
+		analyticsSend.setSelected(AnalyticsServiceSettings.getInstance().sendAnonymousUsage());
 	}
 
 	@NotNull
