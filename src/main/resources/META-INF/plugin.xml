@@ -46,6 +46,10 @@
     </description>
     <change-notes>
         <![CDATA[<html>
+        <h3>2.5.1</h3>
+        <ul>
+            <li>Fixed analytics settings apply/save</li>
+        </ul>
         <h3>2.5.0</h3>
         <ul>
             <li>Major crash fix for 2020.3</li>
