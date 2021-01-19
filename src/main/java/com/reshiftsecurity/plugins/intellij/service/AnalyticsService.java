@@ -236,7 +236,7 @@ public class AnalyticsService {
 
     private void processActions(boolean consentExempt) {
         if (!consentExempt) {
-            if (!AnalyticsServiceSettings.getInstance().hasConsent()) {
+            if (!AnalyticsServiceSettings.getInstance().sendAnonymousUsage()) {
                 return;
             }
         }
