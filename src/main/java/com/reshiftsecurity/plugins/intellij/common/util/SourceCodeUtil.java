@@ -71,13 +71,11 @@ public class SourceCodeUtil {
 
     public static Path getPathFromSourceLineAnnotation(SourceLineAnnotation annotation) {
         String packageName = annotation.getPackageName();
-        String packagePath;
-        if(File.separator.equals("\\")){ //Edge case needed here due to how backslashes operate and the fact that Windows uses them
-            packagePath = packageName.trim().replaceAll("[.]", "\\\\");
+        String separator = File.separator;
+        if(separator.equals("\\")){ //Edge case needed here due to how backslashes operate and the fact that Windows uses them
+            separator = "\\\\";
         }
-        else{
-            packagePath = packageName.trim().replaceAll("[.]", File.separator);
-        }
+        String packagePath = packageName.trim().replaceAll("[.]", separator);
         String fileName = annotation.getSourceFile();
         return Paths.get(packagePath, fileName);
     }

@@ -274,11 +274,6 @@ public final class AnalyzeScopeFiles extends AbstractAnalyzeAction {
 	}
 
 	private static String getModuleNameInReadAction(@NotNull final Module module) {
-//		return new ReadAction<String>() {
-//			protected void run(@NotNull Result<String> result) throws Throwable {
-//				result.setResult(module.getName());
-//			}
-//		}.execute().getResultObject();
 
 		return module.getName(); //HACK: Something about run is deprecated, unsure of how read actions work here, or why they're necessary
 		//According to ReadAction, it wants us to use public static <E extends Throwable> void run(@NotNull ThrowableRunnable<E> action) throws E
