@@ -29,6 +29,7 @@ import com.intellij.openapi.actionSystem.LangDataKeys;
 import com.intellij.openapi.actionSystem.PlatformDataKeys;
 import com.intellij.openapi.application.ReadAction;
 import com.intellij.openapi.application.Result;
+import com.intellij.openapi.application.RunResult;
 import com.intellij.openapi.compiler.CompileScope;
 import com.intellij.openapi.compiler.CompilerManager;
 import com.intellij.openapi.fileEditor.FileDocumentManager;
@@ -39,6 +40,7 @@ import com.intellij.openapi.progress.ProgressIndicator;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.roots.ProjectFileIndex;
 import com.intellij.openapi.roots.ProjectRootManager;
+import com.intellij.openapi.util.ThrowableComputable;
 import com.intellij.openapi.vfs.JarFileSystem;
 import com.intellij.openapi.vfs.VfsUtilCore;
 import com.intellij.openapi.vfs.VirtualFile;
@@ -50,6 +52,7 @@ import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiManager;
 import com.intellij.psi.PsiRecursiveElementVisitor;
 import com.intellij.util.Consumer;
+import com.intellij.util.ThrowableRunnable;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
@@ -271,10 +274,16 @@ public final class AnalyzeScopeFiles extends AbstractAnalyzeAction {
 	}
 
 	private static String getModuleNameInReadAction(@NotNull final Module module) {
-		return new ReadAction<String>() {
-			protected void run(@NotNull final Result<String> result) throws Throwable {
-				result.setResult(module.getName());
-			}
-		}.execute().getResultObject();
+//		return new ReadAction<String>() {
+//			protected void run(@NotNull Result<String> result) throws Throwable {
+//				result.setResult(module.getName());
+//			}
+//		}.execute().getResultObject();
+
+		return module.getName(); //HACK: Something about run is deprecated, unsure of how read actions work here, or why they're necessary
+		//According to ReadAction, it wants us to use public static <E extends Throwable> void run(@NotNull ThrowableRunnable<E> action) throws E
+		//That calls public static <T, E extends Throwable> T compute(@NotNull ThrowableComputable<T, E> action) throws E
+		//And then *that* calls return ApplicationManager.getApplication().runReadAction(action);
+		//Far as I can see, all the commented code above is doing is returning the module's name
 	}
 }
