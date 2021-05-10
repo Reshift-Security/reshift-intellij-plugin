@@ -23,8 +23,10 @@ import com.intellij.ide.highlighter.XmlFileType;
 import com.intellij.openapi.fileChooser.FileChooserFactory;
 import com.intellij.openapi.fileChooser.FileSaverDescriptor;
 import com.intellij.openapi.options.ConfigurationException;
+import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.io.FileUtil;
 import com.intellij.openapi.util.text.StringUtil;
+import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.openapi.vfs.VirtualFileWrapper;
 import org.jetbrains.annotations.NotNull;
 import com.reshiftsecurity.plugins.intellij.common.util.ErrorUtil;
@@ -89,12 +91,13 @@ final class FilterTab extends JPanel implements SettingsOwner<AbstractSettings> 
 	}
 
 	void addRFilerFilter() {
+		VirtualFile placeholder = null; //Save function ambiguous when passing null directly, have to use either Path or VirtualFile
 		final VirtualFileWrapper wrapper = FileChooserFactory.getInstance().createSaveFileDialog(
 				new FileSaverDescriptor(
 						StringUtil.capitalizeWords(ResourcesLoader.getString("filter.rFile.save.title"), true),
 						ResourcesLoader.getString("filter.rFile.save.text"),
 						XmlFileType.DEFAULT_EXTENSION
-				), this).save(null, "findbugs-android-exclude");
+				), this).save(placeholder, "findbugs-android-exclude");
 		if (wrapper == null) {
 			return;
 		}

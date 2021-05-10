@@ -19,6 +19,7 @@
   -->
 
 <idea-plugin url="https://reshiftsecurity.com">
+    <idea-version since-build="211"/>
     <name>Reshift Security</name>
     <description>
         <![CDATA[
@@ -46,6 +47,11 @@
     </description>
     <change-notes>
         <![CDATA[<html>
+        <h3>2.6.0</h3>
+        <ul>
+            <li>Support for 2021.1</li>
+            <li>Windows environment bugfix for XXE findings</li>
+        </ul>
         <h3>2.5.1</h3>
         <ul>
             <li>Fixed analytics settings apply/save</li>

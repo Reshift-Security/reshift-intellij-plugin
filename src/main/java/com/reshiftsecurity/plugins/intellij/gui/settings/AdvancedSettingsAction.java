@@ -158,13 +158,13 @@ final class AdvancedSettingsAction extends DefaultActionGroup {
 
 		@Override
 		public void actionPerformed(@NotNull final AnActionEvent e) {
-
+			VirtualFile placeholder = null; //Save function ambiguous when passing null directly, have to use either Path or VirtualFile
 			final VirtualFileWrapper wrapper = FileChooserFactory.getInstance().createSaveFileDialog(
 					new FileSaverDescriptor(
 							ResourcesLoader.getString("settings.export.title"),
 							ResourcesLoader.getString("settings.export.description"),
 							XmlFileType.DEFAULT_EXTENSION
-					), settingsPane).save(null, "Reshift");
+					), settingsPane).save(placeholder, "Reshift");
 			if (wrapper == null) {
 				return;
 			}

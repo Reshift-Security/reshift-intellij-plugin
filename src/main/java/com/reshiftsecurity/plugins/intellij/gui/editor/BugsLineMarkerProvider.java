@@ -48,9 +48,9 @@ import com.reshiftsecurity.plugins.intellij.gui.toolwindow.view.ToolWindowPanel;
 import com.reshiftsecurity.plugins.intellij.intentions.ClearBugIntentionAction;
 import com.reshiftsecurity.plugins.intellij.intentions.SuppressReportBugIntentionAction;
 
+import javax.swing.*;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
@@ -102,7 +102,8 @@ public final class BugsLineMarkerProvider implements LineMarkerProvider {
 			}
 			if (!matchingDescriptors.isEmpty()) {
 				final GutterIconNavigationHandler<PsiElement> navHandler = new BugGutterIconNavigationHandler(psiElement, matchingDescriptors);
-				return new LineMarkerInfo<PsiElement>(psiElement, psiElement.getTextRange(), GuiUtil.getTinyIcon(matchingDescriptors.get(0)), 4, new TooltipProvider(matchingDescriptors), navHandler, GutterIconRenderer.Alignment.LEFT);
+				Icon icon = GuiUtil.getTinyIcon(matchingDescriptors.get(0));
+				return new LineMarkerInfo<PsiElement>(psiElement, psiElement.getTextRange(), icon, 4, new TooltipProvider(matchingDescriptors), navHandler, GutterIconRenderer.Alignment.LEFT);
 			}
 		}
 

@@ -22,6 +22,7 @@ package com.reshiftsecurity.plugins.intellij.resources;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.util.IconLoader;
 import com.intellij.util.containers.ContainerUtil;
+import icons.PluginIcons;
 import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -134,7 +135,7 @@ public final class ResourcesLoader {
 
 	@NotNull
 	public static Icon loadIcon(final String filename) {
-		return IconLoader.getIcon(ICON_RESOURCES_PKG + '/' + filename);
+		return IconLoader.getIcon(ICON_RESOURCES_PKG + '/' + filename, PluginIcons.class);
 	}
 
 

@@ -23,7 +23,6 @@ package com.reshiftsecurity.plugins.intellij.common.util;
 import com.intellij.openapi.vfs.VirtualFile;
 import edu.umd.cs.findbugs.SourceLineAnnotation;
 import org.apache.commons.lang.StringUtils;
-import org.mozilla.javascript.tools.shell.Environment;
 
 import java.io.File;
 import java.nio.file.Files;
@@ -72,7 +71,11 @@ public class SourceCodeUtil {
 
     public static Path getPathFromSourceLineAnnotation(SourceLineAnnotation annotation) {
         String packageName = annotation.getPackageName();
-        String packagePath = packageName.trim().replaceAll("[.]", File.separator);
+        String separator = File.separator;
+        if(separator.equals("\\")){ //Edge case needed here due to how backslashes operate and the fact that Windows uses them
+            separator = "\\\\";
+        }
+        String packagePath = packageName.trim().replaceAll("[.]", separator);
         String fileName = annotation.getSourceFile();
         return Paths.get(packagePath, fileName);
     }
