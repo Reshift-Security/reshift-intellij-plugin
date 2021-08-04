@@ -47,6 +47,10 @@
     </description>
     <change-notes>
         <![CDATA[<html>
+        <h3>2.6.1</h3>
+        <ul>
+            <li>Minor exception fix</li>
+        </ul>
         <h3>2.6.0</h3>
         <ul>
             <li>Support for 2021.1</li>
