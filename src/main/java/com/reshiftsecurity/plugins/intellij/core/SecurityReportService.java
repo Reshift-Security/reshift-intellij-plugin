@@ -152,7 +152,7 @@ public class SecurityReportService implements PersistentStateComponent<SecurityR
             issue.categoryName = bug.getType();
             issue.classFQN = mainSourceLineAnnotation.getClassName();
             issue.lineNumber = mainSourceLineAnnotation.getStartLine();
-            issue.methodFullSignature = bug.getPrimaryMethod().getFullMethod(null);
+            issue.methodFullSignature = (bug.getPrimaryMethod() != null ? bug.getPrimaryMethod().getFullMethod(null) : "");
             issue.code = SourceCodeUtil.getTrimmedSourceLine(projectSourceFiles, mainSourceLineAnnotation);
             issue.cweId = bug.getCWEid();
             issue.issueHash = HashUtil.hashThis(String.format("%s|%s", issue.cweId, bug.getInstanceKey()));
