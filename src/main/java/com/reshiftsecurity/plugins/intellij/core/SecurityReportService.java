@@ -21,13 +21,11 @@
 package com.reshiftsecurity.plugins.intellij.core;
 
 import com.intellij.openapi.components.PersistentStateComponent;
-import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.components.State;
 import com.intellij.openapi.components.Storage;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.roots.ProjectRootManager;
 import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.util.SmartList;
 import com.intellij.util.xmlb.Constants;
 import com.intellij.util.xmlb.XmlSerializerUtil;
 import com.intellij.util.xmlb.annotations.Tag;
@@ -50,6 +48,7 @@ import org.jetbrains.annotations.Nullable;
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Set;
 
 @State(
@@ -90,7 +89,7 @@ public class SecurityReportService implements PersistentStateComponent<SecurityR
 
     @Tag(value = "securityIssues")
     @XCollection(elementName = Constants.LIST)
-    public SmartList<SecurityIssue> securityIssues;
+    public ArrayList<SecurityIssue> securityIssues;
 
     @Nullable
     @Override
@@ -103,7 +102,7 @@ public class SecurityReportService implements PersistentStateComponent<SecurityR
 
     @NotNull
     public static SecurityReportService getInstance(@NotNull final Project project) {
-        SecurityReportService service = ServiceManager.getService(project, SecurityReportService.class);
+        SecurityReportService service = project.getService(SecurityReportService.class);
         service.projectName = project.getName();
         service.currentProject = project;
         service.projectSourceFiles = ProjectRootManager.getInstance(project).getContentSourceRoots();
@@ -125,7 +124,7 @@ public class SecurityReportService implements PersistentStateComponent<SecurityR
         return service;
     }
 
-    private boolean issueExistsInSet(SecurityIssue issue, SmartList<SecurityIssue> issueSet) {
+    private boolean issueExistsInSet(SecurityIssue issue, ArrayList<SecurityIssue> issueSet) {
         if (issueSet == null)
             return false;
 
@@ -142,9 +141,9 @@ public class SecurityReportService implements PersistentStateComponent<SecurityR
     }
 
     public void addBugCollection(BugCollection bugCollection) {
-        SmartList<SecurityIssue> latestIssues = new SmartList<>();
-        SmartList<SecurityIssue> fixedIems = new SmartList<>();
-        SmartList<SecurityIssue> newItems = new SmartList<>();
+        ArrayList<SecurityIssue> latestIssues = new ArrayList<>();
+        ArrayList<SecurityIssue> fixedItems = new ArrayList<>();
+        ArrayList<SecurityIssue> newItems = new ArrayList<>();
 
         for (BugInstance bug: bugCollection.getCollection()) {
             SourceLineAnnotation mainSourceLineAnnotation = bug.getPrimarySourceLineAnnotation();
@@ -171,7 +170,7 @@ public class SecurityReportService implements PersistentStateComponent<SecurityR
                 if (!existingIssue.isFixed) { // only process issues that have not been fixed before
                     existingIssue.isFixed = !issueExistsInSet(existingIssue, latestIssues);
                     if (existingIssue.isFixed) {
-                        fixedIems.add(existingIssue);
+                        fixedItems.add(existingIssue);
                         existingIssue.fixDatetime = LocalDateTime.now().toString();
                         latestIssues.add(existingIssue);
                     }
@@ -179,7 +178,7 @@ public class SecurityReportService implements PersistentStateComponent<SecurityR
             }
         }
         securityIssues = latestIssues;
-        newFixCount = fixedIems.size();
+        newFixCount = fixedItems.size();
         newVulnerabilityCount = newItems.size();
         totalFixCount += newFixCount;
         totalVulnerabilityCount = securityIssues.size();
